@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "7115a9e7-fc1d-4a10-b789-a49b29ad676e",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "Idle_knife_005": {
+      "ver": "1.0.4",
+      "uuid": "25f5f195-a1d9-4cdd-a996-f03dd88f66f7",
+      "rawTextureUuid": "7115a9e7-fc1d-4a10-b789-a49b29ad676e",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 0.5,
+      "trimX": 3,
+      "trimY": 0,
+      "width": 133,
+      "height": 138,
+      "rawWidth": 138,
+      "rawHeight": 139,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
