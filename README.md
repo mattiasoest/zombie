@@ -2,8 +2,7 @@
 
 Project zombie
 
-### What is this repository for? ###
+### What is this repository? ###
 
-* Endles zombie shooter
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
+* Instant game
+* Endless zombie shooter
