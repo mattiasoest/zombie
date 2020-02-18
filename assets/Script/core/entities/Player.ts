@@ -9,17 +9,16 @@ const ATTACK_CD = 0.1;
 @ccclass
 export default class Player extends cc.Component {
 
+    @property(cc.Animation)
+    animations: cc.Animation = null;
+
     private attackCooldown: number = ATTACK_CD;
     private chargingAttack: boolean = false;
 
-    private animations: cc.Animation = null;
-
-    onLoad() {
-        this.animations = this.getComponent(cc.Animation);
-    }
+    // onLoad() {
+    // }
 
     start() {
-        const animState = this.animations.getAnimationState('man_fire_gun');
         this.animations.on('finished', (event) => {
             this.animations.play();
         });
