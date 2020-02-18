@@ -6,6 +6,9 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Obstacle extends cc.Component {
 
+    @property(cc.MotorJoint)
+    motorJoint: cc.MotorJoint = null;
+
     @property(cc.Sprite)
     carSprite: cc.Sprite = null;
 
@@ -28,31 +31,33 @@ export default class Obstacle extends cc.Component {
     private hitPoints = 4;
 
 
-
-    // LIFE-CYCLE CALLBACKS:
-
     onLoad() {
         this.body = this.node.getComponent(cc.RigidBody);
     }
 
-    start() {
 
+    start() {
+        this.body.linearVelocity = cc.v2(0, -180);
+        // this.body.applyForceToCenter(cc.v2(0, -180 * 100), true);
+        this.alive = true;
     }
 
     init() {
+        this.body = this.node.getComponent(cc.RigidBody);
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
         this.upperBound = this.controller.getMainCanvas().height * 0.7;
         this.leftBound = -this.controller.getMainCanvas().width * 0.7;
         this.rightBound = this.controller.getMainCanvas().width * 0.7;
         // Rotation, position
         this.node.angle = Math.random() * 360;
+        // this.body.applyForceToCenter(cc.v2(0, -180* 100), true);
         this.generateRandomProps();
         this.alive = true;
     }
 
 
     update(dt) {
-        this.node.setPosition(this.node.position.x, this.node.position.y - this.scrollSpeed * dt);
+        // this.node.setPosition(this.node.position.x, this.node.position.y - this.scrollSpeed * dt);
         if (this.node.position.y < this.lowerBound) {
             cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
         }

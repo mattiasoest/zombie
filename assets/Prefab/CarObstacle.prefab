@@ -19,25 +19,28 @@
     "_children": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 5
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 5
+        "__id__": 10
       },
       {
-        "__id__": 6
-      },
-      {
-        "__id__": 7
+        "__id__": 11
       },
       {
         "__id__": 8
+      },
+      {
+        "__id__": 12
       }
     ],
     "_prefab": {
-      "__id__": 9
+      "__id__": 13
     },
     "_opacity": 255,
     "_color": {
@@ -66,8 +69,8 @@
         0,
         0,
         0,
-        0,
-        1,
+        0.7071067811865475,
+        0.7071067811865476,
         1,
         1,
         1
@@ -77,7 +80,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": 90
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -192,6 +195,167 @@
     "sync": false
   },
   {
+    "__type__": "cc.Node",
+    "_name": "Motor",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 6
+      },
+      {
+        "__id__": 7
+      }
+    ],
+    "_prefab": {
+      "__id__": 9
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.RigidBody",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "_type": 2,
+    "_allowSleep": true,
+    "_gravityScale": 1,
+    "_linearDamping": 0,
+    "_angularDamping": 0,
+    "_linearVelocity": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_angularVelocity": 0,
+    "_fixedRotation": false,
+    "enabledContactListener": false,
+    "bullet": false,
+    "awakeOnLoad": true,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.MotorJoint",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "anchor": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "connectedAnchor": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "connectedBody": {
+      "__id__": 8
+    },
+    "collideConnected": false,
+    "_linearOffset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_angularOffset": 0,
+    "_maxForce": 1,
+    "_maxTorque": 1,
+    "_correctionFactor": 0.3,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.RigidBody",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_type": 2,
+    "_allowSleep": true,
+    "_gravityScale": 1,
+    "_linearDamping": 0,
+    "_angularDamping": 1,
+    "_linearVelocity": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_angularVelocity": 0,
+    "_fixedRotation": false,
+    "enabledContactListener": true,
+    "bullet": false,
+    "awakeOnLoad": true,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
+    },
+    "fileId": "0adUW0ZKNEx4iXBysijAYX",
+    "sync": false
+  },
+  {
     "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
@@ -231,6 +395,9 @@
       "__id__": 1
     },
     "_enabled": true,
+    "motorJoint": {
+      "__id__": 7
+    },
     "carSprite": {
       "__id__": 3
     },
@@ -251,31 +418,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 3,
-    "_allowSleep": true,
-    "_gravityScale": 1,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": false,
-    "enabledContactListener": true,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
     "__type__": "cc.PhysicsBoxCollider",
     "_name": "",
     "_objFlags": 0,
@@ -286,8 +428,8 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
+    "_friction": 1,
+    "_restitution": 1,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",

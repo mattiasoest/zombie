@@ -57,7 +57,9 @@ export default class Player extends cc.Component {
 
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === 'CarObstacle') {
-            console.log('Player dead');
+            console.log('Player dead static car');
+        } else if (otherCollider.node.name === 'Vehicle') {
+            console.log('Player dead vehicle');
         }
     }
 }

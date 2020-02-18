@@ -48,6 +48,10 @@ export default class Bullet extends cc.Component {
                 otherCollider.node.getComponent('Obstacle').hit();
                 this.alive = false;
                 cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
+            } else if (otherCollider.node.name === 'Vehicle') {
+                otherCollider.node.getComponent('Vehicle').hit();
+                this.alive = false;
+                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
             }
         }
     }

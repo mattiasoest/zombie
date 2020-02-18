@@ -1353,6 +1353,9 @@
     "carObstacle": {
       "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
     },
+    "vehicle": {
+      "__uuid__": "8dd11f3b-235a-45ca-aaea-2648c2192e67"
+    },
     "_id": "95DQ3NidZA76+ok8bkxxmD"
   },
   {
@@ -1458,7 +1461,7 @@
       }
     ],
     "_prefab": null,
-    "_opacity": 255,
+    "_opacity": 150,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1664,7 +1667,7 @@
       "__id__": 35
     },
     "_enabled": true,
-    "_type": 3,
+    "_type": 0,
     "_allowSleep": true,
     "_gravityScale": 1,
     "_linearDamping": 0,
@@ -1676,7 +1679,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_id": "2dWUOZJPBFQrfFW3l6H/Sn"
@@ -1691,7 +1694,7 @@
     "_enabled": true,
     "tag": 0,
     "_density": 1,
-    "_sensor": false,
+    "_sensor": true,
     "_friction": 0.2,
     "_restitution": 0,
     "body": null,

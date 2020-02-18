@@ -5,6 +5,7 @@ import Player from "./entities/Player";
 const { ccclass, property } = cc._decorator;
 
 const STATIC_SPAWN_RATE = 7;
+const VEHICLE_SPAWN_RATE = 4;
 
 @ccclass
 export default class StageController extends cc.Component {
@@ -24,12 +25,17 @@ export default class StageController extends cc.Component {
     @property(cc.Prefab)
     carObstacle: cc.Prefab = null;
 
+    @property(cc.Prefab)
+    vehicle: cc.Prefab = null;
+
     public cvs: cc.Node = null;
 
     bulletPool: cc.NodePool = new cc.NodePool();
     staticCarPool: cc.NodePool = new cc.NodePool();
+    vehiclePool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 2;
+    private vehicleSpawnTimer: number = 3;
 
 
     onLoad() {
@@ -42,6 +48,7 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.BULLET_SPAWN, this.onBulletSpawn, this);
         cc.systemEvent.on(GameEvent.BULLET_REMOVE, this.onBulletRemove, this);
         cc.systemEvent.on(GameEvent.STATIC_CAR_REMOVE, this.onStaticCarRemove, this);
+        cc.systemEvent.on(GameEvent.VEHICLE_REMOVE, this.onVehicleRemove, this);
     }
 
     start() {
@@ -54,9 +61,13 @@ export default class StageController extends cc.Component {
 
     update(dt) {
         this.staticObjectSpawnTimer -= dt;
+        this.vehicleSpawnTimer -= dt;
         if (this.staticObjectSpawnTimer <= 0) {
             // Random among other objects
             this.handleStaticCarSpawn();
+        }
+        if (this.vehicleSpawnTimer <= 0) {
+            this.handleVehicleSpawn();
         }
     }
 
@@ -69,6 +80,7 @@ export default class StageController extends cc.Component {
         const manager = cc.director.getPhysicsManager();
         manager.enabled = true;
         manager.enabledAccumulator = true;
+        manager.gravity = cc.v2(0, 0);
 
         cc.PhysicsManager.FIXED_TIME_STEP = 1 / 60;
         // The number of iterations per update of the Physics System processing speed is 10 by default
@@ -157,5 +169,28 @@ export default class StageController extends cc.Component {
     private onStaticCarRemove(staticCarNode: cc.Node) {
         staticCarNode.removeFromParent();
         this.staticCarPool.put(staticCarNode);
+    }
+
+    private handleVehicleSpawn() {
+
+        let vehicleNode;
+        if (this.vehiclePool.size() > 0) {
+            console.log('vehicle POOL!!!');
+            vehicleNode = this.vehiclePool.get();
+        } else {
+            console.log('vehicle NEW!!!');
+            vehicleNode = cc.instantiate(this.vehicle);
+        }
+        const vehicleObj = vehicleNode.getComponent('Vehicle');
+        vehicleObj.controller = this;
+        vehicleNode.setPosition(this.generateRandomPos());
+        vehicleObj.init();
+        this.node.addChild(vehicleNode);
+        this.vehicleSpawnTimer = VEHICLE_SPAWN_RATE;
+    }
+
+    private onVehicleRemove(vehicleNode: cc.Node) {
+        vehicleNode.removeFromParent();
+        this.vehiclePool.put(vehicleNode);
     }
 }
