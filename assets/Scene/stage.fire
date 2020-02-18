@@ -1353,6 +1353,9 @@
     "carObstacle": {
       "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
     },
+    "compactObstacle": {
+      "__uuid__": "b31f6815-414a-4b41-bfaf-d164c43fda3f"
+    },
     "vehicle": {
       "__uuid__": "8dd11f3b-235a-45ca-aaea-2648c2192e67"
     },

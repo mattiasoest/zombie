@@ -6,6 +6,9 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Vehicle extends cc.Component {
 
+    @property(cc.Animation)
+    animations: cc.Animation = null;
+
     @property(cc.Sprite)
     mainSprite: cc.Sprite = null;
 
@@ -22,36 +25,42 @@ export default class Vehicle extends cc.Component {
 
     private hitPoints = 4;
 
-    onLoad() {
-        // this.playerFireSound = this.getComponent(cc.AudioSource);
-        this.body = this.node.getComponent(cc.RigidBody);
-    }
-
-    start() {
-        this.body.linearVelocity = cc.v2(0, -1000);
-        this.alive = true;
-    }
-
     init() {
+        this.animations.on('finished', (event) => {
+            this.mainSprite.node.setScale(0.7);
+            cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
+        });
+
+        this.body = this.node.getComponent(cc.RigidBody);
+        this.body.linearVelocity = cc.v2(0, -1000);
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
+        this.body.enabledContactListener = true;
         this.generateRandomProps();
         this.alive = true;
     }
 
 
     update(dt) {
-        if (this.node.y < this.lowerBound) {
-            cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
+        if (this.alive) {
+            if (this.node.y < this.lowerBound) {
+                cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
+            }
         }
 
     }
 
     public hit() {
-        this.hitPoints--;
-        if (this.hitPoints > 0) {
-            this.mainSprite.spriteFrame = this.frames[this.hitPoints - 1];
-        } else {
-            cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
+        if (this.alive) {
+
+            this.hitPoints--;
+            if (this.hitPoints > 0) {
+                this.mainSprite.spriteFrame = this.frames[this.hitPoints - 1];
+            } else {
+                this.body.enabledContactListener = false;
+                this.alive = false;
+                this.body.linearVelocity = cc.v2(0, 0);
+                this.animations.play('car_explosion');
+            }
         }
     }
 

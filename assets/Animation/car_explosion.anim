@@ -1,0 +1,75 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "car_explosion",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.23076923076923078,
+  "sample": 26,
+  "speed": 0.4,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "7db0ba4c-41fc-432d-ba49-aed43ef305da"
+            }
+          },
+          {
+            "frame": 0.038461538461538464,
+            "value": {
+              "__uuid__": "7f270df1-299e-49bb-917a-6d65fa84c0f5"
+            }
+          },
+          {
+            "frame": 0.07692307692307693,
+            "value": {
+              "__uuid__": "50331956-fbf1-4b4c-8313-0ce876f4b975"
+            }
+          },
+          {
+            "frame": 0.11538461538461539,
+            "value": {
+              "__uuid__": "a94b34c8-48fc-4110-a2b3-a68f31690663"
+            }
+          },
+          {
+            "frame": 0.15384615384615385,
+            "value": {
+              "__uuid__": "f014b9b6-4272-49ce-bdee-374d80cd8ad5"
+            }
+          },
+          {
+            "frame": 0.19230769230769232,
+            "value": {
+              "__uuid__": "f656d36b-0a8e-45f3-bf7d-d9dda67a4e6b"
+            }
+          }
+        ]
+      }
+    },
+    "props": {
+      "scale": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1.85,
+            "y": 1.85
+          }
+        },
+        {
+          "frame": 0.23076923076923078,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1.5,
+            "y": 1.6
+          }
+        }
+      ]
+    }
+  },
+  "events": []
+}

@@ -4,13 +4,16 @@ import { GameEvent } from "../Event";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Obstacle extends cc.Component {
+export default abstract class Obstacle extends cc.Component {
 
-    @property(cc.MotorJoint)
-    motorJoint: cc.MotorJoint = null;
+    @property(cc.Animation)
+    animations: cc.Animation = null;
 
     @property(cc.Sprite)
     carSprite: cc.Sprite = null;
+
+    @property(cc.Sprite)
+    shadowSprite: cc.Sprite = null;
 
     @property([cc.SpriteFrame])
     carFrames: Array<cc.SpriteFrame> = new Array(4);
@@ -21,56 +24,46 @@ export default class Obstacle extends cc.Component {
 
     alive = false;
 
-    private lowerBound: number = 0;
-    private upperBound: number = 0;
-    private leftBound: number = 0;
-    private rightBound: number = 0;
+    protected lowerBound: number = 0;
+    protected upperBound: number = 0;
+    protected leftBound: number = 0;
+    protected rightBound: number = 0;
 
     private scrollSpeed: number = 180;
 
     private hitPoints = 4;
 
-
-    onLoad() {
-        this.body = this.node.getComponent(cc.RigidBody);
-    }
-
-
-    start() {
-        this.body.linearVelocity = cc.v2(0, -180);
-        // this.body.applyForceToCenter(cc.v2(0, -180 * 100), true);
-        this.alive = true;
-    }
-
     init() {
         this.body = this.node.getComponent(cc.RigidBody);
+        this.body.linearVelocity = cc.v2(0, -180);
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
         this.upperBound = this.controller.getMainCanvas().height * 0.7;
         this.leftBound = -this.controller.getMainCanvas().width * 0.7;
         this.rightBound = this.controller.getMainCanvas().width * 0.7;
-        // Rotation, position
+
         this.node.angle = Math.random() * 360;
-        // this.body.applyForceToCenter(cc.v2(0, -180* 100), true);
         this.generateRandomProps();
+        this.body.enabledContactListener = true;
+        this.shadowSprite.enabled = true;
         this.alive = true;
     }
 
-
-    update(dt) {
-        // this.node.setPosition(this.node.position.x, this.node.position.y - this.scrollSpeed * dt);
-        if (this.node.position.y < this.lowerBound) {
-            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
-        }
-
-    }
-
     public hit() {
-        this.hitPoints--;
-        if (this.hitPoints > 0) {
-            this.carSprite.spriteFrame = this.carFrames[this.hitPoints - 1];
-        } else {
-            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
+        if (this.alive) {
+            this.hitPoints--;
+            if (this.hitPoints > 0) {
+                this.carSprite.spriteFrame = this.carFrames[this.hitPoints - 1];
+            } else {
+                this.body.enabledContactListener = false;
+                this.body.linearVelocity = cc.v2(0, 0);
+                this.shadowSprite.enabled = false;
+                this.alive = false;
+                this.animations.play();
+            }
         }
+    }
+    protected shouldRecycle() {
+        return this.node.position.y < this.lowerBound || this.node.x < this.leftBound || this.node.x > this.rightBound;
     }
 
     private generateRandomProps() {

@@ -1,11 +1,10 @@
 import { GameEvent } from "./Event";
-import Bullet from "./objects/Bullet";
 import Player from "./entities/Player";
 
 const { ccclass, property } = cc._decorator;
 
-const STATIC_SPAWN_RATE = 7;
-const VEHICLE_SPAWN_RATE = 4;
+const STATIC_SPAWN_RATE = 4;
+const VEHICLE_SPAWN_RATE = 7;
 
 @ccclass
 export default class StageController extends cc.Component {
@@ -26,15 +25,19 @@ export default class StageController extends cc.Component {
     carObstacle: cc.Prefab = null;
 
     @property(cc.Prefab)
+    compactObstacle: cc.Prefab = null;
+
+    @property(cc.Prefab)
     vehicle: cc.Prefab = null;
 
     public cvs: cc.Node = null;
 
     bulletPool: cc.NodePool = new cc.NodePool();
     staticCarPool: cc.NodePool = new cc.NodePool();
+    staticCompactPool: cc.NodePool = new cc.NodePool();
     vehiclePool: cc.NodePool = new cc.NodePool();
 
-    private staticObjectSpawnTimer: number = 2;
+    private staticObjectSpawnTimer: number = 1;
     private vehicleSpawnTimer: number = 3;
 
 
@@ -48,6 +51,7 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.BULLET_SPAWN, this.onBulletSpawn, this);
         cc.systemEvent.on(GameEvent.BULLET_REMOVE, this.onBulletRemove, this);
         cc.systemEvent.on(GameEvent.STATIC_CAR_REMOVE, this.onStaticCarRemove, this);
+        cc.systemEvent.on(GameEvent.STATIC_COMPACT_REMOVE, this.onStaticCompactRemove, this);
         cc.systemEvent.on(GameEvent.VEHICLE_REMOVE, this.onVehicleRemove, this);
     }
 
@@ -64,7 +68,11 @@ export default class StageController extends cc.Component {
         this.vehicleSpawnTimer -= dt;
         if (this.staticObjectSpawnTimer <= 0) {
             // Random among other objects
-            this.handleStaticCarSpawn();
+            if (Math.random() < 0.4) {
+                this.handleStaticCarSpawn();
+            } else {
+                this.handleStaticCompactSpawn();
+            }
         }
         if (this.vehicleSpawnTimer <= 0) {
             this.handleVehicleSpawn();
@@ -148,7 +156,7 @@ export default class StageController extends cc.Component {
     }
 
     private generateRandomSign() {
-        return Math.random() <= 0.5 ? -1 : 1;
+        return Math.random() < 0.5 ? -1 : 1;
     }
 
     private handleStaticCarSpawn() {
@@ -158,10 +166,11 @@ export default class StageController extends cc.Component {
         } else {
             carNode = cc.instantiate(this.carObstacle);
         }
-        const carObj = carNode.getComponent('Obstacle');
+        const carObj = carNode.getComponent('CarStatic');
         carObj.controller = this;
-        carNode.setPosition(this.generateRandomPos());
         carObj.init();
+
+        carNode.setPosition(this.generateRandomPos());
         this.node.addChild(carNode);
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
@@ -171,14 +180,35 @@ export default class StageController extends cc.Component {
         this.staticCarPool.put(staticCarNode);
     }
 
+    private handleStaticCompactSpawn() {
+        let compactNode;
+        if (this.staticCompactPool.size() > 0) {
+            compactNode = this.staticCompactPool.get();
+        } else {
+            compactNode = cc.instantiate(this.compactObstacle);
+        }
+        const compactObj = compactNode.getComponent('CompactStatic');
+        compactObj.controller = this;
+        compactObj.init();
+
+        compactNode.setPosition(this.generateRandomPos());
+        this.node.addChild(compactNode);
+        this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
+    }
+
+    private onStaticCompactRemove(staticCompactNode: cc.Node) {
+        staticCompactNode.removeFromParent();
+        this.staticCompactPool.put(staticCompactNode);
+    }
+
+
+
     private handleVehicleSpawn() {
 
         let vehicleNode;
         if (this.vehiclePool.size() > 0) {
-            console.log('vehicle POOL!!!');
             vehicleNode = this.vehiclePool.get();
         } else {
-            console.log('vehicle NEW!!!');
             vehicleNode = cc.instantiate(this.vehicle);
         }
         const vehicleObj = vehicleNode.getComponent('Vehicle');

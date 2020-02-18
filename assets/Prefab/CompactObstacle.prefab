@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "CarObstacle",
+    "_name": "CompactObstacle",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -49,8 +49,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 527,
-      "height": 236
+      "width": 757,
+      "height": 415
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -68,8 +68,8 @@
         0,
         0.7071067811865475,
         0.7071067811865476,
-        0.85,
-        0.85,
+        0.5,
+        0.5,
         1
       ]
     },
@@ -116,8 +116,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 462,
-      "height": 182
+      "width": 698,
+      "height": 354
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -192,11 +192,11 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "86828e2f-3722-4656-8f51-80f55211675b"
+      "__uuid__": "ecd54302-1e9e-4e5d-9603-a4ce7c2a05c7"
     },
     "_clips": [
       {
-        "__uuid__": "86828e2f-3722-4656-8f51-80f55211675b"
+        "__uuid__": "ecd54302-1e9e-4e5d-9603-a4ce7c2a05c7"
       }
     ],
     "playOnLoad": false,
@@ -208,9 +208,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
+      "__uuid__": "b31f6815-414a-4b41-bfaf-d164c43fda3f"
     },
-    "fileId": "9cvNzG+UVONIfulWoel2rh",
+    "fileId": "6ch59oRKZNSI72m165hHvt",
     "sync": false
   },
   {
@@ -229,7 +229,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "0cfce4f1-10d9-4fc6-83a5-cf7f98082446"
+      "__uuid__": "9acf29bf-1b1b-4ea8-b8a7-348cbcdfd0d9"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -243,6 +243,39 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "a43b3r6vLdIUrvP0NDO60oF",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "animations": {
+      "__id__": 4
+    },
+    "carSprite": {
+      "__id__": 3
+    },
+    "shadowSprite": {
+      "__id__": 6
+    },
+    "carFrames": [
+      {
+        "__uuid__": "8b79c684-1e15-48d0-8e4f-b8f89ce7a43a"
+      },
+      {
+        "__uuid__": "b291943f-e55d-4a7c-bce5-b2bcb3954394"
+      },
+      {
+        "__uuid__": "c7b64feb-275d-4187-ab3b-05da218a4f28"
+      },
+      {
+        "__uuid__": "ec08a649-0f4f-4c17-abf9-771f91b03878"
+      }
+    ],
     "_id": ""
   },
   {
@@ -291,42 +324,9 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 462,
-      "height": 182
+      "width": 670,
+      "height": 350
     },
-    "_id": ""
-  },
-  {
-    "__type__": "30e54c9SkdJPodzzUV9thJh",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "animations": {
-      "__id__": 4
-    },
-    "carSprite": {
-      "__id__": 3
-    },
-    "shadowSprite": {
-      "__id__": 6
-    },
-    "carFrames": [
-      {
-        "__uuid__": "c0e47b3f-7789-4938-bd53-94a58f9a5185"
-      },
-      {
-        "__uuid__": "3c3776e1-55a7-4cef-acb2-688967be3efa"
-      },
-      {
-        "__uuid__": "275480a4-cac1-4854-acb1-1c02b5ad3d49"
-      },
-      {
-        "__uuid__": "03b9c8ee-d1d0-44e1-ba5b-77d048d8decf"
-      }
-    ],
     "_id": ""
   },
   {
@@ -335,9 +335,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
+      "__uuid__": "b31f6815-414a-4b41-bfaf-d164c43fda3f"
     },
-    "fileId": "efgnYQPrFPHK4OCapAna5z",
+    "fileId": "93orwGXPhArJAVj9Jqb52D",
     "sync": false
   }
 ]
