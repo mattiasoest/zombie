@@ -4,7 +4,7 @@ const { ccclass, property } = cc._decorator;
 export default class GroundScrollScroll extends cc.Component {
 
     private readonly lowBound: number = -2400;
-    private readonly scrollSpeed: number = 250;
+    private readonly scrollSpeed: number = 180;
 
     // onLoad () {}
 

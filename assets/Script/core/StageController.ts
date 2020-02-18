@@ -21,6 +21,8 @@ export default class StageController extends cc.Component {
 
     public cvs: cc.Node = null;
 
+    bulletPool: cc.NodePool = new cc.NodePool();
+
 
     onLoad() {
         this.initPhysics();
@@ -71,8 +73,15 @@ export default class StageController extends cc.Component {
     }
 
     private onBulletSpawn() {
-        console.log('spawn bullet')
-        const bulletNode = cc.instantiate(this.bullet);
+        let bulletNode;
+
+        if (this.bulletPool.size() > 0) {
+            console.log('POOL');
+            bulletNode = this.bulletPool.get();
+        } else {
+            console.log('NEW BULLET');
+            bulletNode = cc.instantiate(this.bullet);
+        }
         const bullet = bulletNode.getComponent('Bullet');
         bullet.controller = this;
         bullet.init();
@@ -86,7 +95,7 @@ export default class StageController extends cc.Component {
     private onBulletRemove(bullet: Bullet) {
         console.log('bullet destroyed');
         bullet.node.removeFromParent();
-        bullet.node.destroy();
+        this.bulletPool.put(bullet.node);
     }
 
     private onTouchStart(event: any) {
