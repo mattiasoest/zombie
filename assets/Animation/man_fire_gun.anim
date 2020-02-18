@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "man_fire_gun",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.13157894736842105,
+  "sample": 38,
+  "speed": 0.4,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "604ae3ae-fed3-4691-b0a7-a3ce594222e3"
+            }
+          },
+          {
+            "frame": 0.02631578947368421,
+            "value": {
+              "__uuid__": "31d44696-82f0-4c5e-b79d-fa65aeb89abb"
+            }
+          },
+          {
+            "frame": 0.05263157894736842,
+            "value": {
+              "__uuid__": "19602026-b4eb-435c-b505-f87be9ff61c0"
+            }
+          },
+          {
+            "frame": 0.07894736842105263,
+            "value": {
+              "__uuid__": "c3196b09-d633-49a3-8d2b-89652a26ac24"
+            }
+          },
+          {
+            "frame": 0.10526315789473684,
+            "value": {
+              "__uuid__": "3da8b576-3035-4d10-8637-2da78847ffe1"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

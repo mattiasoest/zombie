@@ -98,8 +98,8 @@ export default class StageController extends cc.Component {
         bullet.controller = this;
         bullet.init();
         const pos = this.node.convertToNodeSpaceAR(this.player.node.position);
-        pos.x = pos.x + 25;
-        pos.y = pos.y + 50;
+        pos.x = pos.x + 20;
+        pos.y = pos.y + 55;
         bulletNode.setPosition(pos);
         this.node.addChild(bulletNode);
     }

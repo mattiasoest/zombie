@@ -1386,6 +1386,9 @@
       },
       {
         "__id__": 38
+      },
+      {
+        "__id__": 39
       }
     ],
     "_prefab": null,
@@ -1518,5 +1521,27 @@
       "height": 174
     },
     "_id": "48bzch6N9PWIcT9T4PxkOk"
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 35
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "b6403941-19d8-4ae4-a79a-792c8c478530"
+    },
+    "_clips": [
+      {
+        "__uuid__": "b6403941-19d8-4ae4-a79a-792c8c478530"
+      },
+      {
+        "__uuid__": "c439bd74-abef-43f1-91ac-2e460d1c276d"
+      }
+    ],
+    "playOnLoad": true,
+    "_id": "5d6Mr8+jhMtrwOZFURl48V"
   }
 ]

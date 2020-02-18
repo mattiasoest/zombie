@@ -1,7 +1,7 @@
 import { GameEvent } from "../Event";
 
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 
 const ATTACK_CD = 0.1;
@@ -10,15 +10,22 @@ const ATTACK_CD = 0.1;
 export default class Player extends cc.Component {
 
     private attackCooldown: number = ATTACK_CD;
-    private chargingAttack: boolean  = false;
+    private chargingAttack: boolean = false;
 
-    // onLoad () {}
+    private animations: cc.Animation = null;
 
-    start () {
-
+    onLoad() {
+        this.animations = this.getComponent(cc.Animation);
     }
 
-    update (dt) {
+    start() {
+        const animState = this.animations.getAnimationState('man_fire_gun');
+        this.animations.on('finished', (event) => {
+            this.animations.play();
+        });
+    }
+
+    update(dt) {
         if (this.chargingAttack) {
             this.attackCooldown -= dt;
         }
@@ -30,6 +37,7 @@ export default class Player extends cc.Component {
 
     public handleAttack() {
         if (this.attackCooldown <= 0) {
+            this.animations.play("man_fire_gun");
             cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
             this.resetAttack();
         } else {
