@@ -32,15 +32,20 @@ export default class Bullet extends cc.Component {
         if (cc.isValid(this.node) && this.alive) {
             if (this.node.y > this.controller.getMainCanvas().height * 0.6) {
                 this.alive = false;
-                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this);
+                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
             }
         }
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === 'Enemy') {
+            cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
             otherCollider.node.destroy();
+        } else if (otherCollider.node.name === 'CarObstacle') {
+            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, otherCollider.node);
+            cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
         }
+
     }
 
     // playFireSound() {

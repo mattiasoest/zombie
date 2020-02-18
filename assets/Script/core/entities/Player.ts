@@ -1,4 +1,5 @@
-import { GameEvent } from "../../Event";
+import { GameEvent } from "../Event";
+
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,7 +30,6 @@ export default class Player extends cc.Component {
 
     public handleAttack() {
         if (this.attackCooldown <= 0) {
-            console.log('fire!');
             cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
             this.resetAttack();
         } else {
@@ -44,7 +44,6 @@ export default class Player extends cc.Component {
     }
 
     public chargeAttack() {
-        console.log('charge');
         this.chargingAttack = true;
         this.attackCooldown = ATTACK_CD;
     }

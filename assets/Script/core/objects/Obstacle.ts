@@ -1,20 +1,24 @@
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+import StageController from "../StageController";
+import { GameEvent } from "../Event";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Obstacle extends cc.Component {
 
-    @property(cc.RigidBody)
-    body: cc.RigidBody = null;
+    controller: StageController = null;
+
+    body: cc.RigidBody;
+
+    alive = false;
+
+    lowerBound: number = 0;
+    upperBound: number = 0;
+    leftBound: number = 0;
+    rightBound: number = 0;
+
+    private scrollSpeed: number = 180;
+
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -27,5 +31,28 @@ export default class Obstacle extends cc.Component {
 
     }
 
-    // update (dt) {}
+    init() {
+
+        this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
+        this.upperBound = this.controller.getMainCanvas().height * 0.7;
+        this.leftBound = -this.controller.getMainCanvas().width * 0.7;
+        this.rightBound = this.controller.getMainCanvas().width * 0.7;
+        // Rotation, position
+        this.node.angle = Math.random() * 360;
+    }
+
+
+    update(dt) {
+        this.node.setPosition(this.node.position.x, this.node.position.y - this.scrollSpeed * dt);
+        if (this.node.position.y < this.lowerBound) {
+            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
+        }
+        
+    }
+
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.name === 'Player') {
+            console.log('Player dead');
+        }
+    }
 }
