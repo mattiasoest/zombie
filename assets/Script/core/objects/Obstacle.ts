@@ -1,5 +1,4 @@
 import StageController from "../StageController";
-import { GameEvent } from "../Event";
 
 const { ccclass, property } = cc._decorator;
 
@@ -33,7 +32,7 @@ export default abstract class Obstacle extends cc.Component {
 
     private hitPoints = 4;
 
-    init() {
+    protected init() {
         this.body = this.node.getComponent(cc.RigidBody);
         this.body.linearVelocity = cc.v2(0, -180);
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;

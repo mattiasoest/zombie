@@ -37,8 +37,8 @@ export default class StageController extends cc.Component {
     staticCompactPool: cc.NodePool = new cc.NodePool();
     vehiclePool: cc.NodePool = new cc.NodePool();
 
-    private staticObjectSpawnTimer: number = 1;
-    private vehicleSpawnTimer: number = 3;
+    private staticObjectSpawnTimer: number = 3;
+    private vehicleSpawnTimer: number = 7;
 
 
     onLoad() {
@@ -152,7 +152,7 @@ export default class StageController extends cc.Component {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height * 0.6);
+        return cc.v2(randomX, this.cvs.height * 0.7);
     }
 
     private generateRandomSign() {
