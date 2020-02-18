@@ -1,6 +1,6 @@
-import Player from "./objects/entities/Player";
 import { GameEvent } from "./Event";
 import Bullet from "./objects/Bullet";
+import Player from "./entities/Player";
 
 const { ccclass, property } = cc._decorator;
 
