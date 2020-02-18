@@ -59,6 +59,7 @@ export default class Vehicle extends cc.Component {
                 this.body.enabledContactListener = false;
                 this.alive = false;
                 this.body.linearVelocity = cc.v2(0, 0);
+                this.body.angularVelocity = 0;
                 this.animations.play('car_explosion');
             }
         }

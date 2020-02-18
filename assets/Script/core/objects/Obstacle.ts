@@ -55,6 +55,7 @@ export default abstract class Obstacle extends cc.Component {
             } else {
                 this.body.enabledContactListener = false;
                 this.body.linearVelocity = cc.v2(0, 0);
+                this.body.angularVelocity = 0;
                 this.shadowSprite.enabled = false;
                 this.alive = false;
                 this.animations.play();
