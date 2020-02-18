@@ -25,7 +25,7 @@ export default class Bullet extends cc.Component {
     }
 
     init() {
-        this.alive = true;  
+        this.alive = true;
     }
 
     update(dt) {
@@ -38,14 +38,18 @@ export default class Bullet extends cc.Component {
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {
-        if (otherCollider.node.name === 'Enemy') {
-            cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
-            otherCollider.node.destroy();
-        } else if (otherCollider.node.name === 'CarObstacle') {
-            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, otherCollider.node);
-            cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
-        }
+        if (this.alive) {
 
+            if (otherCollider.node.name === 'Enemy') {
+                this.alive = false;
+                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
+                otherCollider.node.destroy();
+            } else if (otherCollider.node.name === 'CarObstacle') {
+                otherCollider.node.getComponent('Obstacle').hit();
+                this.alive = false;
+                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
+            }
+        }
     }
 
     // playFireSound() {

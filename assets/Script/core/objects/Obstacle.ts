@@ -1,10 +1,16 @@
 import StageController from "../StageController";
 import { GameEvent } from "../Event";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Obstacle extends cc.Component {
+
+    @property(cc.Sprite)
+    carSprite: cc.Sprite = null;
+
+    @property([cc.SpriteFrame])
+    carFrames: Array<cc.SpriteFrame> = new Array(4);
 
     controller: StageController = null;
 
@@ -12,33 +18,36 @@ export default class Obstacle extends cc.Component {
 
     alive = false;
 
-    lowerBound: number = 0;
-    upperBound: number = 0;
-    leftBound: number = 0;
-    rightBound: number = 0;
+    private lowerBound: number = 0;
+    private upperBound: number = 0;
+    private leftBound: number = 0;
+    private rightBound: number = 0;
 
     private scrollSpeed: number = 180;
+
+    private hitPoints = 4;
 
 
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.body = this.node.getComponent(cc.RigidBody);
     }
 
-    start () {
+    start() {
 
     }
 
     init() {
-
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
         this.upperBound = this.controller.getMainCanvas().height * 0.7;
         this.leftBound = -this.controller.getMainCanvas().width * 0.7;
         this.rightBound = this.controller.getMainCanvas().width * 0.7;
         // Rotation, position
         this.node.angle = Math.random() * 360;
+        this.generateRandomProps();
+        this.alive = true;
     }
 
 
@@ -47,12 +56,21 @@ export default class Obstacle extends cc.Component {
         if (this.node.position.y < this.lowerBound) {
             cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
         }
-        
+
     }
 
-    onBeginContact(contact, selfCollider, otherCollider) {
-        if (otherCollider.node.name === 'Player') {
-            console.log('Player dead');
+    public hit() {
+        this.hitPoints--;
+        if (this.hitPoints > 0) {
+            this.carSprite.spriteFrame = this.carFrames[this.hitPoints - 1];
+        } else {
+            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
         }
+    }
+
+    private generateRandomProps() {
+        const random = Math.floor(Math.random() * this.carFrames.length);
+        this.carSprite.spriteFrame = this.carFrames[random];
+        this.hitPoints = random + 1;
     }
 }

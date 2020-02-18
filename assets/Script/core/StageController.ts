@@ -29,7 +29,7 @@ export default class StageController extends cc.Component {
     bulletPool: cc.NodePool = new cc.NodePool();
     staticCarPool: cc.NodePool = new cc.NodePool();
 
-    private staticObjectSpawnTimer: number = STATIC_SPAWN_RATE;
+    private staticObjectSpawnTimer: number = 2;
 
 
     onLoad() {
@@ -142,10 +142,8 @@ export default class StageController extends cc.Component {
     private handleStaticCarSpawn() {
         let carNode;
         if (this.staticCarPool.size() > 0) {
-            console.log("spawn car POOL");
             carNode = this.staticCarPool.get();
         } else {
-            console.log("spawn car NEW");
             carNode = cc.instantiate(this.carObstacle);
         }
         const carObj = carNode.getComponent('Obstacle');
@@ -157,7 +155,6 @@ export default class StageController extends cc.Component {
     }
 
     private onStaticCarRemove(staticCarNode: cc.Node) {
-        console.log('recycld car');
         staticCarNode.removeFromParent();
         this.staticCarPool.put(staticCarNode);
     }

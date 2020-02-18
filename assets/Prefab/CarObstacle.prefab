@@ -16,24 +16,28 @@
     "_name": "CarObstacle",
     "_objFlags": 0,
     "_parent": null,
-    "_children": [],
+    "_children": [
+      {
+        "__id__": 2
+      }
+    ],
     "_active": true,
     "_components": [
       {
-        "__id__": 2
-      },
-      {
-        "__id__": 3
-      },
-      {
-        "__id__": 4
-      },
-      {
         "__id__": 5
+      },
+      {
+        "__id__": 6
+      },
+      {
+        "__id__": 7
+      },
+      {
+        "__id__": 8
       }
     ],
     "_prefab": {
-      "__id__": 6
+      "__id__": 9
     },
     "_opacity": 255,
     "_color": {
@@ -45,8 +49,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 462,
-      "height": 182
+      "width": 527,
+      "height": 236
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -83,6 +87,111 @@
     "_id": ""
   },
   {
+    "__type__": "cc.Node",
+    "_name": "MainSprite",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 3
+      }
+    ],
+    "_prefab": {
+      "__id__": 4
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 462,
+      "height": 182
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": null,
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
+    },
+    "fileId": "9cvNzG+UVONIfulWoel2rh",
+    "sync": false
+  },
+  {
     "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
@@ -98,7 +207,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "03b9c8ee-d1d0-44e1-ba5b-77d048d8decf"
+      "__uuid__": "0cfce4f1-10d9-4fc6-83a5-cf7f98082446"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -122,6 +231,23 @@
       "__id__": 1
     },
     "_enabled": true,
+    "carSprite": {
+      "__id__": 3
+    },
+    "carFrames": [
+      {
+        "__uuid__": "c0e47b3f-7789-4938-bd53-94a58f9a5185"
+      },
+      {
+        "__uuid__": "3c3776e1-55a7-4cef-acb2-688967be3efa"
+      },
+      {
+        "__uuid__": "275480a4-cac1-4854-acb1-1c02b5ad3d49"
+      },
+      {
+        "__uuid__": "03b9c8ee-d1d0-44e1-ba5b-77d048d8decf"
+      }
+    ],
     "_id": ""
   },
   {
@@ -181,7 +307,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "78764d6f-896a-4b02-b95a-a2d1ba84973f"
     },
     "fileId": "efgnYQPrFPHK4OCapAna5z",
     "sync": false

@@ -47,4 +47,10 @@ export default class Player extends cc.Component {
         this.chargingAttack = true;
         this.attackCooldown = ATTACK_CD;
     }
+
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.name === 'CarObstacle') {
+            console.log('Player dead');
+        }
+    }
 }
