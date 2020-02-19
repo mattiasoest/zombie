@@ -40,11 +40,11 @@ export default class Bullet extends cc.Component {
     onBeginContact(contact, selfCollider, otherCollider) {
         if (this.alive) {
 
-            if (otherCollider.node.name === 'Enemy') {
-                this.alive = false;
-                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
-                otherCollider.node.destroy();
-            } else if (otherCollider.node.name === 'CarObstacle') {
+            // if (otherCollider.node.name === 'Enemy') {
+            //     this.alive = false;
+            //     otherCollider.node.destroy();
+            // } else 
+            if (otherCollider.node.name === 'CarObstacle') {
                 otherCollider.node.getComponent('CarStatic').hit();
                 this.alive = false;
                 cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);

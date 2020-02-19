@@ -4,4 +4,5 @@ export const GameEvent = {
     STATIC_CAR_REMOVE: 'core_static_car_remove',
     STATIC_COMPACT_REMOVE: 'core_static_compact_remove',
     VEHICLE_REMOVE: 'core_vehicle_remove',
+    ZOMBIE_REMOVE: 'core_zombie_remove',
   };

@@ -1383,6 +1383,9 @@
     "vehicle": {
       "__uuid__": "8dd11f3b-235a-45ca-aaea-2648c2192e67"
     },
+    "patrollerDyn": {
+      "__uuid__": "426ee470-5cf4-4b55-b84c-3143ae07d29c"
+    },
     "_id": "95DQ3NidZA76+ok8bkxxmD"
   },
   {
@@ -1774,8 +1777,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        598.69,
-        958.383,
+        -218.219,
+        964.346,
         0,
         0,
         0,
@@ -1868,8 +1871,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        392.706,
-        964.741,
+        -424.203,
+        970.704,
         0,
         0,
         0,
@@ -1962,8 +1965,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        607.205,
-        775.667,
+        -209.704,
+        781.63,
         0,
         0,
         0,
@@ -2056,8 +2059,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        404.69,
-        756.821,
+        -412.219,
+        762.784,
         0,
         0,
         0,
@@ -2150,8 +2153,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        177.69,
-        775.383,
+        -639.219,
+        781.346,
         0,
         0,
         0,
@@ -2244,8 +2247,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        185.69,
-        964.383,
+        -631.219,
+        970.346,
         0,
         0,
         0,

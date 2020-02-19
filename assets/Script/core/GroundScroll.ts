@@ -1,5 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
+export const SCROLL_SPEED = 180;
+
 @ccclass
 export default class GroundScrollScroll extends cc.Component {
 

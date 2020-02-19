@@ -12,6 +12,8 @@ export default class Player extends cc.Component {
     @property(cc.Animation)
     animations: cc.Animation = null;
 
+    isAlive = false;
+
     private attackCooldown: number = ATTACK_CD;
     private chargingAttack: boolean = false;
 
@@ -19,6 +21,7 @@ export default class Player extends cc.Component {
     // }
 
     start() {
+        this.isAlive = true;
         this.animations.on('finished', (event) => {
             this.animations.play();
         });
