@@ -5,8 +5,8 @@ import PatrollerDynamic from "./entities/PatrollerDynamic";
 
 const { ccclass, property } = cc._decorator;
 
-const STATIC_SPAWN_RATE = 5;
-const VEHICLE_SPAWN_RATE = 8;
+const STATIC_SPAWN_RATE = 8;
+const VEHICLE_SPAWN_RATE = 12;
 const ZOMBIE_SPAWN_RATE = 2.5;
 
 @ccclass

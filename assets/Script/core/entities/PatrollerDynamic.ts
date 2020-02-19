@@ -5,7 +5,7 @@ const { ccclass, property } = cc._decorator;
 
 const X_ACCELERATION = 1300;
 const X_SPEED = 300;
-const Y_SPEED = -500;
+const Y_SPEED = -460;
 
 enum DYNAMIC_TYPE {
     HALF,
@@ -36,11 +36,12 @@ export default class PatrollerDynamic extends Enemy {
 
     init() {
         this.stuckContactCount = 0;
-        this.ySpeed = Y_SPEED;
         this.patrollerType = Math.random() < 0.5 ? DYNAMIC_TYPE.HALF : DYNAMIC_TYPE.FULL;
         if (this.patrollerType === DYNAMIC_TYPE.FULL) {
+            this.ySpeed = Y_SPEED * 0.5;
             super.init();
         } else {
+            this.ySpeed = Y_SPEED;
             const halfWidth = this.controller.getMainCanvas().width * 0.5;
             const leftSide = Math.random() < 0.5;
             leftSide ? super.init(-halfWidth, 0) : super.init(0, halfWidth);
