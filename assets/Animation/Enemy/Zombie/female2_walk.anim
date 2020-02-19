@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "female2_walk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.225,
+  "sample": 40,
+  "speed": 0.3,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "46ebceac-87a1-4413-9619-49bc8763c620"
+            }
+          },
+          {
+            "frame": 0.025,
+            "value": {
+              "__uuid__": "528221ac-fdab-40ea-b86b-86d85af32d3f"
+            }
+          },
+          {
+            "frame": 0.05,
+            "value": {
+              "__uuid__": "9f1a86db-85af-496f-b8bf-3783bce25e60"
+            }
+          },
+          {
+            "frame": 0.075,
+            "value": {
+              "__uuid__": "bc3498d5-2128-4095-87a1-a094f76985db"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "df76354e-54ca-40b2-aeba-a60e18f0c478"
+            }
+          },
+          {
+            "frame": 0.125,
+            "value": {
+              "__uuid__": "d30a38fb-ceb9-478a-b79b-fd04acdc6275"
+            }
+          },
+          {
+            "frame": 0.15,
+            "value": {
+              "__uuid__": "ace1dc08-15e5-45cd-abd7-612874ba0e85"
+            }
+          },
+          {
+            "frame": 0.175,
+            "value": {
+              "__uuid__": "6c01c20a-198e-4daf-a7bf-6ee29a1d17df"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "8ac85252-5a10-4277-92a6-4e81d6efea62"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

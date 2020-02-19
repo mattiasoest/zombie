@@ -192,8 +192,6 @@
     "_enabled": true,
     "_defaultClip": null,
     "_clips": [
-      null,
-      null,
       null
     ],
     "playOnLoad": false,

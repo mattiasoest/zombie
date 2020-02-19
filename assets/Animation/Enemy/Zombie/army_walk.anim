@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "army_walk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.225,
+  "sample": 40,
+  "speed": 0.3,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "564b2617-a209-4142-a049-8b16403e92a0"
+            }
+          },
+          {
+            "frame": 0.025,
+            "value": {
+              "__uuid__": "639ab26f-4e1e-4d30-9c8a-b6d75b4d5e33"
+            }
+          },
+          {
+            "frame": 0.05,
+            "value": {
+              "__uuid__": "382c9a87-8e0b-4bbb-a894-4000f511f2e5"
+            }
+          },
+          {
+            "frame": 0.075,
+            "value": {
+              "__uuid__": "70e20688-fd66-406b-b57f-b137cd36e3cc"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "71e20e80-b882-4d7a-a7ae-99c3d50d8bb3"
+            }
+          },
+          {
+            "frame": 0.125,
+            "value": {
+              "__uuid__": "3849b0e6-4803-484e-bb1e-1a6e88fa867b"
+            }
+          },
+          {
+            "frame": 0.15,
+            "value": {
+              "__uuid__": "ae39b4a7-cb6e-4e1a-bb14-aec3acba6ab4"
+            }
+          },
+          {
+            "frame": 0.175,
+            "value": {
+              "__uuid__": "5f51ab7f-87d1-490f-b2d4-ded0c643142f"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "9fe3b646-fb55-442a-90bf-c636ab5c5038"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

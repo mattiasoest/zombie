@@ -5,10 +5,10 @@ import { SCROLL_SPEED } from "../GroundScroll";
 const { ccclass, property } = cc._decorator;
 
 export enum ZOMBIE_TYPE {
-    FEMALE_ONE,
-    FEMALE_TWO,
-    MALE_1,
-    MALE_2,
+    FEMALE_1,
+    FEMALE_2,
+    MALE_3,
+    MALE_4,
     ARMY,
     COP
 }
@@ -31,6 +31,26 @@ export default abstract class Enemy extends cc.Component {
     abstract handleNotHardImpact(colliderNode: cc.Node): void;
 
     protected init(leftBound?: number, rightBound?: number) {
+        const randomZombieLook = Math.floor(Math.random() * this.controller.walk.length);
+        switch (randomZombieLook) {
+            case ZOMBIE_TYPE.FEMALE_1:
+            case ZOMBIE_TYPE.FEMALE_2:
+                this.animations.node.setScale(0.9);
+                break;
+            case ZOMBIE_TYPE.MALE_3:
+            case ZOMBIE_TYPE.MALE_4:
+                this.animations.node.setScale(0.85);
+                break;
+            case ZOMBIE_TYPE.ARMY:
+            case ZOMBIE_TYPE.COP:
+                this.animations.node.setScale(0.78);
+                break;
+            default:
+                throw new Error("Not supported look");
+
+        }
+        this.animations.addClip(this.controller.walk[randomZombieLook], 'walk');
+        this.animations.play('walk');
         this.node.getComponent(cc.RigidBody).enabledContactListener = true;
         this.lowerBound = -this.controller.getMainCanvas().height * 0.6;
         if (leftBound !== undefined && rightBound !== undefined) {
@@ -87,9 +107,9 @@ export default abstract class Enemy extends cc.Component {
 
 
     getAngle() {
-        if (this.controller.isPlayerAlive()) {
-            let angle = Math.atan2(this.controller.player.node.y - this.node.y, this.controller.player.node.x - this.node.x) * -180 / Math.PI;
-            return angle - 90;
+        if (this.controller.isPlayerAlive() && this.node.position.y > this.controller.player.node.y) {
+            let angle = Math.atan2(this.controller.player.node.y - this.node.y, this.controller.player.node.x - this.node.x) * 180 / Math.PI;
+            return angle + 90;
         }
         else {
             return 0;

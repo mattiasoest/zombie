@@ -31,6 +31,8 @@ export default class PatrollerDynamic extends Enemy {
 
     private lastColliderNode: cc.Node = null;
 
+    private angleTimer = 0.7;
+
 
     init() {
         this.stuckContactCount = 0;
@@ -49,6 +51,11 @@ export default class PatrollerDynamic extends Enemy {
 
     update(dt) {
         this.updateMovement(dt)
+        // this.angleTimer -= dt;
+        // if (this.angleTimer < 0) {
+        this.node.angle = super.getAngle();
+        // this.angleTimer = 0.7;
+        // }
     }
 
     updateMovement(dt: number) {

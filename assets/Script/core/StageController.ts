@@ -7,13 +7,16 @@ const { ccclass, property } = cc._decorator;
 
 const STATIC_SPAWN_RATE = 5;
 const VEHICLE_SPAWN_RATE = 8;
-const ZOMBIE_SPAWN_RATE = 0.9;
+const ZOMBIE_SPAWN_RATE = 2.5;
 
 @ccclass
 export default class StageController extends cc.Component {
 
     @property(Player)
     player: Player = null;
+
+    @property(cc.AnimationClip)
+    walk: cc.AnimationClip[] = new Array(4);
 
     @property(cc.TiledLayer)
     topLayer: cc.TiledLayer = null;
@@ -136,7 +139,7 @@ export default class StageController extends cc.Component {
         const bullet = bulletNode.getComponent('Bullet');
         bullet.controller = this;
         bullet.init();
-        const pos = this.node.convertToNodeSpaceAR(this.player.node.position);
+        const pos = this.player.node.position;
         pos.x = pos.x + 24;
         pos.y = pos.y + 68;
         bulletNode.setPosition(pos);
@@ -151,16 +154,18 @@ export default class StageController extends cc.Component {
     private onTouchStart(event: any) {
         this.player.chargeAttack();
         const touch: cc.Touch = event.touch;
-        this.handleTouch(touch);
+        const converted = this.node.convertToNodeSpaceAR(touch.getLocation());
+        this.handleTouch(converted);
     }
 
     private onTouchMove(event: any) {
         const touch: cc.Touch = event.touch;
-        this.handleTouch(touch);
+        const converted = this.node.convertToNodeSpaceAR(touch.getLocation());
+        this.handleTouch(converted);
     }
 
-    private handleTouch(touch: cc.Touch) {
-        this.player.handleMovement(touch.getLocation());
+    private handleTouch(touchConverted: cc.Vec2) {
+        this.player.handleMovement(touchConverted);
     }
 
     private onTouchEnd(event: any) {
