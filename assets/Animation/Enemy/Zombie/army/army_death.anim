@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "army_death",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.12,
+  "sample": 50,
+  "speed": 0.3,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "8c88566b-5bf7-4485-a7fd-9a9e52942597"
+            }
+          },
+          {
+            "frame": 0.02,
+            "value": {
+              "__uuid__": "408e0fde-6b81-4a5a-81fd-fde2c9774604"
+            }
+          },
+          {
+            "frame": 0.04,
+            "value": {
+              "__uuid__": "101c96da-507a-4152-bc52-02c6fa65fee4"
+            }
+          },
+          {
+            "frame": 0.06,
+            "value": {
+              "__uuid__": "6a4fe848-8c65-4828-b5c7-bbfaaa9e0c21"
+            }
+          },
+          {
+            "frame": 0.08,
+            "value": {
+              "__uuid__": "b0165618-6309-4877-8c10-a756583d7ec8"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "5951c3d7-518a-44c0-aebb-b658ab70b063"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

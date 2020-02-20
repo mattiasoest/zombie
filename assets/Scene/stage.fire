@@ -1422,6 +1422,26 @@
         "__uuid__": "565a8fca-021d-4e89-a1e6-a75d39cd79ed"
       }
     ],
+    "death": [
+      {
+        "__uuid__": "511d9c3f-0036-4bd4-bb4c-e4a3ff5a678b"
+      },
+      {
+        "__uuid__": "bb01719a-b517-4f01-8d2b-ae218fe9b9cc"
+      },
+      {
+        "__uuid__": "1cf1e0b9-ceb9-473f-af81-644a54b4de8a"
+      },
+      {
+        "__uuid__": "fed1b562-2761-4234-bcf3-be6ff81f4fb4"
+      },
+      {
+        "__uuid__": "bf83d52a-c44d-45d0-90f9-d551c8dfc1fa"
+      },
+      {
+        "__uuid__": "662f3fcb-0651-45ec-b489-ed8696463ff6"
+      }
+    ],
     "topLayer": {
       "__id__": 9
     },

@@ -18,6 +18,9 @@ export default class StageController extends cc.Component {
     @property(cc.AnimationClip)
     walk: cc.AnimationClip[] = new Array(4);
 
+    @property(cc.AnimationClip)
+    death: cc.AnimationClip[] = new Array(4);
+
     @property(cc.TiledLayer)
     topLayer: cc.TiledLayer = null;
 

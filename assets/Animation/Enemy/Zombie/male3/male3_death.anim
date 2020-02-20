@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "male3_death",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.12,
+  "sample": 50,
+  "speed": 0.3,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "7e97efb5-29ab-444f-a0c5-8491deef00a7"
+            }
+          },
+          {
+            "frame": 0.02,
+            "value": {
+              "__uuid__": "e165b3d8-8106-4a77-a5dd-7d42744cad95"
+            }
+          },
+          {
+            "frame": 0.04,
+            "value": {
+              "__uuid__": "239aee27-54d4-4a0a-b6ee-3dbcec2a4ff9"
+            }
+          },
+          {
+            "frame": 0.06,
+            "value": {
+              "__uuid__": "8fb7fe61-7fc7-4164-a5f1-7008bffc12f7"
+            }
+          },
+          {
+            "frame": 0.08,
+            "value": {
+              "__uuid__": "c2930048-6879-4550-9206-f579e9c70e15"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "813f21a0-975d-4b00-ba6f-23156e5925b5"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

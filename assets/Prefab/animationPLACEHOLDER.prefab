@@ -51,8 +51,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        995.579,
-        674.644,
+        -199,
+        430,
         0,
         0,
         0,
@@ -138,6 +138,26 @@
       {
         "__uuid__": "565a8fca-021d-4e89-a1e6-a75d39cd79ed"
       },
+      {
+        "__uuid__": "bf83d52a-c44d-45d0-90f9-d551c8dfc1fa"
+      },
+      {
+        "__uuid__": "662f3fcb-0651-45ec-b489-ed8696463ff6"
+      },
+      {
+        "__uuid__": "511d9c3f-0036-4bd4-bb4c-e4a3ff5a678b"
+      },
+      {
+        "__uuid__": "bb01719a-b517-4f01-8d2b-ae218fe9b9cc"
+      },
+      {
+        "__uuid__": "1cf1e0b9-ceb9-473f-af81-644a54b4de8a"
+      },
+      {
+        "__uuid__": "fed1b562-2761-4234-bcf3-be6ff81f4fb4"
+      },
+      null,
+      null,
       null,
       null
     ],
@@ -150,9 +170,9 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "f5a4e959-a3b6-4bc7-97e8-d471bf44a2a7"
     },
-    "fileId": "28o/ywxSxHH46hOxivqYqR",
+    "fileId": "c2eFKleTtJlo/Y3E1Br3uU",
     "sync": false
   }
 ]

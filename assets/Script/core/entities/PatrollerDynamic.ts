@@ -6,6 +6,8 @@ const { ccclass, property } = cc._decorator;
 const X_ACCELERATION = 1300;
 const X_SPEED = 300;
 const Y_SPEED = -460;
+const DAMP = 0.95;
+const DEATH_DAMP = 0.88;
 
 enum DYNAMIC_TYPE {
     HALF,
@@ -15,7 +17,6 @@ enum DYNAMIC_TYPE {
 @ccclass
 export default class PatrollerDynamic extends Enemy {
 
-    private DAMP: number = 0.95;
 
     private applyForceLeft: boolean = false;
 
@@ -60,6 +61,12 @@ export default class PatrollerDynamic extends Enemy {
     }
 
     updateMovement(dt: number) {
+        if (!this.isAlive) {
+            this.node.y -= SCROLL_SPEED * dt;
+            this.node.x += this.xSpeed * dt;
+            this.xSpeed *= DEATH_DAMP;
+            return;
+        }
 
         // X-axis force bounds
         if (this.node.x <= this.leftBound) {
@@ -85,7 +92,7 @@ export default class PatrollerDynamic extends Enemy {
             this.node.y += this.ySpeed * dt;
         }
         this.node.x += this.xSpeed * dt;
-        this.xSpeed *= this.DAMP;
+        this.xSpeed *= DAMP;
     }
 
     handleNotHardImpact(colliderNode: cc.Node): void {

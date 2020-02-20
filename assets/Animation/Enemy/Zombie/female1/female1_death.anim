@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "female1_death",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.12,
+  "sample": 50,
+  "speed": 0.3,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "27af4919-3d71-422e-8801-eb88ea4a5125"
+            }
+          },
+          {
+            "frame": 0.02,
+            "value": {
+              "__uuid__": "e2edc228-3ca6-4a28-95bb-3ced749e7a12"
+            }
+          },
+          {
+            "frame": 0.04,
+            "value": {
+              "__uuid__": "9ae6867a-299f-4c5a-b1fb-52b1f2f536ff"
+            }
+          },
+          {
+            "frame": 0.06,
+            "value": {
+              "__uuid__": "93d00bb7-e4de-4f0d-b003-eb3ec3b72fd7"
+            }
+          },
+          {
+            "frame": 0.08,
+            "value": {
+              "__uuid__": "5c3a54ed-192b-40e0-ae69-6fd04b3c8b5a"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "f2c38804-0e56-4f49-984d-2fcef674c737"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

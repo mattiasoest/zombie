@@ -27,6 +27,9 @@ export default abstract class Enemy extends cc.Component {
     protected hitPoints: number = 0;
     protected xSpeed = 0;
     protected zombieType: ZOMBIE_TYPE = null;
+    protected body: cc.RigidBody = null;
+
+    protected isAlive = true;
 
     abstract handleNotHardImpact(colliderNode: cc.Node): void;
 
@@ -50,8 +53,11 @@ export default abstract class Enemy extends cc.Component {
 
         }
         this.animations.addClip(this.controller.walk[randomZombieLook], 'walk');
+        this.animations.addClip(this.controller.death[randomZombieLook], 'death');
         this.animations.play('walk');
-        this.node.getComponent(cc.RigidBody).enabledContactListener = true;
+        this.isAlive = true;
+        this.body = this.node.getComponent(cc.RigidBody);
+        this.body.enabledContactListener = true;
         this.lowerBound = -this.controller.getMainCanvas().height * 0.6;
         if (leftBound !== undefined && rightBound !== undefined) {
             this.leftBound = leftBound;
@@ -101,8 +107,13 @@ export default abstract class Enemy extends cc.Component {
     }
 
     protected killZombie() {
-        this.node.getComponent(cc.RigidBody).enabledContactListener = false;
-        cc.systemEvent.emit(GameEvent.ZOMBIE_REMOVE, this);
+        this.isAlive = false;
+        this.body.enabledContactListener = false;
+        this.body.linearVelocity = cc.v2(0, 0);
+        this.animations.play('death')
+        this.scheduleOnce(() => {
+            cc.systemEvent.emit(GameEvent.ZOMBIE_REMOVE, this);
+        }, 1.5);
     }
 
 
