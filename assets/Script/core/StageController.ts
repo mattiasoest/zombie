@@ -21,9 +21,6 @@ export default class StageController extends cc.Component {
     @property(cc.TiledLayer)
     topLayer: cc.TiledLayer = null;
 
-    @property(cc.Node)
-    zombie: cc.Node = null;
-
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
 
@@ -52,6 +49,8 @@ export default class StageController extends cc.Component {
     private vehicleSpawnTimer: number = 1;
     private zombieSpawner: number = 2;
 
+    private started = false;
+
 
     onLoad() {
         this.initPhysics();
@@ -73,27 +72,29 @@ export default class StageController extends cc.Component {
         // TODO z indexes
         this.topLayer.node.zIndex = 5;
         this.player.node.zIndex = 1;
-        this.zombie.zIndex = 0;
     }
 
     update(dt) {
-        this.zombieSpawner -= dt;
-        this.staticObjectSpawnTimer -= dt;
-        this.vehicleSpawnTimer -= dt;
-        if (this.staticObjectSpawnTimer <= 0) {
-            // Random among other objects
-            if (Math.random() < 0.5) {
-                this.handleStaticCarSpawn();
-            } else {
-                this.handleStaticCompactSpawn();
-            }
-        }
-        if (this.vehicleSpawnTimer <= 0) {
-            this.handleVehicleSpawn();
-        }
+        if (this.started) {
 
-        if (this.zombieSpawner <= 0) {
-            this.handleZombieSpawn();
+            this.zombieSpawner -= dt;
+            this.staticObjectSpawnTimer -= dt;
+            this.vehicleSpawnTimer -= dt;
+            if (this.staticObjectSpawnTimer <= 0) {
+                // Random among other objects
+                if (Math.random() < 0.5) {
+                    this.handleStaticCarSpawn();
+                } else {
+                    this.handleStaticCompactSpawn();
+                }
+            }
+            if (this.vehicleSpawnTimer <= 0) {
+                this.handleVehicleSpawn();
+            }
+            
+            if (this.zombieSpawner <= 0) {
+                this.handleZombieSpawn();
+            }
         }
     }
 
@@ -152,6 +153,9 @@ export default class StageController extends cc.Component {
     }
 
     private onTouchStart(event: any) {
+        if (!this.started) {
+            this.started = true;
+        }
         this.player.chargeAttack();
         const touch: cc.Touch = event.touch;
         const converted = this.node.convertToNodeSpaceAR(touch.getLocation());

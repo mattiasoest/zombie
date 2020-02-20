@@ -54,7 +54,7 @@ export default class PatrollerDynamic extends Enemy {
         this.updateMovement(dt)
         // this.angleTimer -= dt;
         // if (this.angleTimer < 0) {
-        this.node.angle = super.getAngle();
+        // this.node.angle = super.getAngle();
         // this.angleTimer = 0.7;
         // }
     }
