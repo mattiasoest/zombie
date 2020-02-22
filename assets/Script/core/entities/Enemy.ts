@@ -4,13 +4,20 @@ import { SCROLL_SPEED } from "../GroundScroll";
 
 const { ccclass, property } = cc._decorator;
 
-export enum ZOMBIE_TYPE {
+export enum ZOMBIE_VISUAL {
     FEMALE_1,
     FEMALE_2,
     MALE_3,
     MALE_4,
     ARMY,
     COP
+}
+
+export enum ZOMBIE_TYPE {
+    CHARGER,
+    PATROLLER,
+    PATROLLER_DYN_HALF,
+    PATROLLER_DYN_FULL,
 }
 
 @ccclass
@@ -27,8 +34,8 @@ export default abstract class Enemy extends cc.Component {
 
     protected hitPoints: number = 0;
     protected xSpeed = 0;
-    protected zombieType: ZOMBIE_TYPE = null;
     protected body: cc.RigidBody = null;
+    protected zombieType: ZOMBIE_TYPE = null;
 
     protected isAlive = true;
 
@@ -37,16 +44,16 @@ export default abstract class Enemy extends cc.Component {
     protected init(leftBound?: number, rightBound?: number) {
         const randomZombieLook = Math.floor(Math.random() * this.controller.walk.length);
         switch (randomZombieLook) {
-            case ZOMBIE_TYPE.FEMALE_1:
-            case ZOMBIE_TYPE.FEMALE_2:
+            case ZOMBIE_VISUAL.FEMALE_1:
+            case ZOMBIE_VISUAL.FEMALE_2:
                 this.animations.node.setScale(0.9);
                 break;
-            case ZOMBIE_TYPE.MALE_3:
-            case ZOMBIE_TYPE.MALE_4:
+            case ZOMBIE_VISUAL.MALE_3:
+            case ZOMBIE_VISUAL.MALE_4:
                 this.animations.node.setScale(0.85);
                 break;
-            case ZOMBIE_TYPE.ARMY:
-            case ZOMBIE_TYPE.COP:
+            case ZOMBIE_VISUAL.ARMY:
+            case ZOMBIE_VISUAL.COP:
                 this.animations.node.setScale(0.78);
                 break;
             default:
@@ -55,7 +62,25 @@ export default abstract class Enemy extends cc.Component {
         }
         this.animations.addClip(this.controller.walk[randomZombieLook], 'walk');
         this.animations.addClip(this.controller.death[randomZombieLook], 'death');
-        this.animations.play('walk');
+
+        let animationSpeed = 0.3;
+        switch (this.zombieType) {
+            case ZOMBIE_TYPE.CHARGER:
+                animationSpeed = 0.8;
+                break;
+            case ZOMBIE_TYPE.PATROLLER:
+                animationSpeed = 0.2;
+                break;
+            case ZOMBIE_TYPE.PATROLLER_DYN_HALF:
+                animationSpeed = 0.5;
+                break;
+            case ZOMBIE_TYPE.PATROLLER_DYN_FULL:
+                animationSpeed = 0.5;
+                break;
+            default:
+                throw new Error(`Unknown zombie type ${this.zombieType}`);
+        }
+        this.animations.play('walk').speed = animationSpeed;
         this.isAlive = true;
         this.body = this.node.getComponent(cc.RigidBody);
         this.body.enabledContactListener = true;

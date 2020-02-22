@@ -1,4 +1,4 @@
-import Enemy from "./Enemy";
+import Enemy, { ZOMBIE_TYPE } from "./Enemy";
 import { SCROLL_SPEED } from "../GroundScroll";
 
 const { ccclass, property } = cc._decorator;
@@ -9,11 +9,6 @@ const Y_SPEED = -460;
 const DAMP = 0.95;
 const DEATH_DAMP = 0.88;
 
-enum DYNAMIC_TYPE {
-    HALF,
-    FULL,
-}
-
 @ccclass
 export default class PatrollerDynamic extends Enemy {
 
@@ -23,8 +18,6 @@ export default class PatrollerDynamic extends Enemy {
     private rotateRight: boolean = false;
 
     private xAcceleration: number = X_ACCELERATION;
-
-    private patrollerType: DYNAMIC_TYPE = null;
 
     private slowSpeed = false;
     private slowSpeedtimer: number = 0.4;
@@ -38,8 +31,8 @@ export default class PatrollerDynamic extends Enemy {
 
     init() {
         this.stuckContactCount = 0;
-        this.patrollerType = Math.random() < 0.5 ? DYNAMIC_TYPE.HALF : DYNAMIC_TYPE.FULL;
-        if (this.patrollerType === DYNAMIC_TYPE.FULL) {
+        this.zombieType = Math.random() < 0.5 ? ZOMBIE_TYPE.PATROLLER_DYN_HALF : ZOMBIE_TYPE.PATROLLER_DYN_FULL;
+        if (this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL) {
             this.ySpeed = Y_SPEED * 0.5;
             super.init();
         } else {
@@ -65,11 +58,15 @@ export default class PatrollerDynamic extends Enemy {
 
     updateAngle() {
         if (this.xSpeed > 0 && !this.rotateRight) {
-            this.node.runAction(cc.rotateTo(0.45, 16));
+            const angle = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 70 : 14;
+            const turnSpeed = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 0.3 : 0.1;
+            this.node.runAction(cc.rotateTo(turnSpeed, angle));
             this.rotateLeft = false;
             this.rotateRight = true;
         } else if (this.xSpeed <= 0 && !this.rotateLeft) {
-            this.node.runAction(cc.rotateTo(0.45, -16));
+            const angle = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 70 : 14;
+            const turnSpeed = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 0.3 : 0.1;
+            this.node.runAction(cc.rotateTo(turnSpeed, -angle));
             this.rotateLeft = true;
             this.rotateRight = false;
         }
@@ -135,7 +132,7 @@ export default class PatrollerDynamic extends Enemy {
         this.slowSpeedtimer = 0.4 + (this.stuckContactCount * 0.07);
 
         // GIVE THEM FULL WIDTH TO FIND A WAY OUT
-        this.patrollerType = DYNAMIC_TYPE.FULL;
+        this.zombieType = ZOMBIE_TYPE.PATROLLER_DYN_FULL;
         super.setDefaultBounds();
 
     }
