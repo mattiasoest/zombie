@@ -25,6 +25,10 @@ export default class Vehicle extends cc.Component {
 
     private hitPoints = 4;
 
+    start() {
+        this.node.zIndex = 7;
+    }
+
     init() {
         this.body = this.node.getComponent(cc.RigidBody);
         this.body.linearVelocity = cc.v2(0, -1000);

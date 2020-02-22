@@ -85,8 +85,7 @@ export default class StageController extends cc.Component {
     start() {
         this.cvs = cc.find("Canvas");
         // TODO z indexes
-        this.topLayer.node.zIndex = 5;
-        this.player.node.zIndex = 1;
+        this.player.node.zIndex = 10;
     }
 
     update(dt) {

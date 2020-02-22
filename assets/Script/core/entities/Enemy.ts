@@ -42,6 +42,7 @@ export default abstract class Enemy extends cc.Component {
     abstract handleNotHardImpact(colliderNode: cc.Node): void;
 
     protected init(leftBound?: number, rightBound?: number) {
+        this.node.zIndex = 3;
         const randomZombieLook = Math.floor(Math.random() * this.controller.walk.length);
         switch (randomZombieLook) {
             case ZOMBIE_VISUAL.FEMALE_1:
@@ -133,6 +134,7 @@ export default abstract class Enemy extends cc.Component {
     }
 
     protected killZombie(instant = true) {
+        this.node.zIndex = 0;
         this.isAlive = false;
         this.body.enabledContactListener = false;
         this.body.linearVelocity = cc.v2(0, 0);

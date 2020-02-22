@@ -35,6 +35,10 @@ export default abstract class Obstacle extends cc.Component {
 
     protected abstract handleDeath();
 
+    start() {
+        this.node.zIndex = 7;
+    }
+
     protected init() {
         this.body = this.node.getComponent(cc.RigidBody);
         this.body.linearVelocity = cc.v2(0, -180);
