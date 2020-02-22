@@ -8,10 +8,6 @@ export default class CompactStatic extends Obstacle {
 
     init() {
         super.init();
-        this.animations.on('finished', (event) => {
-            this.carSprite.node.setScale(1);
-            cc.systemEvent.emit(GameEvent.STATIC_COMPACT_REMOVE, this.node);
-        });
     }
 
     update(dt) {
@@ -22,5 +18,9 @@ export default class CompactStatic extends Obstacle {
                 cc.systemEvent.emit(GameEvent.STATIC_COMPACT_REMOVE, this.node);
             }
         }
+    }
+
+    protected handleDeath() {
+        cc.systemEvent.emit(GameEvent.STATIC_COMPACT_REMOVE, this.node);
     }
 }

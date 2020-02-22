@@ -8,10 +8,6 @@ export default class CarStatic extends Obstacle {
 
     init() {
         super.init();
-        this.animations.on('finished', (event) => {
-            this.carSprite.node.setScale(1);
-            cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
-        });
     }
 
     update(dt) {
@@ -21,5 +17,9 @@ export default class CarStatic extends Obstacle {
                 cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
             }
         }
+    }
+
+    protected handleDeath() {
+        cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
     }
 }

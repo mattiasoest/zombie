@@ -37,6 +37,9 @@ export default class StageController extends cc.Component {
     @property(cc.Prefab)
     vehicle: cc.Prefab = null;
 
+    @property(cc.Prefab)
+    explosion: cc.Prefab = null;
+
     // ============ Enemies ============
     @property(cc.Prefab)
     patrollerDyn: cc.Prefab = null;
@@ -52,6 +55,7 @@ export default class StageController extends cc.Component {
     vehiclePool: cc.NodePool = new cc.NodePool();
     patrollerDynPool: cc.NodePool = new cc.NodePool();
     chargerPool: cc.NodePool = new cc.NodePool();
+    explosionPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 2;
@@ -66,6 +70,9 @@ export default class StageController extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+
+        cc.systemEvent.on(GameEvent.PLAY_EXPLOSION, this.onPlayExplosion, this);
+        cc.systemEvent.on(GameEvent.EXPLOSION_REMOVE, this.onExplosionRemove, this);
 
         cc.systemEvent.on(GameEvent.BULLET_SPAWN, this.onBulletSpawn, this);
         cc.systemEvent.on(GameEvent.BULLET_REMOVE, this.onBulletRemove, this);
@@ -270,9 +277,23 @@ export default class StageController extends cc.Component {
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
 
+
     private onStaticCarRemove(staticCarNode: cc.Node) {
         staticCarNode.removeFromParent();
         this.staticCarPool.put(staticCarNode);
+    }
+
+    private onPlayExplosion(referenceNode: cc.Node) {
+        const explosionNode = cc.instantiate(this.explosion);
+        const explosion = explosionNode.getComponent('Explosion');
+        explosion.init();
+        this.node.addChild(explosionNode);
+        explosionNode.setPosition(referenceNode.position);
+    }
+
+    private onExplosionRemove(explosionNode: cc.Node) {
+        explosionNode.removeFromParent();
+        this.explosionPool.put(explosionNode);
     }
 
     private handleStaticCompactSpawn() {
@@ -295,8 +316,6 @@ export default class StageController extends cc.Component {
         staticCompactNode.removeFromParent();
         this.staticCompactPool.put(staticCompactNode);
     }
-
-
 
     private handleVehicleSpawn() {
 

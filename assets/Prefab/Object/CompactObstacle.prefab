@@ -24,6 +24,9 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 5
+      },
+      {
         "__id__": 6
       },
       {
@@ -31,13 +34,10 @@
       },
       {
         "__id__": 8
-      },
-      {
-        "__id__": 9
       }
     ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 9
     },
     "_opacity": 255,
     "_color": {
@@ -98,13 +98,10 @@
     "_components": [
       {
         "__id__": 3
-      },
-      {
-        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 5
+      "__id__": 4
     },
     "_opacity": 255,
     "_color": {
@@ -184,25 +181,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "ecd54302-1e9e-4e5d-9603-a4ce7c2a05c7"
-    },
-    "_clips": [
-      {
-        "__uuid__": "ecd54302-1e9e-4e5d-9603-a4ce7c2a05c7"
-      }
-    ],
-    "playOnLoad": false,
-    "_id": ""
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -253,14 +231,12 @@
       "__id__": 1
     },
     "_enabled": true,
-    "animations": {
-      "__id__": 4
-    },
+    "animations": null,
     "carSprite": {
       "__id__": 3
     },
     "shadowSprite": {
-      "__id__": 6
+      "__id__": 5
     },
     "carFrames": [
       {

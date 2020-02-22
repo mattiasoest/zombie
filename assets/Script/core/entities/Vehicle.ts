@@ -26,11 +26,6 @@ export default class Vehicle extends cc.Component {
     private hitPoints = 4;
 
     init() {
-        this.animations.on('finished', (event) => {
-            this.mainSprite.node.setScale(0.7);
-            cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
-        });
-
         this.body = this.node.getComponent(cc.RigidBody);
         this.body.linearVelocity = cc.v2(0, -1000);
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
@@ -60,7 +55,8 @@ export default class Vehicle extends cc.Component {
                 this.alive = false;
                 this.body.linearVelocity = cc.v2(0, 0);
                 this.body.angularVelocity = 0;
-                this.animations.play('car_explosion');
+                cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
+                cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
             }
         }
     }

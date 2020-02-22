@@ -1457,6 +1457,9 @@
     "vehicle": {
       "__uuid__": "8dd11f3b-235a-45ca-aaea-2648c2192e67"
     },
+    "explosion": {
+      "__uuid__": "c2f50ec8-d06b-4134-aa16-2140bc42f1f7"
+    },
     "patrollerDyn": {
       "__uuid__": "426ee470-5cf4-4b55-b84c-3143ae07d29c"
     },

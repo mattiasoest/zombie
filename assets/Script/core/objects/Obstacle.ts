@@ -1,4 +1,5 @@
 import StageController from "../StageController";
+import { GameEvent } from "../Event";
 
 const { ccclass, property } = cc._decorator;
 
@@ -32,6 +33,8 @@ export default abstract class Obstacle extends cc.Component {
 
     private hitPoints = 4;
 
+    protected abstract handleDeath();
+
     protected init() {
         this.body = this.node.getComponent(cc.RigidBody);
         this.body.linearVelocity = cc.v2(0, -180);
@@ -58,7 +61,8 @@ export default abstract class Obstacle extends cc.Component {
                 this.body.angularVelocity = 0;
                 this.shadowSprite.enabled = false;
                 this.alive = false;
-                this.animations.play();
+                cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
+                this.handleDeath();
             }
         }
     }
