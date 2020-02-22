@@ -1,6 +1,7 @@
 import StageController from "../StageController";
 import { GameEvent } from "../Event";
 import { SCROLL_SPEED } from "../GroundScroll";
+import SoundManager from "../../SoundManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -97,7 +98,7 @@ export default abstract class Enemy extends cc.Component {
     update(dt) {
         if (this.isAlive) {
             if (this.node.y < this.lowerBound) {
-                this.killZombie(true);
+                this.killZombie(true, false);
             }
         }
     }
@@ -110,7 +111,7 @@ export default abstract class Enemy extends cc.Component {
                 this.hitPoints--;
             }
             else {
-                this.killZombie();
+                this.killZombie(false, false);
             }
         }
         else if (otherCollider.node.name === "Player") {
@@ -133,12 +134,15 @@ export default abstract class Enemy extends cc.Component {
         this.rightBound = this.controller.getMainCanvas().width * 0.5;
     }
 
-    protected killZombie(instant = true) {
+    protected killZombie(instant = false, playFallsound = true) {
         this.node.zIndex = 0;
         this.isAlive = false;
         this.body.enabledContactListener = false;
         this.body.linearVelocity = cc.v2(0, 0);
         this.animations.play('death')
+        if (playFallsound) {
+            SoundManager.play('fall', false);
+        }
         let timer = 1.6;
         this.scheduleOnce(() => {
             if (instant) {

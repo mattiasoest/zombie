@@ -3,6 +3,8 @@ import Player from "./entities/Player";
 import Enemy from "./entities/Enemy";
 import ZombieDynamic from "./entities/ZombieDynamic";
 import Zombie from "./entities/Zombie";
+import App from "../App";
+import SoundManager from "../SoundManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -65,6 +67,8 @@ export default class StageController extends cc.Component {
 
 
     onLoad() {
+        App.initApp();
+
         this.initPhysics();
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -144,6 +148,7 @@ export default class StageController extends cc.Component {
     }
 
     private onBulletSpawn() {
+        SoundManager.play('fire1', false);
         let bulletNode;
 
         if (this.bulletPool.size() > 0) {
@@ -161,7 +166,10 @@ export default class StageController extends cc.Component {
         this.node.addChild(bulletNode);
     }
 
-    private onBulletRemove(bulletNode: cc.Node) {
+    private onBulletRemove(bulletNode: cc.Node, playSound = true) {
+        if (playSound) {
+            SoundManager.play('bullet_hit', false, 0.3);
+        }
         bulletNode.removeFromParent();
         this.bulletPool.put(bulletNode);
     }
@@ -194,7 +202,7 @@ export default class StageController extends cc.Component {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height * 0.8);
+        return cc.v2(randomX, this.cvs.height * 0.52);
     }
 
 
@@ -280,6 +288,7 @@ export default class StageController extends cc.Component {
     }
 
     private onPlayExplosion(referenceNode: cc.Node) {
+        SoundManager.play('explosion', false);
         const explosionNode = cc.instantiate(this.explosion);
         const explosion = explosionNode.getComponent('Explosion');
         explosion.init();

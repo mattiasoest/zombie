@@ -1,5 +1,6 @@
 import StageController from "../StageController";
 import { GameEvent } from "../Event";
+import SoundManager from "../../SoundManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -30,20 +31,15 @@ export default class Bullet extends cc.Component {
 
     update(dt) {
         if (cc.isValid(this.node) && this.alive) {
-            if (this.node.y > this.controller.getMainCanvas().height * 0.6) {
+            if (this.node.y > this.controller.getMainCanvas().height * 0.5) {
                 this.alive = false;
-                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node);
+                cc.systemEvent.emit(GameEvent.BULLET_REMOVE, this.node, false);
             }
         }
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {
         if (this.alive) {
-
-            // if (otherCollider.node.name === 'Enemy') {
-            //     this.alive = false;
-            //     otherCollider.node.destroy();
-            // } else 
             if (otherCollider.node.name === 'CarObstacle') {
                 otherCollider.node.getComponent('CarStatic').hit();
                 this.alive = false;
@@ -59,8 +55,4 @@ export default class Bullet extends cc.Component {
             }
         }
     }
-
-    // playFireSound() {
-    //     this.playerFireSound.play();
-    // }
 }
