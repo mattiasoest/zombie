@@ -16,6 +16,8 @@ export default class Zombie extends Enemy {
         this.zombieType = this.zombieType = Math.random() < 0.6 ? ZOMBIE_TYPE.CHARGER : ZOMBIE_TYPE.PATROLLER;
         this.ySpeed = this.zombieType === ZOMBIE_TYPE.CHARGER ? CHARGER_Y_SPEED : -SCROLL_SPEED;
         this.xSpeed = this.zombieType === ZOMBIE_TYPE.CHARGER ? 0 : PATROLLER_X_SPEED;
+        this.rotateLeft = false;
+        this.rotateRight = false;
         this.node.angle = 0;
         super.init();
     }

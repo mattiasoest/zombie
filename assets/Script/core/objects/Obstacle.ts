@@ -1,5 +1,6 @@
 import StageController from "../StageController";
 import { GameEvent } from "../Event";
+import SoundManager from "../../SoundManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -70,6 +71,15 @@ export default abstract class Obstacle extends cc.Component {
             }
         }
     }
+
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (this.alive) {
+            if (otherCollider.node.name === 'Vehicle') {
+                SoundManager.play('car_hit', false);
+            }
+        }
+    }
+
     protected shouldRecycle() {
         return this.node.position.y < this.lowerBound || this.node.x < this.leftBound || this.node.x > this.rightBound;
     }

@@ -198,19 +198,11 @@ export default class StageController extends cc.Component {
         this.player.handleAttack();
     }
 
-    private generateRandomPos() {
+    private generateRandomPos(yMultiplier = 0.52) {
         let randomX = Math.random() * this.cvs.width / 2;
         // set sign value
         randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height * 0.52);
-    }
-
-
-    private generateRandomPosStatic() {
-        let randomX = Math.random() * this.cvs.width / 2;
-        // set sign value
-        randomX *= this.generateRandomSign();
-        return cc.v2(randomX, this.cvs.height * 0.65);
+        return cc.v2(randomX, this.cvs.height * yMultiplier);
     }
 
     private generateRandomSign() {
@@ -276,7 +268,7 @@ export default class StageController extends cc.Component {
         carObj.controller = this;
         carObj.init();
 
-        carNode.setPosition(this.generateRandomPosStatic());
+        carNode.setPosition(this.generateRandomPos(0.62));
         this.node.addChild(carNode);
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
@@ -312,7 +304,7 @@ export default class StageController extends cc.Component {
         compactObj.controller = this;
         compactObj.init();
 
-        compactNode.setPosition(this.generateRandomPosStatic());
+        compactNode.setPosition(this.generateRandomPos(0.62));
         this.node.addChild(compactNode);
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
@@ -332,7 +324,7 @@ export default class StageController extends cc.Component {
         }
         const vehicleObj = vehicleNode.getComponent('Vehicle');
         vehicleObj.controller = this;
-        vehicleNode.setPosition(this.generateRandomPos());
+        vehicleNode.setPosition(this.generateRandomPos(0.8));
         vehicleObj.init();
         this.node.addChild(vehicleNode);
         this.vehicleSpawnTimer = VEHICLE_SPAWN_RATE;
