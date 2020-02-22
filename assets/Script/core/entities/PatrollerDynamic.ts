@@ -19,6 +19,8 @@ export default class PatrollerDynamic extends Enemy {
 
 
     private applyForceLeft: boolean = false;
+    private rotateLeft: boolean = false;
+    private rotateRight: boolean = false;
 
     private ySpeed: number = Y_SPEED;
     private xAcceleration: number = X_ACCELERATION;
@@ -45,7 +47,7 @@ export default class PatrollerDynamic extends Enemy {
             this.ySpeed = Y_SPEED;
             const halfWidth = this.controller.getMainCanvas().width * 0.5;
             const leftSide = Math.random() < 0.5;
-            leftSide ? super.init(-halfWidth, 0) : super.init(0, halfWidth);
+            leftSide ? super.init(-halfWidth, -20) : super.init(20, halfWidth);
         }
 
         this.applyForceLeft = this.getComponent(cc.RigidBody).linearVelocity.x < 0 ? false : true;
@@ -53,11 +55,24 @@ export default class PatrollerDynamic extends Enemy {
 
     update(dt) {
         this.updateMovement(dt)
+        this.updateAngle();
         // this.angleTimer -= dt;
         // if (this.angleTimer < 0) {
         // this.node.angle = super.getAngle();
         // this.angleTimer = 0.7;
         // }
+    }
+
+    updateAngle() {
+        if (this.xSpeed > 0 && !this.rotateRight) {
+            this.node.runAction(cc.rotateTo(0.45, 16));
+            this.rotateLeft = false;
+            this.rotateRight = true;
+        } else if (this.xSpeed <= 0 && !this.rotateLeft) {
+            this.node.runAction(cc.rotateTo(0.45, -16));
+            this.rotateLeft = true;
+            this.rotateRight = false;
+        }
     }
 
     updateMovement(dt: number) {
@@ -69,10 +84,10 @@ export default class PatrollerDynamic extends Enemy {
         }
 
         // X-axis force bounds
-        if (this.node.x <= this.leftBound) {
+        if (this.node.x <= this.leftBound * 0.9) {
             this.applyForceLeft = false;
         }
-        else if (this.node.x >= this.rightBound) {
+        else if (this.node.x >= this.rightBound * 0.9) {
             this.applyForceLeft = true;
         }
         // === X-AXIS ===
