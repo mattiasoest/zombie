@@ -19,6 +19,7 @@ export default abstract class Enemy extends cc.Component {
     @property(cc.Animation)
     animations: cc.Animation = null;
 
+    protected ySpeed: number = 0;
     protected lowerBound: number = 0;
     protected leftBound: number = 0;
     protected rightBound: number = 0;
@@ -68,9 +69,9 @@ export default abstract class Enemy extends cc.Component {
     }
 
     update(dt) {
-        if (cc.isValid(this.node)) {
+        if (this.isAlive) {
             if (this.node.y < this.lowerBound) {
-                this.killZombie();
+                this.killZombie(true);
             }
         }
     }
@@ -106,14 +107,18 @@ export default abstract class Enemy extends cc.Component {
         this.rightBound = this.controller.getMainCanvas().width * 0.5;
     }
 
-    protected killZombie() {
+    protected killZombie(instant = true) {
         this.isAlive = false;
         this.body.enabledContactListener = false;
         this.body.linearVelocity = cc.v2(0, 0);
         this.animations.play('death')
+        let timer = 1.6;
         this.scheduleOnce(() => {
+            if (instant) {
+                timer = 0;
+            }
             cc.systemEvent.emit(GameEvent.ZOMBIE_REMOVE, this);
-        }, 1.5);
+        }, timer);
     }
 
 

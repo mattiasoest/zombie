@@ -1073,7 +1073,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -400,
+        -430,
         0,
         0,
         0,
@@ -1459,6 +1459,9 @@
     },
     "patrollerDyn": {
       "__uuid__": "426ee470-5cf4-4b55-b84c-3143ae07d29c"
+    },
+    "charger": {
+      "__uuid__": "825f45e5-cc96-4bd9-a230-f3b1f6e7c870"
     },
     "_id": "95DQ3NidZA76+ok8bkxxmD"
   }

@@ -2,12 +2,13 @@ import { GameEvent } from "./Event";
 import Player from "./entities/Player";
 import Enemy from "./entities/Enemy";
 import PatrollerDynamic from "./entities/PatrollerDynamic";
+import Charger from "./entities/Charger";
 
 const { ccclass, property } = cc._decorator;
 
-const STATIC_SPAWN_RATE = 8;
-const VEHICLE_SPAWN_RATE = 12;
-const ZOMBIE_SPAWN_RATE = 2.5;
+const STATIC_SPAWN_RATE = 10;
+const VEHICLE_SPAWN_RATE = 13;
+const ZOMBIE_SPAWN_RATE = 0.9;
 
 @ccclass
 export default class StageController extends cc.Component {
@@ -36,9 +37,12 @@ export default class StageController extends cc.Component {
     @property(cc.Prefab)
     vehicle: cc.Prefab = null;
 
-    // Enemies
+    // ============ Enemies ============
     @property(cc.Prefab)
     patrollerDyn: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    charger: cc.Prefab = null;
 
     public cvs: cc.Node = null;
 
@@ -47,10 +51,11 @@ export default class StageController extends cc.Component {
     staticCompactPool: cc.NodePool = new cc.NodePool();
     vehiclePool: cc.NodePool = new cc.NodePool();
     patrollerDynPool: cc.NodePool = new cc.NodePool();
+    chargerPool: cc.NodePool = new cc.NodePool();
 
-    private staticObjectSpawnTimer: number = 2.5;
-    private vehicleSpawnTimer: number = 1;
-    private zombieSpawner: number = 2;
+    private staticObjectSpawnTimer: number = 8.5;
+    private vehicleSpawnTimer: number = 2;
+    private zombieSpawner: number = 1.5;
 
     private started = false;
 
@@ -94,7 +99,7 @@ export default class StageController extends cc.Component {
             if (this.vehicleSpawnTimer <= 0) {
                 this.handleVehicleSpawn();
             }
-            
+
             if (this.zombieSpawner <= 0) {
                 this.handleZombieSpawn();
             }
@@ -199,26 +204,49 @@ export default class StageController extends cc.Component {
     }
 
     private handleZombieSpawn() {
-        // zombie patroller
-        let zombieNode;
-        if (this.patrollerDynPool.size() > 0) {
-            zombieNode = this.patrollerDynPool.get();
-        } else {
-            zombieNode = cc.instantiate(this.patrollerDyn);
-        }
-        const zombie = zombieNode.getComponent('PatrollerDynamic');
-        zombie.controller = this;
-        zombie.init();
 
-        zombieNode.setPosition(this.generateRandomPos());
-        this.node.addChild(zombieNode);
-        this.zombieSpawner = ZOMBIE_SPAWN_RATE;
+        if (Math.random() < 0.67) {
+
+            // zombie patroller, 2 types
+            let zombieNode;
+            if (this.patrollerDynPool.size() > 0) {
+                zombieNode = this.patrollerDynPool.get();
+            } else {
+                zombieNode = cc.instantiate(this.patrollerDyn);
+            }
+            const zombie = zombieNode.getComponent('PatrollerDynamic');
+            zombie.controller = this;
+            zombie.init();
+
+            zombieNode.setPosition(this.generateRandomPos());
+            this.node.addChild(zombieNode);
+            this.zombieSpawner = ZOMBIE_SPAWN_RATE;
+        } else {
+            // Charger
+            let zombieNode;
+            if (this.chargerPool.size() > 0) {
+                zombieNode = this.chargerPool.get();
+            } else {
+                zombieNode = cc.instantiate(this.charger);
+            }
+            const zombie = zombieNode.getComponent('Charger');
+            zombie.controller = this;
+            zombie.init();
+
+            zombieNode.setPosition(this.generateRandomPos());
+            this.node.addChild(zombieNode);
+            this.zombieSpawner = ZOMBIE_SPAWN_RATE;
+        }
     }
 
     private onZombieRemove(zombie: Enemy) {
         if (zombie instanceof PatrollerDynamic) {
             zombie.node.removeFromParent();
             this.patrollerDynPool.put(zombie.node);
+        }
+        else if (zombie instanceof Charger) {
+            zombie.node.removeFromParent();
+            this.chargerPool.put(zombie.node);
         }
         else {
             console.error('NOT SUPPORTED ZOMBIE');

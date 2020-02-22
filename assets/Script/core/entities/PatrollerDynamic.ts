@@ -22,7 +22,6 @@ export default class PatrollerDynamic extends Enemy {
     private rotateLeft: boolean = false;
     private rotateRight: boolean = false;
 
-    private ySpeed: number = Y_SPEED;
     private xAcceleration: number = X_ACCELERATION;
 
     private patrollerType: DYNAMIC_TYPE = null;
@@ -54,6 +53,7 @@ export default class PatrollerDynamic extends Enemy {
     }
 
     update(dt) {
+        super.update(dt);
         this.updateMovement(dt)
         this.updateAngle();
         // this.angleTimer -= dt;
