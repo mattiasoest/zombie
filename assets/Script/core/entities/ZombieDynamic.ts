@@ -10,7 +10,7 @@ const DAMP = 0.95;
 const DEATH_DAMP = 0.88;
 
 @ccclass
-export default class PatrollerDynamic extends Enemy {
+export default class ZombieDynamic extends Enemy {
 
 
     private applyForceLeft: boolean = false;

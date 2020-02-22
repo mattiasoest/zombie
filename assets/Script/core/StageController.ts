@@ -1,14 +1,14 @@
 import { GameEvent } from "./Event";
 import Player from "./entities/Player";
 import Enemy from "./entities/Enemy";
-import PatrollerDynamic from "./entities/PatrollerDynamic";
-import Charger from "./entities/Charger";
+import ZombieDynamic from "./entities/ZombieDynamic";
+import Zombie from "./entities/Zombie";
 
 const { ccclass, property } = cc._decorator;
 
 const STATIC_SPAWN_RATE = 10;
 const VEHICLE_SPAWN_RATE = 13;
-const ZOMBIE_SPAWN_RATE = 0.9;
+const ZOMBIE_SPAWN_RATE = 0.8;
 
 @ccclass
 export default class StageController extends cc.Component {
@@ -54,7 +54,7 @@ export default class StageController extends cc.Component {
     staticCompactPool: cc.NodePool = new cc.NodePool();
     vehiclePool: cc.NodePool = new cc.NodePool();
     patrollerDynPool: cc.NodePool = new cc.NodePool();
-    chargerPool: cc.NodePool = new cc.NodePool();
+    standardZombiePool: cc.NodePool = new cc.NodePool();
     explosionPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
@@ -211,7 +211,7 @@ export default class StageController extends cc.Component {
 
     private handleZombieSpawn() {
 
-        if (Math.random() < 0.67) {
+        if (Math.random() < 0.6) {
 
             // zombie patroller, 2 types
             let zombieNode;
@@ -220,7 +220,7 @@ export default class StageController extends cc.Component {
             } else {
                 zombieNode = cc.instantiate(this.patrollerDyn);
             }
-            const zombie = zombieNode.getComponent('PatrollerDynamic');
+            const zombie = zombieNode.getComponent('ZombieDynamic');
             zombie.controller = this;
             zombie.init();
 
@@ -230,12 +230,12 @@ export default class StageController extends cc.Component {
         } else {
             // Charger
             let zombieNode;
-            if (this.chargerPool.size() > 0) {
-                zombieNode = this.chargerPool.get();
+            if (this.standardZombiePool.size() > 0) {
+                zombieNode = this.standardZombiePool.get();
             } else {
                 zombieNode = cc.instantiate(this.charger);
             }
-            const zombie = zombieNode.getComponent('Charger');
+            const zombie = zombieNode.getComponent('Zombie');
             zombie.controller = this;
             zombie.init();
 
@@ -246,13 +246,13 @@ export default class StageController extends cc.Component {
     }
 
     private onZombieRemove(zombie: Enemy) {
-        if (zombie instanceof PatrollerDynamic) {
+        if (zombie instanceof ZombieDynamic) {
             zombie.node.removeFromParent();
             this.patrollerDynPool.put(zombie.node);
         }
-        else if (zombie instanceof Charger) {
+        else if (zombie instanceof Zombie) {
             zombie.node.removeFromParent();
-            this.chargerPool.put(zombie.node);
+            this.standardZombiePool.put(zombie.node);
         }
         else {
             console.error('NOT SUPPORTED ZOMBIE');
