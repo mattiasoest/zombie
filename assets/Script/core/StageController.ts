@@ -8,7 +8,7 @@ const { ccclass, property } = cc._decorator;
 
 const STATIC_SPAWN_RATE = 10;
 const VEHICLE_SPAWN_RATE = 13;
-const ZOMBIE_SPAWN_RATE = 0.8;
+const ZOMBIE_SPAWN_RATE = 0.75;
 
 @ccclass
 export default class StageController extends cc.Component {
@@ -45,7 +45,7 @@ export default class StageController extends cc.Component {
     patrollerDyn: cc.Prefab = null;
 
     @property(cc.Prefab)
-    charger: cc.Prefab = null;
+    zombie: cc.Prefab = null;
 
     public cvs: cc.Node = null;
 
@@ -211,9 +211,7 @@ export default class StageController extends cc.Component {
 
     private handleZombieSpawn() {
 
-        if (Math.random() < 0.6) {
-
-            // zombie patroller, 2 types
+        if (Math.random() < 0.4) {
             let zombieNode;
             if (this.patrollerDynPool.size() > 0) {
                 zombieNode = this.patrollerDynPool.get();
@@ -228,12 +226,11 @@ export default class StageController extends cc.Component {
             this.node.addChild(zombieNode);
             this.zombieSpawner = ZOMBIE_SPAWN_RATE;
         } else {
-            // Charger
             let zombieNode;
             if (this.standardZombiePool.size() > 0) {
                 zombieNode = this.standardZombiePool.get();
             } else {
-                zombieNode = cc.instantiate(this.charger);
+                zombieNode = cc.instantiate(this.zombie);
             }
             const zombie = zombieNode.getComponent('Zombie');
             zombie.controller = this;

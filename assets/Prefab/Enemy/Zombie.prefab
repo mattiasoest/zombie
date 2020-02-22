@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Charger",
+    "_name": "Zombie",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -203,7 +203,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "825f45e5-cc96-4bd9-a230-f3b1f6e7c870"
     },
     "fileId": "6d3Flpr+hDvYziwqRNHPmW",
     "sync": false
@@ -278,7 +278,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "825f45e5-cc96-4bd9-a230-f3b1f6e7c870"
     },
     "fileId": "ae94hae2RNa6MlP5SBzng9",
     "sync": false
