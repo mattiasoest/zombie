@@ -3,17 +3,25 @@ import { GameEvent } from "../Event";
 
 const { ccclass, property } = cc._decorator;
 
+const enum FAST_TYPE {
+    PICKUP,
+    RUSTY,
+}
+
+const PICKUP_VEL = -1000;
+const RUSTY_VEL = -1250;
+
 @ccclass
 export default class Vehicle extends cc.Component {
-
-    @property(cc.Animation)
-    animations: cc.Animation = null;
 
     @property(cc.Sprite)
     mainSprite: cc.Sprite = null;
 
     @property([cc.SpriteFrame])
     frames: Array<cc.SpriteFrame> = new Array(4);
+
+    @property(cc.SpriteFrame)
+    rustyFrame: cc.SpriteFrame = null;
 
     controller: StageController = null;
 
@@ -25,16 +33,21 @@ export default class Vehicle extends cc.Component {
 
     private hitPoints = 4;
 
+    private type: FAST_TYPE = null;
+
     start() {
         this.node.zIndex = 7;
     }
 
     init() {
         this.body = this.node.getComponent(cc.RigidBody);
-        this.body.linearVelocity = cc.v2(0, -1000);
+
         this.lowerBound = -this.controller.getMainCanvas().height * 0.7;
         this.body.enabledContactListener = true;
         this.generateRandomProps();
+        const velocity = this.type === FAST_TYPE.PICKUP ? PICKUP_VEL : RUSTY_VEL;
+        this.body.linearVelocity = cc.v2(0, velocity);
+        this.mainSprite.node.scale = this.type === FAST_TYPE.PICKUP ? 1 : 1.3;
         this.alive = true;
     }
 
@@ -66,8 +79,16 @@ export default class Vehicle extends cc.Component {
     }
 
     private generateRandomProps() {
-        const random = Math.floor(Math.random() * this.frames.length);
-        this.mainSprite.spriteFrame = this.frames[random];
-        this.hitPoints = random + 1;
+
+        if (Math.random() < 0.6) {
+            const random = Math.floor(Math.random() * this.frames.length);
+            this.type = FAST_TYPE.PICKUP;
+            this.mainSprite.spriteFrame = this.frames[random];
+            this.hitPoints = random + 1;
+        } else {
+            this.type = FAST_TYPE.RUSTY;
+            this.mainSprite.spriteFrame = this.rustyFrame;
+            this.hitPoints = 1;
+        }
     }
 }
