@@ -8,7 +8,7 @@ class App {
     }
 
     progressHandler(currentCount: number, totalCount: number) {
-        console.log(`Total ${totalCount}`);
+        // console.log(`Total ${totalCount}`);
         console.log(`Progress ${currentCount / totalCount}`);
     }
 }

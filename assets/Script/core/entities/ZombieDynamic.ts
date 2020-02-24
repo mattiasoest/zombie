@@ -42,7 +42,7 @@ export default class ZombieDynamic extends Enemy {
             leftSide ? super.init(-halfWidth, -20) : super.init(20, halfWidth);
         }
 
-        this.applyForceLeft = this.getComponent(cc.RigidBody).linearVelocity.x < 0 ? false : true;
+        this.applyForceLeft = Math.random() < 0.5;
     }
 
     update(dt) {

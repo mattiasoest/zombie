@@ -31,10 +31,16 @@ export default class StageController extends cc.Component {
     bullet: cc.Prefab = null;
 
     @property(cc.Prefab)
+    bigShot: cc.Prefab = null;
+
+    @property(cc.Prefab)
     carObstacle: cc.Prefab = null;
 
     @property(cc.Prefab)
     compactObstacle: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    tank: cc.Prefab = null;
 
     @property(cc.Prefab)
     vehicle: cc.Prefab = null;
@@ -58,6 +64,8 @@ export default class StageController extends cc.Component {
     patrollerDynPool: cc.NodePool = new cc.NodePool();
     standardZombiePool: cc.NodePool = new cc.NodePool();
     explosionPool: cc.NodePool = new cc.NodePool();
+    tankPool: cc.NodePool = new cc.NodePool();
+    bigShotPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 2;
@@ -84,11 +92,14 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.STATIC_COMPACT_REMOVE, this.onStaticCompactRemove, this);
         cc.systemEvent.on(GameEvent.VEHICLE_REMOVE, this.onVehicleRemove, this);
         cc.systemEvent.on(GameEvent.ZOMBIE_REMOVE, this.onZombieRemove, this);
+        cc.systemEvent.on(GameEvent.TANK_REMOVE, this.onTankRemove, this);
+        cc.systemEvent.on(GameEvent.BIG_SHOT_SPAWN, this.onBigShotSpawn, this);
+        cc.systemEvent.on(GameEvent.BIG_SHOT_REMOVE, this.onBigShotRemove, this);
+
     }
 
     start() {
         this.cvs = cc.find("Canvas");
-        // TODO z indexes
         this.player.node.zIndex = 10;
     }
 
@@ -100,7 +111,10 @@ export default class StageController extends cc.Component {
             this.vehicleSpawnTimer -= dt;
             if (this.staticObjectSpawnTimer <= 0) {
                 // Random among other objects
-                if (Math.random() < 0.5) {
+                if (Math.random() < 0.9) {
+                    this.handleTankSpawn();
+                }
+                else if (Math.random() < 0.96) {
                     this.handleStaticCarSpawn();
                 } else {
                     this.handleStaticCompactSpawn();
@@ -172,6 +186,31 @@ export default class StageController extends cc.Component {
         }
         bulletNode.removeFromParent();
         this.bulletPool.put(bulletNode);
+    }
+
+    private onBigShotSpawn(positionNode: cc.Node, velocityVector: cc.Vec2, cannonAngle: number) {
+        // SoundManager.play('fire1', false);
+        let shotNode;
+
+        if (this.bigShotPool.size() > 0) {
+            shotNode = this.bigShotPool.get();
+        } else {
+            shotNode = cc.instantiate(this.bigShot);
+        }
+        const shot = shotNode.getComponent('BigShot');
+        shot.controller = this;
+
+        shot.init(velocityVector, cannonAngle);
+        positionNode.addChild(shotNode);
+    }
+
+    private onBigShotRemove(shotNode: cc.Node, playSound = true) {
+        console.log('REYCLE BIG SHOT');
+        if (playSound) {
+            SoundManager.play('bullet_hit', false, 0.3);
+        }
+        shotNode.removeFromParent();
+        this.bigShotPool.put(shotNode);
     }
 
     private onTouchStart(event: any) {
@@ -254,7 +293,6 @@ export default class StageController extends cc.Component {
         else {
             console.error('NOT SUPPORTED ZOMBIE');
         }
-
     }
 
     private handleStaticCarSpawn() {
@@ -312,6 +350,28 @@ export default class StageController extends cc.Component {
     private onStaticCompactRemove(staticCompactNode: cc.Node) {
         staticCompactNode.removeFromParent();
         this.staticCompactPool.put(staticCompactNode);
+    }
+
+    private handleTankSpawn() {
+        let tankNode;
+        if (this.tankPool.size() > 0) {
+            tankNode = this.tankPool.get();
+        } else {
+            tankNode = cc.instantiate(this.tank);
+        }
+        const tankObj = tankNode.getComponent('Tank');
+        tankObj.controller = this;
+        tankObj.init();
+
+        tankNode.setPosition(this.generateRandomPos(0.7));
+        this.node.addChild(tankNode);
+        this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
+    }
+
+    private onTankRemove(tankNode: cc.Node) {
+        console.log('pooled BACK tank');
+        tankNode.removeFromParent();
+        this.tankPool.put(tankNode);
     }
 
     private handleVehicleSpawn() {

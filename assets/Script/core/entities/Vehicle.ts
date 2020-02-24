@@ -61,21 +61,25 @@ export default class Vehicle extends cc.Component {
 
     }
 
-    public hit() {
+    hit() {
         if (this.alive) {
 
             this.hitPoints--;
             if (this.hitPoints > 0) {
                 this.mainSprite.spriteFrame = this.frames[this.hitPoints - 1];
             } else {
-                this.body.enabledContactListener = false;
-                this.alive = false;
-                this.body.linearVelocity = cc.v2(0, 0);
-                this.body.angularVelocity = 0;
-                cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
-                cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
+                this.handleDeath();
             }
         }
+    }
+
+    handleDeath() {
+        this.body.enabledContactListener = false;
+        this.alive = false;
+        this.body.linearVelocity = cc.v2(0, 0);
+        this.body.angularVelocity = 0;
+        cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
+        cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
     }
 
     private generateRandomProps() {

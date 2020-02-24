@@ -12,14 +12,14 @@ export default class CarStatic extends Obstacle {
 
     update(dt) {
         if (this.alive) {
-            // this.node.setPosition(this.node.position.x, this.node.position.y - this.scrollSpeed * dt);
             if (this.shouldRecycle()) {
-                cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
+                this.handleDeath();
             }
         }
     }
 
     protected handleDeath() {
+        this.alive = false;
         cc.systemEvent.emit(GameEvent.STATIC_CAR_REMOVE, this.node);
     }
 }

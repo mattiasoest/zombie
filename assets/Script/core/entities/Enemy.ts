@@ -115,9 +115,12 @@ export default abstract class Enemy extends cc.Component {
             }
         }
         else if (otherCollider.node.name === "Player") {
-            console.log('Player died - ENEMY');
+            // TODO PLAYER!
         }
         else if (otherCollider.node.name === "Vehicle") {
+            this.killZombie();
+        }
+        else if (otherCollider.node.name === "Tank") {
             this.killZombie();
         }
         else if (this.isStaticObject(otherCollider.node)) {
@@ -151,7 +154,6 @@ export default abstract class Enemy extends cc.Component {
             cc.systemEvent.emit(GameEvent.ZOMBIE_REMOVE, this);
         }, timer);
     }
-
 
     getAngle() {
         if (this.controller.isPlayerAlive() && this.node.position.y > this.controller.player.node.y) {

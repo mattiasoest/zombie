@@ -7,9 +7,6 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default abstract class Obstacle extends cc.Component {
 
-    @property(cc.Animation)
-    animations: cc.Animation = null;
-
     @property(cc.Sprite)
     carSprite: cc.Sprite = null;
 
@@ -76,6 +73,10 @@ export default abstract class Obstacle extends cc.Component {
         if (this.alive) {
             if (otherCollider.node.name === 'Vehicle') {
                 SoundManager.play('car_hit', false);
+            } else if (otherCollider.node.name === 'Tank') {
+                SoundManager.play('car_hit', false);
+                cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
+                this.handleDeath();
             }
         }
     }
