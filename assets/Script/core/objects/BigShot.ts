@@ -43,7 +43,7 @@ export default class BigShot extends cc.Component {
         if (cc.isValid(this.node) && this.alive) {
             if (this.shouldRecycle(dt)) {
                 this.alive = false;
-                cc.systemEvent.emit(GameEvent.BIG_SHOT_REMOVE, this.node);
+                cc.systemEvent.emit(GameEvent.BIG_SHOT_REMOVE, this.node, false);
             }
         }
     }
@@ -54,7 +54,7 @@ export default class BigShot extends cc.Component {
             if (otherCollider.node.name === 'Player') {
                 console.log('PLAYER DEAD BIG SHOT');
                 this.alive = false;
-                cc.systemEvent.emit(GameEvent.BIG_SHOT_REMOVE, this.node);
+                cc.systemEvent.emit(GameEvent.BIG_SHOT_REMOVE, this.node, false);
             }
         }
     }

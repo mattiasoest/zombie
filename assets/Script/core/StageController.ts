@@ -68,7 +68,7 @@ export default class StageController extends cc.Component {
     bigShotPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
-    private vehicleSpawnTimer: number = 2;
+    private vehicleSpawnTimer: number = 6;
     private zombieSpawner: number = 1.5;
 
     private started = false;
@@ -76,6 +76,13 @@ export default class StageController extends cc.Component {
 
     onLoad() {
         App.initApp();
+
+        for (let i = 0; i < 4; i++) {
+            const zombieFab = cc.instantiate(this.zombie);
+            const zombieDynFab = cc.instantiate(this.patrollerDyn);
+            this.standardZombiePool.put(zombieFab);
+            this.patrollerDynPool.put(zombieDynFab);
+        }
 
         this.initPhysics();
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -111,13 +118,11 @@ export default class StageController extends cc.Component {
             this.vehicleSpawnTimer -= dt;
             if (this.staticObjectSpawnTimer <= 0) {
                 // Random among other objects
-                if (Math.random() < 0.9) {
+                if (Math.random() < 0.12) {
                     this.handleTankSpawn();
                 }
-                else if (Math.random() < 0.96) {
-                    this.handleStaticCarSpawn();
-                } else {
-                    this.handleStaticCompactSpawn();
+                else {
+                    Math.random() < 0.5 ? this.handleStaticCarSpawn() : this.handleStaticCompactSpawn();
                 }
             }
             if (this.vehicleSpawnTimer <= 0) {
@@ -205,7 +210,6 @@ export default class StageController extends cc.Component {
     }
 
     private onBigShotRemove(shotNode: cc.Node, playSound = true) {
-        console.log('REYCLE BIG SHOT');
         if (playSound) {
             SoundManager.play('bullet_hit', false, 0.3);
         }
@@ -369,7 +373,6 @@ export default class StageController extends cc.Component {
     }
 
     private onTankRemove(tankNode: cc.Node) {
-        console.log('pooled BACK tank');
         tankNode.removeFromParent();
         this.tankPool.put(tankNode);
     }

@@ -106,12 +106,12 @@ export default abstract class Enemy extends cc.Component {
     // Handle colissions here so all subclasses can run the same logic
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         if (otherCollider.node.name === "Bullet") {
-            cc.systemEvent.emit(GameEvent.BULLET_REMOVE, otherCollider.node);
+            cc.systemEvent.emit(GameEvent.BULLET_REMOVE, otherCollider.node, false);
             if (this.hitPoints > 0) {
                 this.hitPoints--;
             }
             else {
-                this.killZombie(false, false);
+                this.killZombie(false, true);
             }
         }
         else if (otherCollider.node.name === "Player") {
