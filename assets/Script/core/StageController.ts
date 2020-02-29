@@ -16,6 +16,9 @@ const ITEM_SPAWN_RATE = 3;
 @ccclass
 export default class StageController extends cc.Component {
 
+    @property(cc.Node)
+    container: cc.Node = null;
+
     @property(Player)
     player: Player = null;
 
@@ -192,7 +195,7 @@ export default class StageController extends cc.Component {
     }
 
     updateAmmoLabel() {
-        this.bulletLabel.string = `Bullets: ${this.player.bulletAmount}`;
+        this.bulletLabel.string = `${this.player.bulletAmount}`;
     }
 
     updateCashLabel() {
@@ -238,7 +241,7 @@ export default class StageController extends cc.Component {
         ammo.controller = this;
         ammo.init();
         ammoNode.setPosition(this.generateRandomPos(0.62));
-        this.node.addChild(ammoNode);
+        this.container.addChild(ammoNode);
         this.itemSpawner = ITEM_SPAWN_RATE;
     }
 
@@ -268,7 +271,7 @@ export default class StageController extends cc.Component {
         pos.x = pos.x + 24;
         pos.y = pos.y + 68;
         bulletNode.setPosition(pos);
-        this.node.addChild(bulletNode);
+        this.container.addChild(bulletNode);
     }
 
     private onBulletRemove(bulletNode: cc.Node, playSound = true) {
@@ -291,7 +294,7 @@ export default class StageController extends cc.Component {
         cash.controller = this;
         cash.init();
         cashNode.setPosition(refPosition);
-        this.node.addChild(cashNode);
+        this.container.addChild(cashNode);
     }
 
     private onCashRemove(cashNode: cc.Node, pickedUp = true) {
@@ -377,7 +380,7 @@ export default class StageController extends cc.Component {
             zombie.init();
 
             zombieNode.setPosition(this.generateRandomPos());
-            this.node.addChild(zombieNode);
+            this.container.addChild(zombieNode);
             this.zombieSpawner = ZOMBIE_SPAWN_RATE;
         } else {
             let zombieNode;
@@ -391,7 +394,7 @@ export default class StageController extends cc.Component {
             zombie.init();
 
             zombieNode.setPosition(this.generateRandomPos());
-            this.node.addChild(zombieNode);
+            this.container.addChild(zombieNode);
             this.zombieSpawner = ZOMBIE_SPAWN_RATE;
         }
     }
@@ -422,7 +425,7 @@ export default class StageController extends cc.Component {
         carObj.init();
 
         carNode.setPosition(this.generateRandomPos(0.62));
-        this.node.addChild(carNode);
+        this.container.addChild(carNode);
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
 
@@ -437,7 +440,7 @@ export default class StageController extends cc.Component {
         const explosionNode = cc.instantiate(this.explosion);
         const explosion = explosionNode.getComponent('Explosion');
         explosion.init();
-        this.node.addChild(explosionNode);
+        this.container.addChild(explosionNode);
         explosionNode.setPosition(referenceNode.position);
     }
 
@@ -458,7 +461,7 @@ export default class StageController extends cc.Component {
         compactObj.init();
 
         compactNode.setPosition(this.generateRandomPos(0.62));
-        this.node.addChild(compactNode);
+        this.container.addChild(compactNode);
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
 
@@ -479,7 +482,7 @@ export default class StageController extends cc.Component {
         tankObj.init();
 
         tankNode.setPosition(this.generateRandomPos(0.7));
-        this.node.addChild(tankNode);
+        this.container.addChild(tankNode);
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
     }
 
@@ -500,7 +503,7 @@ export default class StageController extends cc.Component {
         vehicleObj.controller = this;
         vehicleNode.setPosition(this.generateRandomPos(0.8));
         vehicleObj.init();
-        this.node.addChild(vehicleNode);
+        this.container.addChild(vehicleNode);
         this.vehicleSpawnTimer = VEHICLE_SPAWN_RATE;
     }
 
