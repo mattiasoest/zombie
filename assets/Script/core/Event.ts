@@ -4,6 +4,8 @@ export const GameEvent = {
   BIG_SHOT_SPAWN: 'core_big_shot_spawn',
   BIG_SHOT_REMOVE: 'core_big_shot_remove',
 
+  PLAYER_DEAD: 'core_player_dead',
+
   PLAY_EXPLOSION: 'core_play_explosion',
   EXPLOSION_REMOVE: 'core_explosion_remove',
 

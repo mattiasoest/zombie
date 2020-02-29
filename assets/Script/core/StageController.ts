@@ -126,6 +126,8 @@ export default class StageController extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
 
+        cc.systemEvent.on(GameEvent.PLAYER_DEAD, this.handlePlayerDeath, this);
+
         cc.systemEvent.on(GameEvent.PLAY_EXPLOSION, this.onPlayExplosion, this);
         cc.systemEvent.on(GameEvent.EXPLOSION_REMOVE, this.onExplosionRemove, this);
 
@@ -227,6 +229,11 @@ export default class StageController extends cc.Component {
         //     cc.PhysicsManager.DrawBits.e_jointBit |
         //     cc.PhysicsManager.DrawBits.e_shapeBit;
         // }
+    }
+
+    private handlePlayerDeath(killerNode: cc.Node) {
+        // TODO !!!!
+        console.log(`Killed by: ${killerNode.name}`);
     }
 
     private handleAmmoSpawn() {

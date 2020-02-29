@@ -53,7 +53,7 @@ export default class BigShot extends cc.Component {
     onBeginContact(contact, selfCollider, otherCollider) {
         if (this.alive) {
             if (otherCollider.node.name === 'Player') {
-                console.log('PLAYER DEAD BIG SHOT');
+                cc.systemEvent.emit(GameEvent.PLAYER_DEAD, this.node);
                 this.alive = false;
                 cc.systemEvent.emit(GameEvent.BIG_SHOT_REMOVE, this.node, false);
             }

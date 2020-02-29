@@ -116,7 +116,7 @@ export default abstract class Enemy extends cc.Component {
             }
         }
         else if (otherCollider.node.name === "Player") {
-            // TODO PLAYER!
+            cc.systemEvent.emit(GameEvent.PLAYER_DEAD, this.node);
         }
         else if (otherCollider.node.name === "Vehicle") {
             this.killZombie();
