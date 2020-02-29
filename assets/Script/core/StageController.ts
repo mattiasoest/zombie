@@ -233,7 +233,7 @@ export default class StageController extends cc.Component {
 
     private handlePlayerDeath(killerNode: cc.Node) {
         // TODO !!!!
-        console.log(`Killed by: ${killerNode.name}`);
+        // console.log(`Killed by: ${killerNode.name}`);
     }
 
     private handleAmmoSpawn() {
