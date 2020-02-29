@@ -16,4 +16,7 @@ export const GameEvent = {
 
   AMMO_SPAWN: 'core_ammo_spawn',
   AMMO_REMOVE: 'core_ammo_remove',
+
+  CASH_SPAWN: 'core_cash_spawn',
+  CASH_REMOVE: 'core_cash_remove',
 };

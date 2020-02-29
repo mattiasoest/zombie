@@ -21,6 +21,9 @@ export default class StageController extends cc.Component {
 
     @property(cc.Label)
     bulletLabel: cc.Label = null;
+    
+    @property(cc.Label)
+    cashLabel: cc.Label = null;
 
     @property(cc.AnimationClip)
     walk: cc.AnimationClip[] = new Array(4);
@@ -33,6 +36,9 @@ export default class StageController extends cc.Component {
 
     @property(cc.Prefab)
     ammo: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    cash: cc.Prefab = null;
 
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
@@ -74,15 +80,18 @@ export default class StageController extends cc.Component {
     tankPool: cc.NodePool = new cc.NodePool();
     bigShotPool: cc.NodePool = new cc.NodePool();
     ammoPool: cc.NodePool = new cc.NodePool();
+    cashPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
     private zombieSpawner: number = 1.5;
-
+    
     private itemSpawner: number = 3;
-
+    
     private started = false;
-
+    
+    // TODO Level and total amount
+    private cashAmount: number = 0;
 
     onLoad() {
         App.initApp();
@@ -116,12 +125,17 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.AMMO_SPAWN, this.handleAmmoSpawn, this);
         cc.systemEvent.on(GameEvent.AMMO_REMOVE, this.onAmmoRemove, this);
 
+        cc.systemEvent.on(GameEvent.CASH_SPAWN, this.handleCashSpawn, this);
+        cc.systemEvent.on(GameEvent.CASH_REMOVE, this.onCashRemove, this);
+
     }
 
     start() {
         this.cvs = cc.find("Canvas");
         this.player.node.zIndex = 10;
         this.bulletLabel.node.zIndex = 99;
+        this.cashLabel.node.zIndex = 99;
+        this.updateAmmoLabel();
     }
 
     update(dt) {
@@ -167,6 +181,15 @@ export default class StageController extends cc.Component {
         this.bulletLabel.string = `Bullets: ${this.player.bulletAmount}`;
     }
 
+    updateCashLabel() {
+        this.cashLabel.string = `$${this.cashAmount}`;
+    }
+
+    handleCashPickup() {
+        // TODO amounts
+        this.cashAmount += 2;
+    }
+
     private initPhysics() {
         const manager = cc.director.getPhysicsManager();
         manager.enabled = true;
@@ -205,12 +228,12 @@ export default class StageController extends cc.Component {
         this.itemSpawner = ITEM_SPAWN_RATE;
     }
 
-    private onAmmoRemove(ammoNode: cc.Node, playSound = true) {
-        if (playSound) {
-            SoundManager.play('ammo_pickup', false, 0.3);
+    private onAmmoRemove(ammoNode: cc.Node, pickedUp = true) {
+        if (pickedUp) {
+            SoundManager.play('ammo_pickup', false, 0.1);
+            this.player.handleAmmoPickup();
+            this.updateAmmoLabel();
         }
-        this.player.handleAmmoPickup();
-        this.updateAmmoLabel();
         ammoNode.removeFromParent();
         this.ammoPool.put(ammoNode);
     }
@@ -240,6 +263,31 @@ export default class StageController extends cc.Component {
         }
         bulletNode.removeFromParent();
         this.bulletPool.put(bulletNode);
+    }
+
+    private handleCashSpawn(refPosition: cc.Vec2) {
+        let cashNode;
+
+        if (this.cashPool.size() > 0) {
+            cashNode = this.cashPool.get();
+        } else {
+            cashNode = cc.instantiate(this.cash);
+        }
+        const cash = cashNode.getComponent('Cash');
+        cash.controller = this;
+        cash.init();
+        cashNode.setPosition(refPosition);
+        this.node.addChild(cashNode);
+    }
+
+    private onCashRemove(cashNode: cc.Node, pickedUp = true) {
+        if (pickedUp) {
+            SoundManager.play('cash_pickup', false, 0.3);
+            this.handleCashPickup();
+            this.updateCashLabel();
+        }
+        cashNode.removeFromParent();
+        this.cashPool.put(cashNode);
     }
 
     private onBigShotSpawn(positionNode: cc.Node, velocityVector: cc.Vec2, cannonAngle: number) {

@@ -139,9 +139,12 @@ export default abstract class Enemy extends cc.Component {
 
     protected killZombie(instant = false, playFallsound = true) {
         this.node.zIndex = 0;
+        cc.systemEvent.emit(GameEvent.CASH_SPAWN, this.node.position);
         this.isAlive = false;
         this.body.enabledContactListener = false;
         this.body.linearVelocity = cc.v2(0, 0);
+
+
         this.animations.play('death')
         if (playFallsound) {
             SoundManager.play('fall', false);
