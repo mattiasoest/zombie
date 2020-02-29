@@ -1,5 +1,5 @@
-import { GameEvent } from "../Event";
-import SoundManager from "../../SoundManager";
+import SoundManager from "../SoundManager";
+import { GameEvent } from "../core/Event";
 
 
 const { ccclass, property } = cc._decorator;
@@ -15,7 +15,9 @@ export default class Player extends cc.Component {
     isAlive = false;
 
     // Different depending on upgrades
-    bulletAmount = 10;
+    bulletCap = 10;
+
+    bulletAmount = 5;
 
     private attackCooldown: number = ATTACK_CD;
     private chargingAttack: boolean = false;
@@ -65,6 +67,13 @@ export default class Player extends cc.Component {
     public chargeAttack() {
         this.chargingAttack = true;
         this.attackCooldown = ATTACK_CD;
+    }
+
+    public handleAmmoPickup() {
+        this.bulletAmount += 5;
+        if (this.bulletAmount > 10) {
+            this.bulletAmount = 10;
+        }
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {

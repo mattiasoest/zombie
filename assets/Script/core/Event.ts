@@ -13,4 +13,7 @@ export const GameEvent = {
   TANK_REMOVE: 'core_tank_remove',
 
   ZOMBIE_REMOVE: 'core_zombie_remove',
+
+  AMMO_SPAWN: 'core_ammo_spawn',
+  AMMO_REMOVE: 'core_ammo_remove',
 };

@@ -11,6 +11,7 @@ const { ccclass, property } = cc._decorator;
 const STATIC_SPAWN_RATE = 10;
 const VEHICLE_SPAWN_RATE = 13;
 const ZOMBIE_SPAWN_RATE = 0.75;
+const ITEM_SPAWN_RATE = 3;
 
 @ccclass
 export default class StageController extends cc.Component {
@@ -72,10 +73,13 @@ export default class StageController extends cc.Component {
     explosionPool: cc.NodePool = new cc.NodePool();
     tankPool: cc.NodePool = new cc.NodePool();
     bigShotPool: cc.NodePool = new cc.NodePool();
+    ammoPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
     private zombieSpawner: number = 1.5;
+
+    private itemSpawner: number = 3;
 
     private started = false;
 
@@ -109,6 +113,9 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.BIG_SHOT_SPAWN, this.onBigShotSpawn, this);
         cc.systemEvent.on(GameEvent.BIG_SHOT_REMOVE, this.onBigShotRemove, this);
 
+        cc.systemEvent.on(GameEvent.AMMO_SPAWN, this.handleAmmoSpawn, this);
+        cc.systemEvent.on(GameEvent.AMMO_REMOVE, this.onAmmoRemove, this);
+
     }
 
     start() {
@@ -119,7 +126,7 @@ export default class StageController extends cc.Component {
 
     update(dt) {
         if (this.started) {
-
+            this.itemSpawner -= dt;
             this.zombieSpawner -= dt;
             this.staticObjectSpawnTimer -= dt;
             this.vehicleSpawnTimer -= dt;
@@ -138,6 +145,11 @@ export default class StageController extends cc.Component {
 
             if (this.zombieSpawner <= 0) {
                 this.handleZombieSpawn();
+            }
+
+            if (this.itemSpawner <= 0) {
+                // TODO MORE ITEMS
+                this.handleAmmoSpawn();
             }
         }
     }
@@ -171,6 +183,31 @@ export default class StageController extends cc.Component {
         //     cc.PhysicsManager.DrawBits.e_jointBit |
         //     cc.PhysicsManager.DrawBits.e_shapeBit;
         // }
+    }
+
+    private handleAmmoSpawn() {
+        let ammoNode;
+
+        if (this.ammoPool.size() > 0) {
+            ammoNode = this.ammoPool.get();
+        } else {
+            ammoNode = cc.instantiate(this.ammo);
+        }
+        const ammo = ammoNode.getComponent('Ammo');
+        ammo.controller = this;
+        ammo.init();
+        ammoNode.setPosition(this.generateRandomPos(0.62));
+        this.node.addChild(ammoNode);
+        this.itemSpawner = ITEM_SPAWN_RATE;
+    }
+
+    private onAmmoRemove(ammoNode: cc.Node, playSound = true) {
+        if (playSound) {
+            SoundManager.play('ammo_pickup', false, 0.3);
+        }
+        this.player.handleAmmoPickup();
+        ammoNode.removeFromParent();
+        this.ammoPool.put(ammoNode);
     }
 
     private onBulletSpawn() {
