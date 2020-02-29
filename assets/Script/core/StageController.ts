@@ -21,7 +21,7 @@ export default class StageController extends cc.Component {
 
     @property(cc.Label)
     bulletLabel: cc.Label = null;
-    
+
     @property(cc.Label)
     cashLabel: cc.Label = null;
 
@@ -85,23 +85,37 @@ export default class StageController extends cc.Component {
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
     private zombieSpawner: number = 1.5;
-    
+
     private itemSpawner: number = 3;
-    
+
     private started = false;
-    
+
     // TODO Level and total amount
     private cashAmount: number = 0;
 
     onLoad() {
-        App.initApp();
-
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 6; i++) {
             const zombieFab = cc.instantiate(this.zombie);
             const zombieDynFab = cc.instantiate(this.patrollerDyn);
             this.standardZombiePool.put(zombieFab);
             this.patrollerDynPool.put(zombieDynFab);
+            this.cashPool.put(cc.instantiate(this.cash));
+            if (i < 2) {
+                this.ammoPool.put(cc.instantiate(this.ammo));
+                this.explosionPool.put(cc.instantiate(this.explosion));
+                this.bigShotPool.put(cc.instantiate(this.bigShot));
+                if (i < 1) {
+                    this.staticCompactPool.put(cc.instantiate(this.compactObstacle));
+                    this.staticCarPool.put(cc.instantiate(this.carObstacle));
+                    this.vehiclePool.put(cc.instantiate(this.vehicle));
+                }
+            } else if (i < 4) {
+                this.bulletPool.put(cc.instantiate(this.bullet));
+            }
         }
+
+        App.initApp();
+
 
         this.initPhysics();
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);

@@ -1,7 +1,8 @@
-import StageController from "../StageController";
-import { GameEvent } from "../Event";
-import { SCROLL_SPEED } from "../GroundScroll";
-import SoundManager from "../../SoundManager";
+import StageController from "../core/StageController";
+import { GameEvent } from "../core/Event";
+import SoundManager from "../SoundManager";
+import { SCROLL_SPEED } from "../core/GroundScroll";
+
 
 const { ccclass, property } = cc._decorator;
 
