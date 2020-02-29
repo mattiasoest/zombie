@@ -1,5 +1,5 @@
 import Enemy, { ZOMBIE_TYPE } from "./Enemy";
-import { SCROLL_SPEED } from "../GroundScroll";
+import { SCROLL_SPEED } from "../core/GroundScroll";
 
 const { ccclass, property } = cc._decorator;
 

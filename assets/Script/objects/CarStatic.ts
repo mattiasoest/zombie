@@ -1,5 +1,5 @@
 import Obstacle from "./Obstacle";
-import { GameEvent } from "../Event";
+import { GameEvent } from "../core/Event";
 
 const {ccclass, property} = cc._decorator;
 

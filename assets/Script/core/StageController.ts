@@ -1,10 +1,10 @@
 import { GameEvent } from "./Event";
-import Player from "./entities/Player";
-import Enemy from "./entities/Enemy";
-import ZombieDynamic from "./entities/ZombieDynamic";
-import Zombie from "./entities/Zombie";
 import App from "../App";
 import SoundManager from "../SoundManager";
+import Player from "../entities/Player";
+import Enemy from "../entities/Enemy";
+import ZombieDynamic from "../entities/ZombieDynamic";
+import Zombie from "../entities/Zombie";
 
 const { ccclass, property } = cc._decorator;
 
@@ -18,6 +18,9 @@ export default class StageController extends cc.Component {
     @property(Player)
     player: Player = null;
 
+    @property(cc.Label)
+    bulletLabel: cc.Label = null;
+
     @property(cc.AnimationClip)
     walk: cc.AnimationClip[] = new Array(4);
 
@@ -26,6 +29,9 @@ export default class StageController extends cc.Component {
 
     @property(cc.TiledLayer)
     topLayer: cc.TiledLayer = null;
+
+    @property(cc.Prefab)
+    ammo: cc.Prefab = null;
 
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
@@ -108,6 +114,7 @@ export default class StageController extends cc.Component {
     start() {
         this.cvs = cc.find("Canvas");
         this.player.node.zIndex = 10;
+        this.bulletLabel.node.zIndex = 99;
     }
 
     update(dt) {
@@ -167,7 +174,7 @@ export default class StageController extends cc.Component {
     }
 
     private onBulletSpawn() {
-        SoundManager.play('fire1', false);
+        this.bulletLabel.string = `Bullets: ${this.player.bulletAmount}`;
         let bulletNode;
 
         if (this.bulletPool.size() > 0) {

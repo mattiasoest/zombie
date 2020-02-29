@@ -58,13 +58,13 @@ export default class ZombieDynamic extends Enemy {
 
     updateAngle() {
         if (this.xSpeed > 0 && !this.rotateRight) {
-            const angle = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 70 : 14;
+            const angle = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 75 : 35;
             const turnSpeed = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 0.3 : 0.1;
             this.node.runAction(cc.rotateTo(turnSpeed, angle));
             this.rotateLeft = false;
             this.rotateRight = true;
         } else if (this.xSpeed <= 0 && !this.rotateLeft) {
-            const angle = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 70 : 14;
+            const angle = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 75 : 35;
             const turnSpeed = this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL ? 0.3 : 0.1;
             this.node.runAction(cc.rotateTo(turnSpeed, -angle));
             this.rotateLeft = true;

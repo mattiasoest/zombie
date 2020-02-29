@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "2a85e664-7bb8-440f-a395-8457c8fe252e",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "items_0003_magazine_gun-min": {
+      "ver": "1.0.4",
+      "uuid": "84068036-07c0-49ee-b542-28dca8d55bbe",
+      "rawTextureUuid": "2a85e664-7bb8-440f-a395-8457c8fe252e",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0.5,
+      "trimX": 27,
+      "trimY": 55,
+      "width": 74,
+      "height": 17,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

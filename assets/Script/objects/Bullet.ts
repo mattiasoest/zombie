@@ -1,6 +1,6 @@
-import StageController from "../StageController";
-import { GameEvent } from "../Event";
-import SoundManager from "../../SoundManager";
+import StageController from "../core/StageController";
+import { GameEvent } from "../core/Event";
+
 
 const { ccclass, property } = cc._decorator;
 

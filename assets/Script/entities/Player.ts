@@ -1,8 +1,8 @@
 import { GameEvent } from "../Event";
+import SoundManager from "../../SoundManager";
 
 
 const { ccclass, property } = cc._decorator;
-
 
 const ATTACK_CD = 0.1;
 
@@ -13,6 +13,9 @@ export default class Player extends cc.Component {
     animations: cc.Animation = null;
 
     isAlive = false;
+
+    // Different depending on upgrades
+    bulletAmount = 10;
 
     private attackCooldown: number = ATTACK_CD;
     private chargingAttack: boolean = false;
@@ -39,11 +42,17 @@ export default class Player extends cc.Component {
 
     public handleAttack() {
         if (this.attackCooldown <= 0) {
-            this.animations.play("man_fire_gun");
-            cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
-            this.resetAttack();
+            if (this.bulletAmount > 0) {
+
+                this.bulletAmount--;
+                SoundManager.play('fire1', false);
+                this.animations.play("man_fire_gun");
+                cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
+                this.resetAttack();
+            } else {
+                SoundManager.play('empty', false,  0.3);
+            }
         } else {
-            console.log('NOT READY, RESET');
             this.resetAttack();
         }
     }

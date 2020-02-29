@@ -1,6 +1,6 @@
-import StageController from "../StageController";
-import { GameEvent } from "../Event";
-import { SCROLL_SPEED } from "../GroundScroll";
+import StageController from "../core/StageController";
+import { GameEvent } from "../core/Event";
+import { SCROLL_SPEED } from "../core/GroundScroll";
 
 const TOTAL_HP = 6;
 
