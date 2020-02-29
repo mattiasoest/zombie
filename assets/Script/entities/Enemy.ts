@@ -43,6 +43,10 @@ export default abstract class Enemy extends cc.Component {
 
     abstract handleNotHardImpact(colliderNode: cc.Node): void;
 
+    onLoad() {
+        cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+    }
+
     protected init(leftBound?: number, rightBound?: number) {
         this.node.zIndex = 3;
         const randomZombieLook = Math.floor(Math.random() * this.controller.walk.length);
@@ -140,11 +144,12 @@ export default abstract class Enemy extends cc.Component {
 
     protected killZombie(instant = false, playFallsound = true) {
         this.node.zIndex = 0;
-        cc.systemEvent.emit(GameEvent.CASH_SPAWN, this.node.position);
         this.isAlive = false;
         this.body.enabledContactListener = false;
         this.body.linearVelocity = cc.v2(0, 0);
-
+        if (!instant) {
+            cc.systemEvent.emit(GameEvent.CASH_SPAWN, this.node.position);
+        }
 
         this.animations.play('death')
         if (playFallsound) {
@@ -167,7 +172,6 @@ export default abstract class Enemy extends cc.Component {
         else {
             return 0;
         }
-
     }
 
     private isStaticObject(colliderNode: cc.Node) {
@@ -178,5 +182,11 @@ export default abstract class Enemy extends cc.Component {
     private isHardObjectImpact(colliderBody: cc.RigidBody) {
         const isObjectMoving = colliderBody.linearVelocity.y < -SCROLL_SPEED - 5 || colliderBody.linearVelocity.y > -SCROLL_SPEED + 5;
         return Math.abs(colliderBody.angularVelocity) > 5 || isObjectMoving;
+    }
+
+    private handleEndGame() {
+        if (this.isAlive) {
+            this.killZombie(true, false);
+        }
     }
 }

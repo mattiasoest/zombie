@@ -13,11 +13,19 @@ const VEHICLE_SPAWN_RATE = 13;
 const ZOMBIE_SPAWN_RATE = 0.75;
 const ITEM_SPAWN_RATE = 3;
 
+const enum GAME_STATE {
+    PLAY,
+    MENU,
+}
+
 @ccclass
 export default class StageController extends cc.Component {
 
     @property(cc.Node)
     container: cc.Node = null;
+
+    @property(cc.Node)
+    menu: cc.Node = null;
 
     @property(Player)
     player: Player = null;
@@ -87,14 +95,15 @@ export default class StageController extends cc.Component {
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
-    private zombieSpawner: number = 1.5;
+    private zombieSpawnerTimer: number = 1.5;
 
-    private itemSpawner: number = 3;
+    private itemSpawnerTimer: number = 3;
 
-    private started = false;
 
     // TODO Level and total amount
     private cashAmount: number = 0;
+
+    private currentState: GAME_STATE = GAME_STATE.MENU;
 
     onLoad() {
         for (let i = 0; i < 6; i++) {
@@ -158,32 +167,36 @@ export default class StageController extends cc.Component {
     }
 
     update(dt) {
-        if (this.started) {
-            this.itemSpawner -= dt;
-            this.zombieSpawner -= dt;
-            this.staticObjectSpawnTimer -= dt;
-            this.vehicleSpawnTimer -= dt;
-            if (this.staticObjectSpawnTimer <= 0) {
-                // Random among other objects
-                if (Math.random() < 0.12) {
-                    this.handleTankSpawn();
+        switch (this.currentState) {
+            case GAME_STATE.PLAY:
+                this.itemSpawnerTimer -= dt;
+                this.zombieSpawnerTimer -= dt;
+                this.staticObjectSpawnTimer -= dt;
+                this.vehicleSpawnTimer -= dt;
+                if (this.staticObjectSpawnTimer <= 0) {
+                    // Random among other objects
+                    if (Math.random() < 0.12) {
+                        this.handleTankSpawn();
+                    }
+                    else {
+                        Math.random() < 0.5 ? this.handleStaticCarSpawn() : this.handleStaticCompactSpawn();
+                    }
                 }
-                else {
-                    Math.random() < 0.5 ? this.handleStaticCarSpawn() : this.handleStaticCompactSpawn();
+                if (this.vehicleSpawnTimer <= 0) {
+                    this.handleVehicleSpawn();
                 }
-            }
-            if (this.vehicleSpawnTimer <= 0) {
-                this.handleVehicleSpawn();
-            }
 
-            if (this.zombieSpawner <= 0) {
-                this.handleZombieSpawn();
-            }
+                if (this.zombieSpawnerTimer <= 0) {
+                    this.handleZombieSpawn();
+                }
 
-            if (this.itemSpawner <= 0) {
-                // TODO MORE ITEMS
-                this.handleAmmoSpawn();
-            }
+                if (this.itemSpawnerTimer <= 0) {
+                    // TODO MORE ITEMS
+                    this.handleAmmoSpawn();
+                }
+                break;
+            case GAME_STATE.MENU:
+                break;
         }
     }
 
@@ -232,8 +245,9 @@ export default class StageController extends cc.Component {
     }
 
     private handlePlayerDeath(killerNode: cc.Node) {
-        // TODO !!!!
-        // console.log(`Killed by: ${killerNode.name}`);
+        cc.systemEvent.emit(GameEvent.END_GAME);
+        console.log(`Killed by: ${killerNode.name}`);
+        this.endGame();
     }
 
     private handleAmmoSpawn() {
@@ -249,7 +263,7 @@ export default class StageController extends cc.Component {
         ammo.init();
         ammoNode.setPosition(this.generateRandomPos(0.62));
         this.container.addChild(ammoNode);
-        this.itemSpawner = ITEM_SPAWN_RATE;
+        this.itemSpawnerTimer = ITEM_SPAWN_RATE;
     }
 
     private onAmmoRemove(ammoNode: cc.Node, pickedUp = true) {
@@ -339,13 +353,51 @@ export default class StageController extends cc.Component {
     }
 
     private onTouchStart(event: any) {
-        if (!this.started) {
-            this.started = true;
+        if (this.currentState === GAME_STATE.MENU) {
+            this.startGame();
         }
         this.player.chargeAttack();
         const touch: cc.Touch = event.touch;
         const converted = this.node.convertToNodeSpaceAR(touch.getLocation());
         this.handleTouch(converted);
+    }
+
+    private startGame() {
+        this.menu.active = false;
+        this.player.isAlive = true;
+        this.currentState = GAME_STATE.PLAY;
+        console.log('====== PLAY');
+        this.player.node.opacity = 255;
+    }
+    
+    private endGame() {
+        this.menu.active = true;
+        this.killPlayer();
+        this.resetGame();
+    }
+    
+    private resetGame() {
+        this.currentState = GAME_STATE.MENU;
+        console.log('====== MENU');
+        this.cashAmount = 0;
+        this.player.bulletAmount = 5;
+
+        this.updateAmmoLabel();
+        this.updateCashLabel();
+
+        this.player.resetPosition();
+
+        this.vehicleSpawnTimer = VEHICLE_SPAWN_RATE;
+        this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
+        this.zombieSpawnerTimer = ZOMBIE_SPAWN_RATE;
+        this.itemSpawnerTimer = ITEM_SPAWN_RATE;
+    }
+
+    private killPlayer() {
+        SoundManager.play('death', false, 0.5);
+        this.player.isAlive = false;
+        // TODO animation
+        this.player.node.opacity = 100;
     }
 
     private onTouchMove(event: any) {
@@ -388,7 +440,7 @@ export default class StageController extends cc.Component {
 
             zombieNode.setPosition(this.generateRandomPos());
             this.container.addChild(zombieNode);
-            this.zombieSpawner = ZOMBIE_SPAWN_RATE;
+            this.zombieSpawnerTimer = ZOMBIE_SPAWN_RATE;
         } else {
             let zombieNode;
             if (this.standardZombiePool.size() > 0) {
@@ -402,7 +454,7 @@ export default class StageController extends cc.Component {
 
             zombieNode.setPosition(this.generateRandomPos());
             this.container.addChild(zombieNode);
-            this.zombieSpawner = ZOMBIE_SPAWN_RATE;
+            this.zombieSpawnerTimer = ZOMBIE_SPAWN_RATE;
         }
     }
 

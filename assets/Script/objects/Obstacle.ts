@@ -34,6 +34,10 @@ export default abstract class Obstacle extends cc.Component {
 
     protected abstract handleDeath();
 
+    onLoad() {
+        cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+    }
+
     start() {
         this.node.zIndex = 7;
     }
@@ -84,6 +88,10 @@ export default abstract class Obstacle extends cc.Component {
 
     protected shouldRecycle() {
         return this.node.position.y < this.lowerBound || this.node.x < this.leftBound || this.node.x > this.rightBound;
+    }
+
+    private handleEndGame() {
+        this.handleDeath();
     }
 
     private generateRandomProps() {

@@ -35,6 +35,10 @@ export default class Vehicle extends cc.Component {
 
     private type: FAST_TYPE = null;
 
+    onLoad() {
+        cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+    }
+
     start() {
         this.node.zIndex = 7;
     }
@@ -73,13 +77,19 @@ export default class Vehicle extends cc.Component {
         }
     }
 
-    handleDeath() {
+    handleDeath(explosion = true) {
         this.body.enabledContactListener = false;
         this.alive = false;
         this.body.linearVelocity = cc.v2(0, 0);
         this.body.angularVelocity = 0;
         cc.systemEvent.emit(GameEvent.VEHICLE_REMOVE, this.node);
-        cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
+        if (explosion) {
+            cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
+        }
+    }
+    
+    private handleEndGame() {
+        this.handleDeath(false);
     }
 
     private generateRandomProps() {

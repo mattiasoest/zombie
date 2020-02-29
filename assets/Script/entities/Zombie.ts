@@ -68,6 +68,6 @@ export default class Zombie extends Enemy {
 
     handleNotHardImpact(colliderNode: cc.Node): void {
         // Just kill this one, runs fast.
-        this.killZombie();
+        super.killZombie();
     }
 }

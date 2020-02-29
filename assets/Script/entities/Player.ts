@@ -39,24 +39,32 @@ export default class Player extends cc.Component {
     }
 
     public handleMovement(touchpos: cc.Vec2) {
-        this.node.x = touchpos.x;
+        if (this.isAlive) {
+            this.node.x = touchpos.x;
+        }
     }
 
     public handleAttack() {
-        if (this.attackCooldown <= 0) {
-            if (this.bulletAmount > 0) {
+        if (this.isAlive) {
+            if (this.attackCooldown <= 0) {
+                if (this.bulletAmount > 0) {
 
-                this.bulletAmount--;
-                SoundManager.play('fire1', false);
-                this.animations.play("man_fire_gun");
-                cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
-                this.resetAttack();
+                    this.bulletAmount--;
+                    SoundManager.play('fire1', false);
+                    this.animations.play("man_fire_gun");
+                    cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
+                    this.resetAttack();
+                } else {
+                    SoundManager.play('empty', false, 0.3);
+                }
             } else {
-                SoundManager.play('empty', false,  0.3);
+                this.resetAttack();
             }
-        } else {
-            this.resetAttack();
         }
+    }
+
+    public resetPosition() {
+        this.node.x = 0;
     }
 
     public resetAttack() {

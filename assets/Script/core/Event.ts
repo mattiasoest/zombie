@@ -21,4 +21,6 @@ export const GameEvent = {
 
   CASH_SPAWN: 'core_cash_spawn',
   CASH_REMOVE: 'core_cash_remove',
+
+  END_GAME: 'core_end_game',
 };

@@ -47,6 +47,9 @@ export default class Tank extends cc.Component {
     private alive = true;
     private firingTimer = 0.7;
 
+    onLoad() {
+        cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+    }
 
     start() {
         this.node.zIndex = 7;
@@ -72,6 +75,7 @@ export default class Tank extends cc.Component {
             this.handleFiring(dt);
 
             if (this.shouldRecycle()) {
+                this.alive = false;
                 cc.systemEvent.emit(GameEvent.TANK_REMOVE, this.node);
             }
         }
@@ -160,6 +164,10 @@ export default class Tank extends cc.Component {
         else {
             return 0;
         }
+    }
 
+    private handleEndGame() {
+        this.alive = false;
+        cc.systemEvent.emit(GameEvent.TANK_REMOVE, this.node);
     }
 }

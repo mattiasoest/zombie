@@ -1,5 +1,6 @@
 import { SCROLL_SPEED } from "../core/GroundScroll";
 import StageController from "../core/StageController";
+import { GameEvent } from "../core/Event";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,6 +20,10 @@ export default abstract class StaticItem extends cc.Component {
     abstract handleRemoval();
 
     private animationVec = new cc.Vec2(0, 10);
+
+    onLoad() {
+        cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+    }
 
     init() {
         this.body = this.node.getComponent(cc.RigidBody);
@@ -43,6 +48,10 @@ export default abstract class StaticItem extends cc.Component {
                 this.handleRemoval()
             }
         }
+    }
+
+    private handleEndGame() {
+        this.handleRemoval()
     }
 
 }

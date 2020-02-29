@@ -134,6 +134,5 @@ export default class ZombieDynamic extends Enemy {
         // GIVE THEM FULL WIDTH TO FIND A WAY OUT
         this.zombieType = ZOMBIE_TYPE.PATROLLER_DYN_FULL;
         super.setDefaultBounds();
-
     }
 }
