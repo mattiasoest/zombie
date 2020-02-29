@@ -163,6 +163,10 @@ export default class StageController extends cc.Component {
         return this.player.isAlive;;
     }
 
+    updateAmmoLabel() {
+        this.bulletLabel.string = `Bullets: ${this.player.bulletAmount}`;
+    }
+
     private initPhysics() {
         const manager = cc.director.getPhysicsManager();
         manager.enabled = true;
@@ -206,12 +210,13 @@ export default class StageController extends cc.Component {
             SoundManager.play('ammo_pickup', false, 0.3);
         }
         this.player.handleAmmoPickup();
+        this.updateAmmoLabel();
         ammoNode.removeFromParent();
         this.ammoPool.put(ammoNode);
     }
 
     private onBulletSpawn() {
-        this.bulletLabel.string = `Bullets: ${this.player.bulletAmount}`;
+        this.updateAmmoLabel();
         let bulletNode;
 
         if (this.bulletPool.size() > 0) {
