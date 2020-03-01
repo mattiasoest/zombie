@@ -13,6 +13,11 @@ const VEHICLE_SPAWN_RATE = 13;
 const ZOMBIE_SPAWN_RATE = 0.75;
 const ITEM_SPAWN_RATE = 3;
 
+export const enum MODE {
+    NORMAL = 'normal',
+    SURVIVAL = 'survival',
+}
+
 const enum GAME_STATE {
     PLAY,
     MENU,
@@ -97,11 +102,7 @@ export default class StageController extends cc.Component {
     private vehicleSpawnTimer: number = 6;
     private zombieSpawnerTimer: number = 1.5;
 
-    private itemSpawnerTimer: number = 3;
-
-
-    // TODO Level and total amount
-    private cashAmount: number = 0;
+    private itemSpawnerTimer: number = 3
 
     private currentState: GAME_STATE = GAME_STATE.MENU;
 
@@ -127,7 +128,6 @@ export default class StageController extends cc.Component {
         }
 
         App.initApp();
-
 
         this.initPhysics();
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -214,12 +214,7 @@ export default class StageController extends cc.Component {
     }
 
     updateCashLabel() {
-        this.cashLabel.string = `$${this.cashAmount}`;
-    }
-
-    handleCashPickup() {
-        // TODO amounts
-        this.cashAmount += 2;
+        this.cashLabel.string = `$${App.level.levelCash}`;
     }
 
     private initPhysics() {
@@ -321,7 +316,7 @@ export default class StageController extends cc.Component {
     private onCashRemove(cashNode: cc.Node, pickedUp = true) {
         if (pickedUp) {
             SoundManager.play('cash_pickup', false, 0.3);
-            this.handleCashPickup();
+            App.level.handleCashPickup();
             this.updateCashLabel();
         }
         cashNode.removeFromParent();
@@ -363,6 +358,7 @@ export default class StageController extends cc.Component {
     }
 
     private startGame() {
+        App.level.startLevel(MODE.NORMAL);
         this.menu.active = false;
         this.player.isAlive = true;
         this.currentState = GAME_STATE.PLAY;
@@ -379,13 +375,13 @@ export default class StageController extends cc.Component {
     private resetGame() {
         this.currentState = GAME_STATE.MENU;
         console.log('====== MENU');
-        this.cashAmount = 0;
-        this.player.bulletAmount = 5;
+        App.level.resetLevel();
+        this.player.resetBullets();
+        this.player.resetPosition();
 
         this.updateAmmoLabel();
         this.updateCashLabel();
 
-        this.player.resetPosition();
 
         this.vehicleSpawnTimer = VEHICLE_SPAWN_RATE;
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
@@ -458,7 +454,11 @@ export default class StageController extends cc.Component {
         }
     }
 
-    private onZombieRemove(zombie: Enemy) {
+    private onZombieRemove(zombie: Enemy, isPlayerKill: boolean) {
+        if (isPlayerKill) {
+            App.level.handleZombieKilled(zombie);
+        }
+
         if (zombie instanceof ZombieDynamic) {
             zombie.node.removeFromParent();
             this.patrollerDynPool.put(zombie.node);

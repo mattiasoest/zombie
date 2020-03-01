@@ -103,7 +103,7 @@ export default abstract class Enemy extends cc.Component {
     update(dt) {
         if (this.isAlive) {
             if (this.node.y < this.lowerBound) {
-                this.killZombie(true, false);
+                this.killZombie(false, true, false);
             }
         }
     }
@@ -116,21 +116,21 @@ export default abstract class Enemy extends cc.Component {
                 this.hitPoints--;
             }
             else {
-                this.killZombie(false, true);
+                this.killZombie(true, false, true);
             }
         }
         else if (otherCollider.node.name === "Player") {
             cc.systemEvent.emit(GameEvent.PLAYER_DEAD, this.node);
         }
         else if (otherCollider.node.name === "Vehicle") {
-            this.killZombie();
+            this.killZombie(false);
         }
         else if (otherCollider.node.name === "Tank") {
-            this.killZombie();
+            this.killZombie(false);
         }
         else if (this.isStaticObject(otherCollider.node)) {
             if (this.isHardObjectImpact(otherCollider.body)) {
-                this.killZombie();
+                this.killZombie(false);
             } else {
                 this.handleNotHardImpact(otherCollider.node);
             }
@@ -142,7 +142,7 @@ export default abstract class Enemy extends cc.Component {
         this.rightBound = this.controller.getMainCanvas().width * 0.5;
     }
 
-    protected killZombie(instant = false, playFallsound = true) {
+    protected killZombie(isPlayerKill: boolean, instant = false, playFallsound = true) {
         this.node.zIndex = 0;
         this.isAlive = false;
         this.body.enabledContactListener = false;
@@ -160,7 +160,7 @@ export default abstract class Enemy extends cc.Component {
             if (instant) {
                 timer = 0;
             }
-            cc.systemEvent.emit(GameEvent.ZOMBIE_REMOVE, this);
+            cc.systemEvent.emit(GameEvent.ZOMBIE_REMOVE, this, isPlayerKill);
         }, timer);
     }
 
@@ -186,7 +186,7 @@ export default abstract class Enemy extends cc.Component {
 
     private handleEndGame() {
         if (this.isAlive) {
-            this.killZombie(true, false);
+            this.killZombie(false, true, false);
         }
     }
 }

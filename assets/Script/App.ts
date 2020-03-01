@@ -1,9 +1,13 @@
 import SoundManager from './SoundManager';
+import Level from './core/Level';
 
 
 class App {
 
+    level: Level;
+
     initApp() {
+        this.level = new Level();
         SoundManager.loadAllAudio(this.progressHandler, this.progressHandler);
     }
 
