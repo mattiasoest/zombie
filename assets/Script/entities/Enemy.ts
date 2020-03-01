@@ -147,7 +147,7 @@ export default abstract class Enemy extends cc.Component {
         this.isAlive = false;
         this.body.enabledContactListener = false;
         this.body.linearVelocity = cc.v2(0, 0);
-        if (!instant) {
+        if (!instant && isPlayerKill) {
             cc.systemEvent.emit(GameEvent.CASH_SPAWN, this.node.position);
         }
 
