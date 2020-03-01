@@ -72,6 +72,7 @@ export default class Vehicle extends cc.Component {
             if (this.hitPoints > 0) {
                 this.mainSprite.spriteFrame = this.frames[this.hitPoints - 1];
             } else {
+                cc.systemEvent.emit(GameEvent.SHIELD_SPAWN, this.node.position);
                 this.handleDeath();
             }
         }

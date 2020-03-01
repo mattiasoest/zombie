@@ -32,6 +32,9 @@ export default class StageController extends cc.Component {
     @property(cc.Node)
     menu: cc.Node = null;
 
+    @property(cc.Node)
+    shieldNodes: cc.Node[] = new Array(3);
+
     @property(Player)
     player: Player = null;
 
@@ -62,6 +65,9 @@ export default class StageController extends cc.Component {
 
     @property(cc.Prefab)
     armor: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    shield: cc.Prefab = null;
 
     // ================
     @property(cc.Prefab)
@@ -107,6 +113,7 @@ export default class StageController extends cc.Component {
     cashPool: cc.NodePool = new cc.NodePool();
     healthPackPool: cc.NodePool = new cc.NodePool();
     armorPool: cc.NodePool = new cc.NodePool();
+    shieldPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
@@ -172,6 +179,10 @@ export default class StageController extends cc.Component {
 
         cc.systemEvent.on(GameEvent.ARMOR_SPAWN, this.handleArmorSpawn, this);
         cc.systemEvent.on(GameEvent.ARMOR_REMOVE, this.onArmorRemove, this);
+
+        cc.systemEvent.on(GameEvent.SHIELD_SPAWN, this.handleShieldSpawn, this);
+        cc.systemEvent.on(GameEvent.SHIELD_REMOVE, this.onShieldRemove, this);
+        cc.systemEvent.on(GameEvent.RESET_SHIELD, this.resetShield, this);
     }
 
     start() {
@@ -349,6 +360,35 @@ export default class StageController extends cc.Component {
         this.armorPool.put(armorNode);
     }
 
+    private handleShieldSpawn(refPos: cc.Vec2) {
+        let shieldNode;
+
+        if (this.shieldPool.size() > 0) {
+            shieldNode = this.shieldPool.get();
+        } else {
+            shieldNode = cc.instantiate(this.shield);
+        }
+        const shield = shieldNode.getComponent('Shield');
+        shield.controller = this;
+        shield.init();
+        shieldNode.setPosition(refPos);
+        this.container.addChild(shieldNode);
+    }
+
+    private onShieldRemove(shieldNode: cc.Node, pickedUp = true) {
+        if (pickedUp) {
+            SoundManager.play('health_pickup', false, 0.8);
+            this.player.handleShield();
+            if (this.player.shields === 0) {
+                this.resetShield();
+            } else {
+                this.shieldNodes[this.player.shields -1].active = true;
+            }
+        }
+        shieldNode.removeFromParent();
+        this.shieldPool.put(shieldNode);
+    }
+
     private onBulletSpawn() {
         this.updateAmmoLabel();
         let bulletNode;
@@ -456,8 +496,7 @@ export default class StageController extends cc.Component {
         console.log('====== MENU');
         App.level.resetLevel();
         this.player.reset();
-        // this.player.resetBullets();
-        // this.player.resetPosition();
+        this.resetShield();
 
         this.updateAmmoLabel();
         this.updateCashLabel();
@@ -467,6 +506,12 @@ export default class StageController extends cc.Component {
         this.staticObjectSpawnTimer = STATIC_SPAWN_RATE;
         this.zombieSpawnerTimer = ZOMBIE_SPAWN_RATE;
         this.itemSpawnerTimer = ITEM_SPAWN_RATE;
+    }
+
+    private resetShield() {
+        this.shieldNodes.forEach(sNode => {
+            sNode.active = false;
+        });
     }
 
     private killPlayer() {

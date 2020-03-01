@@ -29,5 +29,10 @@ export const GameEvent = {
   CASH_SPAWN: 'core_cash_spawn',
   CASH_REMOVE: 'core_cash_remove',
 
+  SHIELD_SPAWN: 'core_shield_spawn',
+  SHIELD_REMOVE: 'core_shield_remove',
+
   END_GAME: 'core_end_game',
+
+  RESET_SHIELD: 'core_reset_shield',
 };

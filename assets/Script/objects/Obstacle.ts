@@ -68,6 +68,7 @@ export default abstract class Obstacle extends cc.Component {
                 this.body.angularVelocity = 0;
                 this.shadowSprite.enabled = false;
                 this.alive = false;
+                cc.systemEvent.emit(GameEvent.SHIELD_SPAWN, this.node.position);
                 cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
                 this.handleDeath();
             }

@@ -6,6 +6,8 @@ const { ccclass, property } = cc._decorator;
 
 const ATTACK_CD = 0.1;
 const DEFAULT_HP = 3;
+const SHIELD_THRESHOLD = 3;
+const INVICIBLE_DEFAULT = 4;
 
 @ccclass
 export default class Player extends cc.Component {
@@ -19,19 +21,23 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     armorNode: cc.Node = null;
 
-    private hp = 3;
-
-    private armorEquipped = false;
 
     isAlive = false;
 
     // Different depending on upgrades
     bulletCap = 10;
 
-    bulletAmount = 5;
+    bulletAmount = 10;
 
+    shields = 0;
+
+    invincible = false;
+
+    private hp = 3;
+    private armorEquipped = false;
     private attackCooldown: number = ATTACK_CD;
     private chargingAttack: boolean = false;
+    private invicibleTimer = INVICIBLE_DEFAULT;
 
     start() {
         this.hpBar.progress = 1;
@@ -44,6 +50,15 @@ export default class Player extends cc.Component {
     update(dt) {
         if (this.chargingAttack) {
             this.attackCooldown -= dt;
+        }
+        if (this.invincible) {
+            this.invicibleTimer -= dt;
+            if (this.invicibleTimer < 0) {
+                this.invicibleTimer = INVICIBLE_DEFAULT;
+                this.invincible = false;
+                this.animations.node.color = cc.color(255, 255, 255);
+                cc.systemEvent.emit(GameEvent.RESET_SHIELD);
+            }
         }
     }
 
@@ -83,6 +98,9 @@ export default class Player extends cc.Component {
         this.resetBullets();
         this.resetPosition();
         this.resetHp();
+
+        this.shields = 0;
+        this.invincible = false;
     }
 
     resetAttack() {
@@ -97,6 +115,11 @@ export default class Player extends cc.Component {
 
     handleHit(collderNode: cc.Node) {
         if (this.isAlive) {
+            if (this.invincible) {
+                // TODO DESTORY OTHER NODE
+                SoundManager.play('hit_player', false, 0.5);
+                return;
+            }
             if (this.armorEquipped) {
                 this.armorEquipped = false;
                 this.armorNode.active = false;
@@ -120,6 +143,18 @@ export default class Player extends cc.Component {
     handleArmor() {
         this.armorEquipped = true;
         this.armorNode.active = true;
+    }
+
+    handleShield() {
+        if (!this.invincible) {
+            this.shields++;
+            if (this.shields >= SHIELD_THRESHOLD) {
+                console.log("INVINCIBLE");
+                // TODO SEND MESSAGE
+                this.invincible = true;
+                this.animations.node.color = cc.color(170, 0, 0);
+            }
+        }
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {
