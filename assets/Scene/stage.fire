@@ -2597,6 +2597,9 @@
     "ammo": {
       "__uuid__": "bf017387-e403-45fd-8f25-b49daa5228b0"
     },
+    "healthPack": {
+      "__uuid__": "f43ed861-cecd-46c1-930c-8d8e5d477ef3"
+    },
     "cash": {
       "__uuid__": "21ecabca-7276-4a4f-a5ac-deb7fdb66769"
     },

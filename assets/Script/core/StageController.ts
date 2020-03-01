@@ -54,6 +54,9 @@ export default class StageController extends cc.Component {
     ammo: cc.Prefab = null;
 
     @property(cc.Prefab)
+    healthPack: cc.Prefab = null;
+
+    @property(cc.Prefab)
     cash: cc.Prefab = null;
 
     @property(cc.Prefab)
@@ -97,6 +100,7 @@ export default class StageController extends cc.Component {
     bigShotPool: cc.NodePool = new cc.NodePool();
     ammoPool: cc.NodePool = new cc.NodePool();
     cashPool: cc.NodePool = new cc.NodePool();
+    healthPackPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
@@ -154,6 +158,9 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.AMMO_SPAWN, this.handleAmmoSpawn, this);
         cc.systemEvent.on(GameEvent.AMMO_REMOVE, this.onAmmoRemove, this);
 
+        cc.systemEvent.on(GameEvent.HEALTH_SPAWN, this.handleHpPackSpawn, this);
+        cc.systemEvent.on(GameEvent.HEALTH_REMOVE, this.onHpPackRemove, this);
+
         cc.systemEvent.on(GameEvent.CASH_SPAWN, this.handleCashSpawn, this);
         cc.systemEvent.on(GameEvent.CASH_REMOVE, this.onCashRemove, this);
 
@@ -195,7 +202,11 @@ export default class StageController extends cc.Component {
 
                 if (this.itemSpawnerTimer <= 0) {
                     // TODO MORE ITEMS
-                    this.handleAmmoSpawn();
+                    if (Math.random() < 0.9) {
+                        this.handleAmmoSpawn();
+                    } else {
+                        this.handleHpPackSpawn();
+                    }
                 }
                 break;
             case GAME_STATE.MENU:
@@ -276,6 +287,31 @@ export default class StageController extends cc.Component {
         }
         ammoNode.removeFromParent();
         this.ammoPool.put(ammoNode);
+    }
+
+    private handleHpPackSpawn() {
+        let hpNode;
+
+        if (this.healthPackPool.size() > 0) {
+            hpNode = this.healthPackPool.get();
+        } else {
+            hpNode = cc.instantiate(this.healthPack);
+        }
+        const hpPack = hpNode.getComponent('HealthPack');
+        hpPack.controller = this;
+        hpPack.init();
+        hpNode.setPosition(this.generateRandomPos(0.62));
+        this.container.addChild(hpNode);
+        this.itemSpawnerTimer = ITEM_SPAWN_RATE;
+    }
+
+    private onHpPackRemove(hpPackNode: cc.Node, pickedUp = true) {
+        if (pickedUp) {
+            SoundManager.play('health_pickup', false, 0.8);
+            this.player.handleHealthPack();
+        }
+        hpPackNode.removeFromParent();
+        this.healthPackPool.put(hpPackNode);
     }
 
     private onBulletSpawn() {
@@ -371,7 +407,7 @@ export default class StageController extends cc.Component {
         this.player.isAlive = true;
         this.currentState = GAME_STATE.PLAY;
         console.log('====== PLAY');
-        this.player.node.opacity = 255;
+        this.player.animations.node.opacity = 255;
     }
     
     private endGame() {
@@ -402,7 +438,7 @@ export default class StageController extends cc.Component {
         SoundManager.play('death', false, 0.5);
         this.player.isAlive = false;
         // TODO animation
-        this.player.node.opacity = 100;
+        this.player.animations.node.opacity = 100;
     }
 
     private onTouchMove(event: any) {
