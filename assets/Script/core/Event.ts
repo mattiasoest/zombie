@@ -23,6 +23,9 @@ export const GameEvent = {
   HEALTH_SPAWN: 'core_health_spawn',
   HEALTH_REMOVE: 'core_health_remove',
 
+  ARMOR_SPAWN: 'core_armor_spawn',
+  ARMOR_REMOVE: 'core_armor_remove',
+
   CASH_SPAWN: 'core_cash_spawn',
   CASH_REMOVE: 'core_cash_remove',
 

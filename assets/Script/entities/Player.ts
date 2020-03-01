@@ -16,8 +16,12 @@ export default class Player extends cc.Component {
     @property(cc.ProgressBar)
     hpBar: cc.ProgressBar = null;
 
+    @property(cc.Node)
+    armorNode: cc.Node = null;
+
     private hp = 3;
 
+    private armorEquipped = false;
 
     isAlive = false;
 
@@ -92,18 +96,30 @@ export default class Player extends cc.Component {
     }
 
     handleHit(collderNode: cc.Node) {
-        this.hp--;
-        console.log(this.hp);
-        if (this.hp < 0) {
-            cc.systemEvent.emit(GameEvent.PLAYER_DEAD, collderNode);
-            return;
+        if (this.isAlive) {
+            if (this.armorEquipped) {
+                this.armorEquipped = false;
+                this.armorNode.active = false;
+                SoundManager.play('armor', false, 0.5);
+            } else {
+                this.hp--;
+                if (this.hp < 0) {
+                    cc.systemEvent.emit(GameEvent.PLAYER_DEAD, collderNode);
+                    return;
+                }
+                this.hpBar.progress = this.hp / DEFAULT_HP;
+                SoundManager.play('hit_player', false, 0.5);
+            }
         }
-        this.hpBar.progress = this.hp / DEFAULT_HP;
-        SoundManager.play('hit_player', false, 0.5);
     }
-    
+
     handleHealthPack() {
         this.resetHp();
+    }
+
+    handleArmor() {
+        this.armorEquipped = true;
+        this.armorNode.active = true;
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {

@@ -50,6 +50,7 @@ export default class StageController extends cc.Component {
     @property(cc.TiledLayer)
     topLayer: cc.TiledLayer = null;
 
+    // === PICKUPS ===
     @property(cc.Prefab)
     ammo: cc.Prefab = null;
 
@@ -59,6 +60,10 @@ export default class StageController extends cc.Component {
     @property(cc.Prefab)
     cash: cc.Prefab = null;
 
+    @property(cc.Prefab)
+    armor: cc.Prefab = null;
+
+    // ================
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
 
@@ -101,6 +106,7 @@ export default class StageController extends cc.Component {
     ammoPool: cc.NodePool = new cc.NodePool();
     cashPool: cc.NodePool = new cc.NodePool();
     healthPackPool: cc.NodePool = new cc.NodePool();
+    armorPool: cc.NodePool = new cc.NodePool();
 
     private staticObjectSpawnTimer: number = 8.5;
     private vehicleSpawnTimer: number = 6;
@@ -164,6 +170,8 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.CASH_SPAWN, this.handleCashSpawn, this);
         cc.systemEvent.on(GameEvent.CASH_REMOVE, this.onCashRemove, this);
 
+        cc.systemEvent.on(GameEvent.ARMOR_SPAWN, this.handleArmorSpawn, this);
+        cc.systemEvent.on(GameEvent.ARMOR_REMOVE, this.onArmorRemove, this);
     }
 
     start() {
@@ -202,8 +210,10 @@ export default class StageController extends cc.Component {
 
                 if (this.itemSpawnerTimer <= 0) {
                     // TODO MORE ITEMS
-                    if (Math.random() < 0.9) {
+                    if (Math.random() < 0.75) {
                         this.handleAmmoSpawn();
+                    } else if (0.9) {
+                        this.handleArmorSpawn();
                     } else {
                         this.handleHpPackSpawn();
                     }
@@ -312,6 +322,31 @@ export default class StageController extends cc.Component {
         }
         hpPackNode.removeFromParent();
         this.healthPackPool.put(hpPackNode);
+    }
+
+    private handleArmorSpawn() {
+        let armorNode;
+
+        if (this.armorPool.size() > 0) {
+            armorNode = this.armorPool.get();
+        } else {
+            armorNode = cc.instantiate(this.armor);
+        }
+        const armor = armorNode.getComponent('Armor');
+        armor.controller = this;
+        armor.init();
+        armorNode.setPosition(this.generateRandomPos(0.62));
+        this.container.addChild(armorNode);
+        this.itemSpawnerTimer = ITEM_SPAWN_RATE;
+    }
+
+    private onArmorRemove(armorNode: cc.Node, pickedUp = true) {
+        if (pickedUp) {
+            SoundManager.play('health_pickup', false, 0.8);
+            this.player.handleArmor();
+        }
+        armorNode.removeFromParent();
+        this.armorPool.put(armorNode);
     }
 
     private onBulletSpawn() {
