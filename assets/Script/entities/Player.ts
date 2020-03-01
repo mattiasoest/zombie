@@ -5,12 +5,18 @@ import { GameEvent } from "../core/Event";
 const { ccclass, property } = cc._decorator;
 
 const ATTACK_CD = 0.1;
+const DEFAULT_HP = 3;
 
 @ccclass
 export default class Player extends cc.Component {
 
     @property(cc.Animation)
     animations: cc.Animation = null;
+
+    @property(cc.ProgressBar)
+    hpBar: cc.ProgressBar = null;
+
+    private hp = 3;
 
 
     isAlive = false;
@@ -27,6 +33,7 @@ export default class Player extends cc.Component {
     // }
 
     start() {
+        this.hpBar.progress = 1;
         this.isAlive = true;
         this.animations.on('finished', (event) => {
             this.animations.play();
@@ -71,15 +78,10 @@ export default class Player extends cc.Component {
         }
     }
 
-    public resetPosition() {
-        // Crashes wihout this using 'static' collider
-        this.scheduleOnce(() => {
-            this.node.x = 0;
-        }, 0);
-    }
-
-    public resetBullets() {
-        this.bulletAmount = 5;
+    public reset() {
+        this.resetBullets();
+        this.resetPosition();
+        this.resetHp();
     }
 
     public resetAttack() {
@@ -92,11 +94,38 @@ export default class Player extends cc.Component {
         this.attackCooldown = ATTACK_CD;
     }
 
+    public handleHit(collderNode: cc.Node) {
+        this.hp--;
+        console.log(this.hp);
+        if (this.hp < 0) {
+            cc.systemEvent.emit(GameEvent.PLAYER_DEAD, collderNode);
+            return;
+        }
+        this.hpBar.progress = this.hp / DEFAULT_HP;
+        SoundManager.play('hit_player', false, 0.5);
+    }
+
     onBeginContact(contact, selfCollider, otherCollider) {
         if (otherCollider.node.name === 'CarObstacle') {
-            cc.systemEvent.emit(GameEvent.PLAYER_DEAD, otherCollider.node);
+            this.handleHit(otherCollider.node);
         } else if (otherCollider.node.name === 'Vehicle') {
-            cc.systemEvent.emit(GameEvent.PLAYER_DEAD, otherCollider.node);
+            this.handleHit(otherCollider.node);
         }
+    }
+
+    private resetPosition() {
+        // Crashes wihout this using 'static' collider
+        this.scheduleOnce(() => {
+            this.node.x = 0;
+        }, 0);
+    }
+
+    private resetBullets() {
+        this.bulletAmount = 5;
+    }
+
+    private resetHp() {
+        this.hp = DEFAULT_HP;
+        this.hpBar.progress = 1;
     }
 }

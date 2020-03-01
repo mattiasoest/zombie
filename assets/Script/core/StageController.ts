@@ -135,6 +135,7 @@ export default class StageController extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
 
+        cc.systemEvent.on(GameEvent.PLAYER_HIT, this.onPlayerHit, this);
         cc.systemEvent.on(GameEvent.PLAYER_DEAD, this.handlePlayerDeath, this);
 
         cc.systemEvent.on(GameEvent.PLAY_EXPLOSION, this.onPlayExplosion, this);
@@ -169,10 +170,12 @@ export default class StageController extends cc.Component {
     update(dt) {
         switch (this.currentState) {
             case GAME_STATE.PLAY:
-                this.itemSpawnerTimer -= dt;
+                if (App.level.levelMode === MODE.NORMAL) {
+                    this.itemSpawnerTimer -= dt;
+                    this.staticObjectSpawnTimer -= dt;
+                    this.vehicleSpawnTimer -= dt;
+                } 
                 this.zombieSpawnerTimer -= dt;
-                this.staticObjectSpawnTimer -= dt;
-                this.vehicleSpawnTimer -= dt;
                 if (this.staticObjectSpawnTimer <= 0) {
                     // Random among other objects
                     if (Math.random() < 0.12) {
@@ -237,6 +240,10 @@ export default class StageController extends cc.Component {
         //     cc.PhysicsManager.DrawBits.e_jointBit |
         //     cc.PhysicsManager.DrawBits.e_shapeBit;
         // }
+    }
+
+    private onPlayerHit(hitNode: cc.Node) {
+        this.player.handleHit(hitNode);
     }
 
     private handlePlayerDeath(killerNode: cc.Node) {
@@ -358,6 +365,7 @@ export default class StageController extends cc.Component {
     }
 
     private startGame() {
+        // TODO DIFFERENT BUTTONS FOR MODES
         App.level.startLevel(MODE.NORMAL);
         this.menu.active = false;
         this.player.isAlive = true;
@@ -376,8 +384,9 @@ export default class StageController extends cc.Component {
         this.currentState = GAME_STATE.MENU;
         console.log('====== MENU');
         App.level.resetLevel();
-        this.player.resetBullets();
-        this.player.resetPosition();
+        this.player.reset();
+        // this.player.resetBullets();
+        // this.player.resetPosition();
 
         this.updateAmmoLabel();
         this.updateCashLabel();
