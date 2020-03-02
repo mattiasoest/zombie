@@ -27,7 +27,7 @@ export default new class SoundManager {
     }
 
     stop(id: string) {
-        const audioId = this.playingClips[cliidpId];
+        const audioId = this.playingClips[id];
         if (audioId !== undefined) {
             cc.audioEngine.stop(audioId);
             delete this.playingClips[id];
