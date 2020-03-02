@@ -200,7 +200,7 @@ export default class StageController extends cc.Component {
                     this.itemSpawnerTimer -= dt;
                     this.staticObjectSpawnTimer -= dt;
                     this.vehicleSpawnTimer -= dt;
-                } 
+                }
                 this.zombieSpawnerTimer -= dt;
                 if (this.staticObjectSpawnTimer <= 0) {
                     // Random among other objects
@@ -379,11 +379,8 @@ export default class StageController extends cc.Component {
         if (pickedUp) {
             SoundManager.play('health_pickup', false, 0.8);
             this.player.handleShield();
-            if (this.player.shields === 0) {
-                this.resetShield();
-            } else {
-                this.shieldNodes[this.player.shields -1].active = true;
-            }
+            // TODO SHIELD BUG WITH FRAMES
+            this.shieldNodes[this.player.shields - 1].active = true;
         }
         shieldNode.removeFromParent();
         this.shieldPool.put(shieldNode);
@@ -484,13 +481,13 @@ export default class StageController extends cc.Component {
         console.log('====== PLAY');
         this.player.animations.node.opacity = 255;
     }
-    
+
     private endGame() {
         this.menu.active = true;
         this.killPlayer();
         this.resetGame();
     }
-    
+
     private resetGame() {
         this.currentState = GAME_STATE.MENU;
         console.log('====== MENU');

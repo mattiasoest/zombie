@@ -4,7 +4,7 @@ import { GameEvent } from "../core/Event";
 
 const { ccclass, property } = cc._decorator;
 
-const ATTACK_CD = 0.1;
+const CHARGE_TIMER = 0.25;
 const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
 const INVICIBLE_DEFAULT = 4;
@@ -17,6 +17,9 @@ export default class Player extends cc.Component {
 
     @property(cc.ProgressBar)
     hpBar: cc.ProgressBar = null;
+
+    @property(cc.ProgressBar)
+    chargeBar: cc.ProgressBar = null;
 
     @property(cc.Node)
     armorNode: cc.Node = null;
@@ -35,12 +38,14 @@ export default class Player extends cc.Component {
 
     private hp = 3;
     private armorEquipped = false;
-    private attackCooldown: number = ATTACK_CD;
+    private chargeTimer: number = 0;
     private chargingAttack: boolean = false;
     private invicibleTimer = INVICIBLE_DEFAULT;
 
     start() {
         this.hpBar.progress = 1;
+        this.chargeBar.progress = 0;
+        this.chargeBar.node.active = false;
         this.isAlive = true;
         this.animations.on('finished', (event) => {
             this.animations.play();
@@ -49,7 +54,14 @@ export default class Player extends cc.Component {
 
     update(dt) {
         if (this.chargingAttack) {
-            this.attackCooldown -= dt;
+            this.chargeTimer += dt;
+            if (this.chargeTimer >= CHARGE_TIMER) {
+                this.chargeBar.progress = 1;
+                this.chargingAttack = false;
+                // SoundManager.stop('charge_temp');
+            } else {
+                this.chargeBar.progress = this.chargeTimer / CHARGE_TIMER;
+            }
         }
         if (this.invincible) {
             this.invicibleTimer -= dt;
@@ -70,9 +82,8 @@ export default class Player extends cc.Component {
 
     handleAttack() {
         if (this.isAlive) {
-            if (this.attackCooldown <= 0) {
+            if (this.chargeTimer > CHARGE_TIMER) {
                 if (this.bulletAmount > 0) {
-
                     this.bulletAmount--;
                     SoundManager.play('fire1', false);
                     this.animations.play("man_fire_gun");
@@ -98,19 +109,25 @@ export default class Player extends cc.Component {
         this.resetBullets();
         this.resetPosition();
         this.resetHp();
+        this.resetAttack();
 
         this.shields = 0;
         this.invincible = false;
     }
 
     resetAttack() {
+        this.chargeBar.progress = 0;
+        this.chargeBar.node.active = false;
         this.chargingAttack = false;
-        this.attackCooldown = ATTACK_CD;
+        this.chargeTimer = 0;
+        SoundManager.stop('reload_not_cc');
     }
 
     chargeAttack() {
+        SoundManager.play('reload_not_cc', false, 0.5, true);
+        this.chargeBar.node.active = true;
         this.chargingAttack = true;
-        this.attackCooldown = ATTACK_CD;
+        this.chargeTimer = 0;
     }
 
     handleHit(collderNode: cc.Node) {
@@ -173,7 +190,7 @@ export default class Player extends cc.Component {
     }
 
     private resetBullets() {
-        this.bulletAmount = 5;
+        this.bulletAmount = this.bulletCap;
     }
 
     private resetHp() {

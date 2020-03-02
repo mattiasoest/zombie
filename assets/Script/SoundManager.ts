@@ -4,6 +4,8 @@ const PATH_SFX = 'audio/sfx';
 export default new class SoundManager {
     private audioClips = {};
 
+    private playingClips = {};
+
 
     loadAllAudio(musicProgressHandler, sfxProgressHandler): Promise<any> {
         return Promise.all([
@@ -12,13 +14,24 @@ export default new class SoundManager {
         ]);
     }
 
-    play(id: string, loop: boolean, volume: number = 0.5) {
+    play(id: string, loop: boolean, volume: number = 0.5, storeAudioId = false) {
         const clip = this.audioClips[id];
         if (clip === undefined) {
             throw new Error('Undefined sound');
         }
 
-        cc.audioEngine.play(clip, loop, volume);
+        const audioId = cc.audioEngine.play(clip, loop, volume);
+        if (loop || storeAudioId) {
+            this.playingClips[id] = audioId;
+        }
+    }
+
+    stop(id: string) {
+        const audioId = this.playingClips[cliidpId];
+        if (audioId !== undefined) {
+            cc.audioEngine.stop(audioId);
+            delete this.playingClips[id];
+        }
     }
 
     private loadAudio(path: string, progressHandler?): Promise<any> {
