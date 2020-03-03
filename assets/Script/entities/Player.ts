@@ -69,6 +69,7 @@ export default class Player extends cc.Component {
                 this.invicibleTimer = INVICIBLE_DEFAULT;
                 this.invincible = false;
                 this.animations.node.color = cc.color(255, 255, 255);
+                this.shields = 0;
                 cc.systemEvent.emit(GameEvent.RESET_SHIELD);
             }
         }
@@ -166,11 +167,14 @@ export default class Player extends cc.Component {
         if (!this.invincible) {
             this.shields++;
             if (this.shields >= SHIELD_THRESHOLD) {
-                console.log("INVINCIBLE");
                 // TODO SEND MESSAGE
                 this.invincible = true;
+                this.shields = SHIELD_THRESHOLD;
                 this.animations.node.color = cc.color(170, 0, 0);
             }
+        } else {
+            // Extend the timer
+            this.invicibleTimer = INVICIBLE_DEFAULT;
         }
     }
 
