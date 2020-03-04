@@ -7,7 +7,7 @@ const TOTAL_HP = 6;
 const X_ACCELERATION = 200;
 const DAMP = 0.99;
 const TANK_BULLET_SPEED = 900;
-const FIRE_RATE = 1;
+const FIRE_RATE = 1.6;
 
 const { ccclass, property } = cc._decorator;
 
