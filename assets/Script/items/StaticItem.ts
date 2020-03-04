@@ -40,8 +40,8 @@ export default abstract class StaticItem extends cc.Component {
             .repeatForever());
 
         this.glowNode.runAction(cc.sequence(
-            cc.fadeTo(2,140).easing(cc.easeSineInOut()),
-            cc.fadeTo(2,255).easing(cc.easeSineInOut()))
+            cc.fadeTo(2, 130).easing(cc.easeSineInOut()),
+            cc.fadeTo(2, 210).easing(cc.easeSineInOut()))
             .repeatForever());
     }
 
