@@ -476,10 +476,9 @@ export default class StageController extends cc.Component {
         // TODO DIFFERENT BUTTONS FOR MODES
         App.level.startLevel(MODE.NORMAL);
         this.menu.active = false;
-        this.player.isAlive = true;
+        this.player.startLevel();
         this.currentState = GAME_STATE.PLAY;
         console.log('====== PLAY');
-        this.player.animations.node.opacity = 255;
     }
 
     private endGame() {
@@ -512,10 +511,7 @@ export default class StageController extends cc.Component {
     }
 
     private killPlayer() {
-        SoundManager.play('death', false, 0.5);
-        this.player.isAlive = false;
-        // TODO animation
-        this.player.animations.node.opacity = 100;
+        this.player.handleDeath();
     }
 
     private onTouchMove(event: any) {

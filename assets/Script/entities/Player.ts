@@ -24,6 +24,9 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     armorNode: cc.Node = null;
 
+    @property(cc.Node)
+    invincibleNode: cc.Node = null;
+
 
     isAlive = false;
 
@@ -68,7 +71,7 @@ export default class Player extends cc.Component {
             if (this.invicibleTimer < 0) {
                 this.invicibleTimer = INVICIBLE_DEFAULT;
                 this.invincible = false;
-                this.animations.node.color = cc.color(255, 255, 255);
+                this.invincibleNode.active = false;
                 this.shields = 0;
                 cc.systemEvent.emit(GameEvent.RESET_SHIELD);
             }
@@ -99,6 +102,12 @@ export default class Player extends cc.Component {
         }
     }
 
+    startLevel() {
+        this.isAlive = true;
+        this.hpBar.node.active = true;
+        this.animations.node.opacity = 255;
+    }
+
     handleAmmoPickup() {
         this.bulletAmount += 5;
         if (this.bulletAmount > this.bulletCap) {
@@ -106,10 +115,19 @@ export default class Player extends cc.Component {
         }
     }
 
+    handleDeath() {
+        SoundManager.play('death', false, 0.5);
+        this.isAlive = false;
+        this.hpBar.node.active = false;
+        // TODO animation
+        this.animations.node.opacity = 150;
+    }
+
     reset() {
         this.resetBullets();
         this.resetPosition();
         this.resetHp();
+        this.hpBar.node.active = false;
         this.resetAttack();
 
         this.shields = 0;
@@ -170,7 +188,7 @@ export default class Player extends cc.Component {
                 // TODO SEND MESSAGE
                 this.invincible = true;
                 this.shields = SHIELD_THRESHOLD;
-                this.animations.node.color = cc.color(170, 0, 0);
+                this.invincibleNode.active = true;
             }
         } else {
             // Extend the timer
@@ -182,6 +200,8 @@ export default class Player extends cc.Component {
         if (otherCollider.node.name === 'CarObstacle') {
             this.handleHit(otherCollider.node);
         } else if (otherCollider.node.name === 'Vehicle') {
+            this.handleHit(otherCollider.node);
+        } else if (otherCollider.node.name === 'CompactObstacle') {
             this.handleHit(otherCollider.node);
         }
     }
