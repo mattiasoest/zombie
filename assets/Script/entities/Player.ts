@@ -9,6 +9,15 @@ const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
 const INVICIBLE_DEFAULT = 4;
 
+const ARMOR_EFFECT_GUN = 0;
+const ARMOR_EFFECT_RIFLE = 40;
+
+enum WEAPON {
+    GUN = 'gun',
+    RIFLE = 'rifle',
+    BASEBALLBAT = 'baseballbat',
+}
+
 @ccclass
 export default class Player extends cc.Component {
 
@@ -27,6 +36,15 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     invincibleNode: cc.Node = null;
 
+    @property(cc.Node)
+    weaponEffect: cc.Node = null;
+
+    @property(cc.Node)
+    characterEffect: cc.Node = null;
+
+    @property(cc.Node)
+    weaponGlow: cc.Node = null;
+
 
     isAlive = false;
 
@@ -44,14 +62,30 @@ export default class Player extends cc.Component {
     private chargeTimer: number = 0;
     private chargingAttack: boolean = false;
     private invicibleTimer = INVICIBLE_DEFAULT;
+    private currentWeapon = WEAPON.GUN;
 
     start() {
+        // TODO adjust dynamically during pickup
+        this.characterEffect.runAction(cc.sequence(
+            cc.fadeTo(1.5, 175).easing(cc.easeSineInOut()),
+            cc.fadeTo(1.5, 255).easing(cc.easeSineInOut()))
+            .repeatForever());
+
+        this.weaponGlow.runAction(cc.sequence(
+            cc.fadeTo(1.5, 175).easing(cc.easeSineInOut()),
+            cc.fadeTo(1.5, 255).easing(cc.easeSineInOut()))
+            .repeatForever());
+        this.characterEffect.y = this.currentWeapon === WEAPON.RIFLE ? 50 : 10;
+        this.weaponGlow.y = this.currentWeapon === WEAPON.RIFLE ? -50 : -67.5;
+        this.weaponGlow.scaleY = this.currentWeapon === WEAPON.RIFLE ? 0.7 : 0.5;
+        this.weaponGlow.scaleX = this.currentWeapon === WEAPON.RIFLE ? 0.7 : 0.34;
+        this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         this.hpBar.progress = 1;
         this.chargeBar.progress = 0;
         this.chargeBar.node.active = false;
         this.isAlive = true;
         this.animations.on('finished', (event) => {
-            this.animations.play();
+            this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         });
     }
 
@@ -87,18 +121,47 @@ export default class Player extends cc.Component {
     handleAttack() {
         if (this.isAlive) {
             if (this.chargeTimer > CHARGE_TIMER) {
-                if (this.bulletAmount > 0) {
-                    this.bulletAmount--;
-                    SoundManager.play('fire1', false);
-                    this.animations.play("man_fire_gun");
-                    cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
-                    this.resetAttack();
-                } else {
-                    SoundManager.play('empty', false, 0.3);
+                switch (this.currentWeapon) {
+                    case WEAPON.GUN:
+                        this.useFirearm(this.currentWeapon);
+                        break;
+                    case WEAPON.RIFLE:
+                        this.useFirearm(this.currentWeapon);
+                        break;
+                    case WEAPON.BASEBALLBAT:
+                        // TOOD
+                        // this.animations.play("man_fire_rifle");
+                        break;
+                    default:
+                        throw new Error('Invalid weapon');
                 }
             } else {
                 this.resetAttack();
             }
+        }
+    }
+
+    useFirearm(firearmType: WEAPON) {
+        const isGun = firearmType === WEAPON.GUN;
+        if (this.bulletAmount > 0) {
+            this.bulletAmount--;
+            if (isGun) {
+                this.animations.play("man_fire_gun");
+                SoundManager.play('fire1', false);
+            } else {
+                this.animations.play("man_fire_rifle");
+                //Rifle 
+                SoundManager.play('fire1', false);
+                this.scheduleOnce(() => {
+                    SoundManager.play('fire1', false);
+                    cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
+                }, 0.1);
+            }
+            // this.animations.play("man_fire_gun");
+            cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
+            this.resetAttack();
+        } else {
+            SoundManager.play('empty', false, 0.3);
         }
     }
 
