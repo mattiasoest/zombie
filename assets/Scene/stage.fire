@@ -2829,12 +2829,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 20
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 92,
-      "height": 80
+      "width": 88,
+      "height": 60
     },
     "_id": "48bzch6N9PWIcT9T4PxkOk"
   },
