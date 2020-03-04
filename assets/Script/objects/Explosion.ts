@@ -1,7 +1,8 @@
 import { GameEvent } from "../core/Event";
+import { SCROLL_SPEED } from "../core/GroundScroll";
 
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Explosion extends cc.Component {
@@ -15,5 +16,9 @@ export default class Explosion extends cc.Component {
         this.animations.on('finished', () => {
             cc.systemEvent.emit(GameEvent.EXPLOSION_REMOVE, this.node);
         });
+    }
+
+    update(dt) {
+        this.node.y -= SCROLL_SPEED * dt;
     }
 }
