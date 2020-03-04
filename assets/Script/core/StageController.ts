@@ -1,7 +1,7 @@
 import { GameEvent } from "./Event";
 import App from "../App";
 import SoundManager from "../SoundManager";
-import Player from "../entities/Player";
+import Player, { WEAPON } from "../entities/Player";
 import Enemy from "../entities/Enemy";
 import ZombieDynamic from "../entities/ZombieDynamic";
 import Zombie from "../entities/Zombie";
@@ -68,6 +68,9 @@ export default class StageController extends cc.Component {
 
     @property(cc.Prefab)
     shield: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    rifle: cc.Prefab = null;
 
     // ================
     @property(cc.Prefab)
@@ -183,6 +186,9 @@ export default class StageController extends cc.Component {
         cc.systemEvent.on(GameEvent.SHIELD_SPAWN, this.handleShieldSpawn, this);
         cc.systemEvent.on(GameEvent.SHIELD_REMOVE, this.onShieldRemove, this);
         cc.systemEvent.on(GameEvent.RESET_SHIELD, this.resetShield, this);
+
+        cc.systemEvent.on(GameEvent.RIFLE_SPAWN, this.handleRifleSpawn, this);
+        cc.systemEvent.on(GameEvent.RIFLE_REMOVE, this.onRifleRemove, this);
     }
 
     start() {
@@ -399,8 +405,10 @@ export default class StageController extends cc.Component {
         bullet.controller = this;
         bullet.init();
         const pos = this.player.node.position;
-        pos.x = pos.x + 24;
-        pos.y = pos.y + 68;
+        pos.x = pos.x + (this.player.currentWeapon === WEAPON.GUN
+        ? 24 : 19);
+        pos.y = pos.y + (this.player.currentWeapon === WEAPON.GUN
+            ? 68 : 110);
         bulletNode.setPosition(pos);
         this.container.addChild(bulletNode);
     }
@@ -436,6 +444,23 @@ export default class StageController extends cc.Component {
         }
         cashNode.removeFromParent();
         this.cashPool.put(cashNode);
+    }
+
+    private handleRifleSpawn(refPosition: cc.Vec2) {
+        const rifleNode = cc.instantiate(this.rifle);
+        const rifle = rifleNode.getComponent('Rifle');
+        rifle.controller = this;
+        rifle.init();
+        rifleNode.setPosition(refPosition);
+        this.container.addChild(rifleNode);
+    }
+
+    private onRifleRemove(cashNode: cc.Node, pickedUp = true) {
+        if (pickedUp) {
+            SoundManager.play('health_pickup', false, 0.3);
+            this.player.handleRifle();
+        }
+        cashNode.removeFromParent();
     }
 
     private onBigShotSpawn(positionNode: cc.Node, velocityVector: cc.Vec2, cannonAngle: number) {
@@ -664,6 +689,7 @@ export default class StageController extends cc.Component {
     }
 
     private onTankRemove(tankNode: cc.Node) {
+        // TODO only bosses??
         tankNode.removeFromParent();
         this.tankPool.put(tankNode);
     }

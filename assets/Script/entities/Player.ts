@@ -9,10 +9,10 @@ const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
 const INVICIBLE_DEFAULT = 4;
 
-const ARMOR_EFFECT_GUN = 0;
-const ARMOR_EFFECT_RIFLE = 40;
+const ARMOR_EFFECT_GUN = 10;
+const ARMOR_EFFECT_RIFLE = 50;
 
-enum WEAPON {
+export enum WEAPON {
     GUN = 'gun',
     RIFLE = 'rifle',
     BASEBALLBAT = 'baseballbat',
@@ -57,12 +57,13 @@ export default class Player extends cc.Component {
 
     invincible = false;
 
+    currentWeapon = WEAPON.GUN;
+
     private hp = 3;
     private armorEquipped = false;
     private chargeTimer: number = 0;
     private chargingAttack: boolean = false;
     private invicibleTimer = INVICIBLE_DEFAULT;
-    private currentWeapon = WEAPON.GUN;
 
     start() {
         // TODO adjust dynamically during pickup
@@ -75,16 +76,23 @@ export default class Player extends cc.Component {
             cc.fadeTo(1.5, 175).easing(cc.easeSineInOut()),
             cc.fadeTo(1.5, 255).easing(cc.easeSineInOut()))
             .repeatForever());
-        this.characterEffect.y = this.currentWeapon === WEAPON.RIFLE ? 50 : 10;
-        this.weaponGlow.y = this.currentWeapon === WEAPON.RIFLE ? -50 : -67.5;
-        this.weaponGlow.scaleY = this.currentWeapon === WEAPON.RIFLE ? 0.7 : 0.5;
-        this.weaponGlow.scaleX = this.currentWeapon === WEAPON.RIFLE ? 0.7 : 0.34;
+
+        this.updateEffects();
         this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         this.hpBar.progress = 1;
         this.chargeBar.progress = 0;
         this.chargeBar.node.active = false;
         this.isAlive = true;
         this.animations.on('finished', (event) => {
+            if (this.isAlive) {
+                this.characterEffect.y = this.currentWeapon === WEAPON.GUN
+                ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
+            }
+
+            this.characterEffect.runAction(cc.sequence(
+                cc.fadeTo(1.5, 175).easing(cc.easeSineInOut()),
+                cc.fadeTo(1.5, 255).easing(cc.easeSineInOut()))
+                .repeatForever());
             this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         });
     }
@@ -157,15 +165,26 @@ export default class Player extends cc.Component {
                     cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
                 }, 0.1);
             }
-            // this.animations.play("man_fire_gun");
+            this.characterEffect.runAction(
+                // TODO change with new char anims.
+                cc.sequence(cc.moveBy(isGun ? 0 : 0.14, cc.v2(0, isGun ? 55 : 105)).easing(cc.easeSineInOut()),
+                    cc.delayTime(isGun ?  0.12 : 0.07),
+                    cc.callFunc(() => {
+                        this.characterEffect.y = isGun
+                            ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
+                    })));
             cc.systemEvent.emit(GameEvent.BULLET_SPAWN, this.node.position);
             this.resetAttack();
         } else {
+            this.resetAttack();
             SoundManager.play('empty', false, 0.3);
         }
     }
 
     startLevel() {
+        this.animations.on('finished', (event) => {
+            this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
+        });
         this.isAlive = true;
         this.hpBar.node.active = true;
     }
@@ -193,6 +212,7 @@ export default class Player extends cc.Component {
 
         this.shields = 0;
         this.invincible = false;
+        this.updateWeapon(WEAPON.GUN);
     }
 
     resetAttack() {
@@ -235,6 +255,10 @@ export default class Player extends cc.Component {
 
     handleHealthPack() {
         this.resetHp();
+    }
+
+    handleRifle() {
+        this.updateWeapon(WEAPON.RIFLE);
     }
 
     handleArmor() {
@@ -281,5 +305,19 @@ export default class Player extends cc.Component {
     private resetHp() {
         this.hp = DEFAULT_HP;
         this.hpBar.progress = 1;
+    }
+
+    private updateEffects() {
+        this.characterEffect.y = this.currentWeapon === WEAPON.GUN
+            ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
+        this.weaponGlow.y = this.currentWeapon === WEAPON.RIFLE ? -50 : -67.5;
+        this.weaponGlow.scaleY = this.currentWeapon === WEAPON.RIFLE ? 0.7 : 0.5;
+        this.weaponGlow.scaleX = this.currentWeapon === WEAPON.RIFLE ? 0.7 : 0.34;
+    }
+
+    private updateWeapon(weapon: WEAPON) {
+        this.currentWeapon = weapon;
+        this.updateEffects();
+        this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
     }
 }

@@ -115,7 +115,11 @@ export default class Tank extends cc.Component {
                 this.body.enabledContactListener = false;
                 this.shadowSprite.enabled = false;
                 this.alive = false;
-                cc.systemEvent.emit(GameEvent.SHIELD_SPAWN, this.node.position);
+
+                Math.random() < 0.4
+                ? cc.systemEvent.emit(GameEvent.RIFLE_SPAWN, this.node.position)
+                : cc.systemEvent.emit(GameEvent.SHIELD_SPAWN, this.node.position);
+
                 cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
                 cc.systemEvent.emit(GameEvent.TANK_REMOVE, this.node);
             }

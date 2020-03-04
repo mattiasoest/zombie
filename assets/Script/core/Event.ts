@@ -35,4 +35,7 @@ export const GameEvent = {
   END_GAME: 'core_end_game',
 
   RESET_SHIELD: 'core_reset_shield',
+
+  RIFLE_SPAWN: 'core_rifle_spawn',
+  RIFLE_REMOVE: 'core_rifle_remove',
 };

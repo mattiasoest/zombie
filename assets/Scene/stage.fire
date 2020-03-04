@@ -198,7 +198,7 @@
       "array": [
         0,
         0,
-        256.34351952019387,
+        267.60184976939155,
         0,
         0,
         0,
@@ -1322,12 +1322,12 @@
   {
     "__type__": "cc.Node",
     "_name": "armorEffect",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 28
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 32
@@ -1429,7 +1429,7 @@
   {
     "__type__": "cc.Node",
     "_name": "weaponEffect",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 28
     },
@@ -1496,12 +1496,12 @@
   {
     "__type__": "cc.Node",
     "_name": "gunParticle",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 34
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 36
@@ -1674,12 +1674,12 @@
   {
     "__type__": "cc.Node",
     "_name": "rifleParticle",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 34
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 39
@@ -1988,7 +1988,7 @@
   {
     "__type__": "cc.Node",
     "_name": "weaponFade",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 28
     },
@@ -4644,6 +4644,9 @@
     },
     "shield": {
       "__uuid__": "11ff5864-24b2-43e9-81ea-24f3acbc363a"
+    },
+    "rifle": {
+      "__uuid__": "630733ca-b299-4f60-ac05-7f4f4af35536"
     },
     "bullet": {
       "__uuid__": "c6504ff8-099e-4c81-bce7-b8d6ca82ac37"

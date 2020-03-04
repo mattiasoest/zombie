@@ -72,7 +72,9 @@ export default class Vehicle extends cc.Component {
             if (this.hitPoints > 0) {
                 this.mainSprite.spriteFrame = this.frames[this.hitPoints - 1];
             } else {
-                cc.systemEvent.emit(GameEvent.SHIELD_SPAWN, this.node.position);
+                Math.random() < 0.1
+                    ? cc.systemEvent.emit(GameEvent.RIFLE_SPAWN, this.node.position)
+                    : cc.systemEvent.emit(GameEvent.SHIELD_SPAWN, this.node.position);
                 this.handleDeath();
             }
         }
@@ -88,7 +90,7 @@ export default class Vehicle extends cc.Component {
             cc.systemEvent.emit(GameEvent.PLAY_EXPLOSION, this.node);
         }
     }
-    
+
     private handleEndGame() {
         this.handleDeath(false);
     }
