@@ -255,7 +255,7 @@ export default class StageController extends cc.Component {
     }
 
     updateCashLabel() {
-        this.cashLabel.string = `$${App.level.levelCash}`;
+        this.cashLabel.string = `${App.level.levelCash}`;
     }
 
     private initPhysics() {
