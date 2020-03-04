@@ -10,6 +10,9 @@ export default abstract class StaticItem extends cc.Component {
     @property(cc.Node)
     visualNode: cc.Node = null;
 
+    @property(cc.Node)
+    glowNode: cc.Node = null;
+
     protected body: cc.RigidBody = null;
     protected lowerBound: number = 0;
 
@@ -34,6 +37,11 @@ export default abstract class StaticItem extends cc.Component {
         this.visualNode.runAction(cc.sequence(
             cc.moveTo(0.7, this.animationVec).easing(cc.easeSineInOut()),
             cc.moveTo(0.7, cc.Vec2.ZERO).easing(cc.easeSineInOut()))
+            .repeatForever());
+
+        this.glowNode.runAction(cc.sequence(
+            cc.fadeTo(2,140).easing(cc.easeSineInOut()),
+            cc.fadeTo(2,255).easing(cc.easeSineInOut()))
             .repeatForever());
     }
 

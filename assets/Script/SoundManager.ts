@@ -17,7 +17,7 @@ export default new class SoundManager {
     play(id: string, loop: boolean, volume: number = 0.5, storeAudioId = false) {
         const clip = this.audioClips[id];
         if (clip === undefined) {
-            throw new Error('Undefined sound');
+            console.error(`Undefined sound ${id}`);
         }
 
         const audioId = cc.audioEngine.play(clip, loop, volume);
