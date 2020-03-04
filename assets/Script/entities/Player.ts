@@ -105,7 +105,6 @@ export default class Player extends cc.Component {
     startLevel() {
         this.isAlive = true;
         this.hpBar.node.active = true;
-        this.animations.node.opacity = 255;
     }
 
     handleAmmoPickup() {
@@ -120,7 +119,6 @@ export default class Player extends cc.Component {
         this.isAlive = false;
         this.hpBar.node.active = false;
         // TODO animation
-        this.animations.node.opacity = 150;
     }
 
     reset() {
