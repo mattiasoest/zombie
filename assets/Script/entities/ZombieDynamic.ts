@@ -111,14 +111,14 @@ export default class ZombieDynamic extends Enemy {
         // Reference comparison
         if (this.lastColliderNode != null && colliderNode !== this.lastColliderNode) {
             if (this.stuckContactCount > 2) {
-                super.killZombie();
+                super.killZombie(false);
                 return;
             } else {
                 this.stuckContactCount = 0;
             }
         } else {
             if (this.stuckContactCount > 1) {
-                super.killZombie();
+                super.killZombie(false);
                 return;
             }
         }
