@@ -83,10 +83,10 @@ export default class Tank extends cc.Component {
 
     updateMovement(dt: number) {
         // X-axis force bounds
-        if (this.node.x <= this.leftBound * 0.8) {
+        if (this.node.x <= this.leftBound * 0.86) {
             this.applyForceLeft = false;
         }
-        else if (this.node.x >= this.rightBound * 0.8) {
+        else if (this.node.x >= this.rightBound * 0.86) {
             this.applyForceLeft = true;
         }
         // === X-AXIS ===
