@@ -86,7 +86,7 @@ export default class Player extends cc.Component {
         this.animations.on('finished', (event) => {
             if (this.isAlive) {
                 this.characterEffect.y = this.currentWeapon === WEAPON.GUN
-                ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
+                    ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
             }
 
             this.characterEffect.runAction(cc.sequence(
@@ -168,7 +168,7 @@ export default class Player extends cc.Component {
             this.characterEffect.runAction(
                 // TODO change with new char anims.
                 cc.sequence(cc.moveBy(isGun ? 0 : 0.14, cc.v2(0, isGun ? 55 : 105)).easing(cc.easeSineInOut()),
-                    cc.delayTime(isGun ?  0.12 : 0.07),
+                    cc.delayTime(isGun ? 0.12 : 0.07),
                     cc.callFunc(() => {
                         this.characterEffect.y = isGun
                             ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
@@ -287,6 +287,8 @@ export default class Player extends cc.Component {
         } else if (otherCollider.node.name === 'Vehicle') {
             this.handleHit(otherCollider.node);
         } else if (otherCollider.node.name === 'CompactObstacle') {
+            this.handleHit(otherCollider.node);
+        } else if (otherCollider.node.name === 'Tank') {
             this.handleHit(otherCollider.node);
         }
     }

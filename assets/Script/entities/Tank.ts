@@ -4,10 +4,10 @@ import { SCROLL_SPEED } from "../core/GroundScroll";
 
 const TOTAL_HP = 6;
 
-const X_ACCELERATION = 200;
+const X_ACCELERATION = 140;
 const DAMP = 0.99;
 const TANK_BULLET_SPEED = 900;
-const FIRE_RATE = 1.6;
+const FIRE_RATE = 1.9;
 
 const { ccclass, property } = cc._decorator;
 
@@ -140,7 +140,7 @@ export default class Tank extends cc.Component {
 
     private handleFiring(dt: number) {
         this.firingTimer -= dt;
-        if (this.firingTimer <= 0 && this.node.y > -50) {
+        if (this.firingTimer <= 0 && this.node.y > 0 && Math.random() < 0.6) {
             const velVector = cc.v2(Math.sin((this.cannonSprite.node.angle + 90) / (180 / Math.PI)) * TANK_BULLET_SPEED,
                 Math.cos((this.cannonSprite.node.angle + 90) / (180 / Math.PI)) * -TANK_BULLET_SPEED);
 
