@@ -17,9 +17,6 @@ export default class Level {
 
     vehiclesDestroyed = 0;
 
-
-    // constructor () {}
-
     startLevel(mode: MODE) {
         console.log(`==== LEVEL STARTED: '${mode}' MODE ====`);
         this.levelMode = mode;

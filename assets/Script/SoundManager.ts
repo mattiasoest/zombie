@@ -7,7 +7,7 @@ export default new class SoundManager {
     private playingClips = {};
 
 
-    loadAllAudio(musicProgressHandler, sfxProgressHandler): Promise<any> {
+    loadAllAudio(musicProgressHandler?, sfxProgressHandler?): Promise<any> {
         return Promise.all([
             this.loadAudio(PATH_MUSIC, musicProgressHandler),
             this.loadAudio(PATH_SFX, sfxProgressHandler),

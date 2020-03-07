@@ -33,6 +33,9 @@ export default class StageController extends cc.Component {
     menu: cc.Node = null;
 
     @property(cc.Node)
+    loadingNode: cc.Node = null;
+
+    @property(cc.Node)
     shieldNodes: cc.Node[] = new Array(3);
 
     @property(Player)
@@ -54,52 +57,52 @@ export default class StageController extends cc.Component {
     topLayer: cc.TiledLayer = null;
 
     // === PICKUPS ===
-    @property(cc.Prefab)
-    ammo: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // ammo: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    healthPack: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // healthPack: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    cash: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // cash: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    armor: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // armor: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    shield: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // shield: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    rifle: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // rifle: cc.Prefab = null;
 
-    // ================
-    @property(cc.Prefab)
-    bullet: cc.Prefab = null;
+    // // ================
+    // @property(cc.Prefab)
+    // bullet: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    bigShot: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // bigShot: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    carObstacle: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // carObstacle: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    compactObstacle: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // compactObstacle: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    tank: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // tank: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    vehicle: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // vehicle: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    explosion: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // explosion: cc.Prefab = null;
 
     // ============ Enemies ============
-    @property(cc.Prefab)
-    patrollerDyn: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // patrollerDyn: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    zombie: cc.Prefab = null;
+    // @property(cc.Prefab)
+    // zombie: cc.Prefab = null;
 
     public cvs: cc.Node = null;
 
@@ -127,26 +130,6 @@ export default class StageController extends cc.Component {
     private currentState: GAME_STATE = GAME_STATE.MENU;
 
     onLoad() {
-        for (let i = 0; i < 6; i++) {
-            const zombieFab = cc.instantiate(this.zombie);
-            const zombieDynFab = cc.instantiate(this.patrollerDyn);
-            this.standardZombiePool.put(zombieFab);
-            this.patrollerDynPool.put(zombieDynFab);
-            this.cashPool.put(cc.instantiate(this.cash));
-            if (i < 2) {
-                this.ammoPool.put(cc.instantiate(this.ammo));
-                this.explosionPool.put(cc.instantiate(this.explosion));
-                this.bigShotPool.put(cc.instantiate(this.bigShot));
-                if (i < 1) {
-                    this.staticCompactPool.put(cc.instantiate(this.compactObstacle));
-                    this.staticCarPool.put(cc.instantiate(this.carObstacle));
-                    this.vehiclePool.put(cc.instantiate(this.vehicle));
-                }
-            } else if (i < 4) {
-                this.bulletPool.put(cc.instantiate(this.bullet));
-            }
-        }
-
         App.initApp();
 
         this.initPhysics();
@@ -296,7 +279,8 @@ export default class StageController extends cc.Component {
         if (this.ammoPool.size() > 0) {
             ammoNode = this.ammoPool.get();
         } else {
-            ammoNode = cc.instantiate(this.ammo);
+            // ammoNode = cc.instantiate(this.ammo);
+            ammoNode = cc.instantiate(cc.loader.getRes('prefab/item/Ammo', cc.Prefab));
         }
         const ammo = ammoNode.getComponent('Ammo');
         ammo.controller = this;
@@ -322,7 +306,8 @@ export default class StageController extends cc.Component {
         if (this.healthPackPool.size() > 0) {
             hpNode = this.healthPackPool.get();
         } else {
-            hpNode = cc.instantiate(this.healthPack);
+            // hpNode = cc.instantiate(this.healthPack);
+            hpNode = cc.instantiate(cc.loader.getRes('prefab/item/HealthPack', cc.Prefab));
         }
         const hpPack = hpNode.getComponent('HealthPack');
         hpPack.controller = this;
@@ -347,7 +332,8 @@ export default class StageController extends cc.Component {
         if (this.armorPool.size() > 0) {
             armorNode = this.armorPool.get();
         } else {
-            armorNode = cc.instantiate(this.armor);
+            // armorNode = cc.instantiate(this.armor);
+            armorNode = cc.instantiate(cc.loader.getRes('prefab/item/Armor', cc.Prefab));
         }
         const armor = armorNode.getComponent('Armor');
         armor.controller = this;
@@ -372,7 +358,8 @@ export default class StageController extends cc.Component {
         if (this.shieldPool.size() > 0) {
             shieldNode = this.shieldPool.get();
         } else {
-            shieldNode = cc.instantiate(this.shield);
+            // shieldNode = cc.instantiate(this.shield);
+            shieldNode = cc.instantiate(cc.loader.getRes('prefab/item/Shield', cc.Prefab));
         }
         const shield = shieldNode.getComponent('Shield');
         shield.controller = this;
@@ -399,14 +386,15 @@ export default class StageController extends cc.Component {
         if (this.bulletPool.size() > 0) {
             bulletNode = this.bulletPool.get();
         } else {
-            bulletNode = cc.instantiate(this.bullet);
+            // bulletNode = cc.instantiate(this.bullet);
+            bulletNode = cc.instantiate(cc.loader.getRes('prefab/object/Bullet', cc.Prefab));
         }
         const bullet = bulletNode.getComponent('Bullet');
         bullet.controller = this;
         bullet.init();
         const pos = this.player.node.position;
         pos.x = pos.x + (this.player.currentWeapon === WEAPON.GUN
-        ? 24 : 19);
+            ? 24 : 19);
         pos.y = pos.y + (this.player.currentWeapon === WEAPON.GUN
             ? 68 : 110);
         bulletNode.setPosition(pos);
@@ -427,7 +415,8 @@ export default class StageController extends cc.Component {
         if (this.cashPool.size() > 0) {
             cashNode = this.cashPool.get();
         } else {
-            cashNode = cc.instantiate(this.cash);
+            // cashNode = cc.instantiate(this.cash);
+            cashNode = cc.instantiate(cc.loader.getRes('prefab/item/Cash', cc.Prefab));
         }
         const cash = cashNode.getComponent('Cash');
         cash.controller = this;
@@ -447,7 +436,8 @@ export default class StageController extends cc.Component {
     }
 
     private handleRifleSpawn(refPosition: cc.Vec2) {
-        const rifleNode = cc.instantiate(this.rifle);
+        // const rifleNode = cc.instantiate(this.rifle);
+        const rifleNode = cc.instantiate(cc.loader.getRes('prefab/item/Rifle', cc.Prefab));
         const rifle = rifleNode.getComponent('Rifle');
         rifle.controller = this;
         rifle.init();
@@ -470,7 +460,8 @@ export default class StageController extends cc.Component {
         if (this.bigShotPool.size() > 0) {
             shotNode = this.bigShotPool.get();
         } else {
-            shotNode = cc.instantiate(this.bigShot);
+            // shotNode = cc.instantiate(this.bigShot);
+            shotNode = cc.instantiate(cc.loader.getRes('prefab/object/BigShot', cc.Prefab));
         }
         const shot = shotNode.getComponent('BigShot');
         shot.controller = this;
@@ -487,9 +478,22 @@ export default class StageController extends cc.Component {
         this.bigShotPool.put(shotNode);
     }
 
-    private onTouchStart(event: any) {
+    private async onTouchStart(event: any) {
         if (this.currentState === GAME_STATE.MENU) {
-            this.startGame();
+            if (!App.loadedRes) {
+                // Block all input
+                this.loadingNode.active = true;
+                this.menu.active = false;
+                console.log(`before prefab`);
+                return await App.loadDir('prefab').then(() => {
+                    this.preloadFabs();
+                    this.startGame();
+                    App.loadedRes = true;
+                    this.loadingNode.active = false;
+                });
+            } else {
+                this.startGame();
+            }
         }
         this.player.chargeAttack();
         const touch: cc.Touch = event.touch;
@@ -540,9 +544,11 @@ export default class StageController extends cc.Component {
     }
 
     private onTouchMove(event: any) {
-        const touch: cc.Touch = event.touch;
-        const converted = this.node.convertToNodeSpaceAR(touch.getLocation());
-        this.handleTouch(converted);
+        if (this.currentState === GAME_STATE.PLAY) {
+            const touch: cc.Touch = event.touch;
+            const converted = this.node.convertToNodeSpaceAR(touch.getLocation());
+            this.handleTouch(converted);
+        }
     }
 
     private handleTouch(touchConverted: cc.Vec2) {
@@ -550,7 +556,9 @@ export default class StageController extends cc.Component {
     }
 
     private onTouchEnd(event: any) {
-        this.player.handleAttack();
+        if (this.currentState === GAME_STATE.PLAY) {
+            this.player.handleAttack();
+        }
     }
 
     private generateRandomPos(yMultiplier = 0.52) {
@@ -571,7 +579,8 @@ export default class StageController extends cc.Component {
             if (this.patrollerDynPool.size() > 0) {
                 zombieNode = this.patrollerDynPool.get();
             } else {
-                zombieNode = cc.instantiate(this.patrollerDyn);
+                // zombieNode = cc.instantiate(this.patrollerDyn);
+                zombieNode = cc.instantiate(cc.loader.getRes('prefab/enemy/PatrollerDyn', cc.Prefab));
             }
             const zombie = zombieNode.getComponent('ZombieDynamic');
             zombie.controller = this;
@@ -585,7 +594,8 @@ export default class StageController extends cc.Component {
             if (this.standardZombiePool.size() > 0) {
                 zombieNode = this.standardZombiePool.get();
             } else {
-                zombieNode = cc.instantiate(this.zombie);
+                // zombieNode = cc.instantiate(this.zombie);
+                zombieNode = cc.instantiate(cc.loader.getRes('prefab/enemy/Zombie', cc.Prefab));
             }
             const zombie = zombieNode.getComponent('Zombie');
             zombie.controller = this;
@@ -620,7 +630,8 @@ export default class StageController extends cc.Component {
         if (this.staticCarPool.size() > 0) {
             carNode = this.staticCarPool.get();
         } else {
-            carNode = cc.instantiate(this.carObstacle);
+            // carNode = cc.instantiate(this.carObstacle);
+            carNode = cc.instantiate(cc.loader.getRes('prefab/object/CarObstacle', cc.Prefab));
         }
         const carObj = carNode.getComponent('CarStatic');
         carObj.controller = this;
@@ -639,7 +650,8 @@ export default class StageController extends cc.Component {
 
     private onPlayExplosion(referenceNode: cc.Node) {
         SoundManager.play('explosion', false);
-        const explosionNode = cc.instantiate(this.explosion);
+        // const explosionNode = cc.instantiate(this.explosion);
+        const explosionNode = cc.instantiate(cc.loader.getRes('prefab/Explosion', cc.Prefab));
         const explosion = explosionNode.getComponent('Explosion');
         explosion.init();
         this.container.addChild(explosionNode);
@@ -656,7 +668,8 @@ export default class StageController extends cc.Component {
         if (this.staticCompactPool.size() > 0) {
             compactNode = this.staticCompactPool.get();
         } else {
-            compactNode = cc.instantiate(this.compactObstacle);
+            // compactNode = cc.instantiate(this.compactObstacle);
+            compactNode = cc.instantiate(cc.loader.getRes('prefab/object/CompactObstacle', cc.Prefab));
         }
         const compactObj = compactNode.getComponent('CompactStatic');
         compactObj.controller = this;
@@ -677,7 +690,8 @@ export default class StageController extends cc.Component {
         if (this.tankPool.size() > 0) {
             tankNode = this.tankPool.get();
         } else {
-            tankNode = cc.instantiate(this.tank);
+            // tankNode = cc.instantiate(this.tank);
+            tankNode = cc.instantiate(cc.loader.getRes('prefab/object/Tank', cc.Prefab));
         }
         const tankObj = tankNode.getComponent('Tank');
         tankObj.controller = this;
@@ -700,7 +714,8 @@ export default class StageController extends cc.Component {
         if (this.vehiclePool.size() > 0) {
             vehicleNode = this.vehiclePool.get();
         } else {
-            vehicleNode = cc.instantiate(this.vehicle);
+            // vehicleNode = cc.instantiate(this.vehicle);
+            vehicleNode = cc.instantiate(cc.loader.getRes('prefab/object/Vehicle', cc.Prefab));
         }
         const vehicleObj = vehicleNode.getComponent('Vehicle');
         vehicleObj.controller = this;
@@ -713,5 +728,36 @@ export default class StageController extends cc.Component {
     private onVehicleRemove(vehicleNode: cc.Node) {
         vehicleNode.removeFromParent();
         this.vehiclePool.put(vehicleNode);
+    }
+
+    private preloadFabs() {
+        for (let i = 0; i < 6; i++) {
+            // const zombieFab = cc.instantiate(this.zombie);
+            const zombieFab = cc.instantiate(cc.loader.getRes('prefab/enemy/Zombie', cc.Prefab));
+            // const zombieDynFab = cc.instantiate(this.patrollerDyn);
+            const zombieDynFab = cc.instantiate(cc.loader.getRes('prefab/enemy/PatrollerDyn', cc.Prefab));
+            this.standardZombiePool.put(zombieFab);
+            this.patrollerDynPool.put(zombieDynFab);
+            // this.cashPool.put(cc.instantiate(this.cash));
+            this.cashPool.put(cc.instantiate(cc.loader.getRes('prefab/item/Cash', cc.Prefab)));
+
+            this.bulletPool.put(cc.instantiate(cc.loader.getRes('prefab/object/Bullet', cc.Prefab)));
+            if (i < 2) {
+                // this.ammoPool.put(cc.instantiate(this.ammo));
+                this.ammoPool.put(cc.instantiate(cc.loader.getRes('prefab/item/Ammo', cc.Prefab)));
+                // this.explosionPool.put(cc.instantiate(this.explosion));
+                this.explosionPool.put(cc.instantiate(cc.loader.getRes('prefab/Explosion', cc.Prefab)));
+                // this.bigShotPool.put(cc.instantiate(this.bigShot));
+                this.bigShotPool.put(cc.instantiate(cc.loader.getRes('prefab/object/BigShot', cc.Prefab)));
+                if (i < 1) {
+                    // this.staticCompactPool.put(cc.instantiate(this.compactObstacle));
+                    this.staticCompactPool.put(cc.instantiate(cc.loader.getRes('prefab/object/CompactObstacle', cc.Prefab)));
+                    // this.staticCarPool.put(cc.instantiate(this.carObstacle));
+                    this.staticCarPool.put(cc.instantiate(cc.loader.getRes('prefab/object/CarObstacle', cc.Prefab)));
+                    // this.vehiclePool.put(cc.instantiate(this.vehicle));
+                    this.vehiclePool.put(cc.instantiate(cc.loader.getRes('prefab/object/Vehicle', cc.Prefab)));
+                }
+            }
+        }
     }
 }
