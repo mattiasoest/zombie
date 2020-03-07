@@ -38,4 +38,6 @@ export const GameEvent = {
 
   RIFLE_SPAWN: 'core_rifle_spawn',
   RIFLE_REMOVE: 'core_rifle_remove',
+
+  SCROLL_ALLOWED: 'core_scroll_allowed',
 };

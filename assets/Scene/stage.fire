@@ -1566,7 +1566,7 @@
     "_texture": {
       "__uuid__": "55f0f6c9-8408-4d2d-a358-bb14442f9d1c"
     },
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 15,
@@ -1731,7 +1731,7 @@
     "_texture": {
       "__uuid__": "55f0f6c9-8408-4d2d-a358-bb14442f9d1c"
     },
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 60,

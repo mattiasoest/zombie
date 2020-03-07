@@ -180,6 +180,7 @@ export default class StageController extends cc.Component {
         this.bulletLabel.node.zIndex = 99;
         this.cashLabel.node.zIndex = 99;
         this.updateAmmoLabel();
+        this.scheduleOnce(() => cc.systemEvent.emit(GameEvent.SCROLL_ALLOWED), 0.4);
     }
 
     update(dt) {
@@ -484,7 +485,6 @@ export default class StageController extends cc.Component {
                 // Block all input
                 this.loadingNode.active = true;
                 this.menu.active = false;
-                console.log(`before prefab`);
                 return await App.loadDir('prefab').then(() => {
                     this.preloadFabs();
                     this.startGame();
