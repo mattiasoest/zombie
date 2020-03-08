@@ -7,8 +7,9 @@ const { ccclass, property } = cc._decorator;
 const CHARGE_TIMER = 0.25;
 const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
-const DEFAULT_MELLE_TIMER = 0.4;
+const DEFAULT_MELLE_TIMER = 0.33;
 const INVICIBLE_DEFAULT = 4;
+const DEFUALT_AMMO_PACK = 5;
 
 const ARMOR_EFFECT_GUN = 10;
 const ARMOR_EFFECT_RIFLE = 50;
@@ -221,7 +222,7 @@ export default class Player extends cc.Component {
             this.currentWeapon = this.rifleUpgrade ? WEAPON.RIFLE : WEAPON.GUN;
             this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         }
-        this.bulletAmount += 1;
+        this.bulletAmount += DEFUALT_AMMO_PACK;
         if (this.bulletAmount > this.bulletCap) {
             this.bulletAmount = this.bulletCap;
         }
