@@ -120,7 +120,20 @@ export default abstract class Enemy extends cc.Component {
             }
         }
         else if (otherCollider.node.name === "Player") {
-            cc.systemEvent.emit(GameEvent.PLAYER_HIT, this.node);
+            const killZombie = this.controller.player.meleeAttack;
+            if (otherCollider.tag === 1) {
+                if (killZombie) {
+                    this.killZombie(true, false, true);
+                    console.log('MELEE KILL');
+                }
+            } else {
+                if (killZombie) {
+                    this.killZombie(true, false, true);
+                    console.log('MELEE KILL');
+                } else {
+                    cc.systemEvent.emit(GameEvent.PLAYER_HIT, this.node);
+                }
+            }
         }
         else if (otherCollider.node.name === "Vehicle") {
             this.killZombie(false);

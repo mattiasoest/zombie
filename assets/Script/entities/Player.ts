@@ -7,6 +7,7 @@ const { ccclass, property } = cc._decorator;
 const CHARGE_TIMER = 0.25;
 const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
+const DEFAULT_MELLE_TIMER = 0.4;
 const INVICIBLE_DEFAULT = 4;
 
 const ARMOR_EFFECT_GUN = 10;
@@ -21,6 +22,9 @@ export enum WEAPON {
 
 @ccclass
 export default class Player extends cc.Component {
+
+    @property(cc.PhysicsBoxCollider)
+    meleeCollider: cc.PhysicsBoxCollider = null;
 
     @property(cc.Animation)
     animations: cc.Animation = null;
@@ -46,13 +50,12 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     weaponGlow: cc.Node = null;
 
-
     isAlive = false;
 
     // Different depending on upgrades
     bulletCap = 10;
 
-    bulletAmount = 10;
+    bulletAmount = 1;
 
     shields = 0;
 
@@ -60,13 +63,15 @@ export default class Player extends cc.Component {
 
     rifleUpgrade = false;
 
-    currentWeapon = WEAPON.GUN;
+    meleeAttack = false;
 
+    currentWeapon = WEAPON.GUN;
     private hp = 3;
     private armorEquipped = false;
     private chargeTimer: number = 0;
     private chargingAttack: boolean = false;
     private invicibleTimer = INVICIBLE_DEFAULT;
+    private meleeTimer = DEFAULT_MELLE_TIMER;
 
     start() {
         // TODO adjust dynamically during pickup
@@ -124,6 +129,14 @@ export default class Player extends cc.Component {
                 cc.systemEvent.emit(GameEvent.RESET_SHIELD);
             }
         }
+
+        if (this.meleeAttack) {
+            this.meleeTimer -= dt;
+            if (this.meleeTimer <= 0) {
+                this.meleeAttack = false;
+                this.meleeTimer = DEFAULT_MELLE_TIMER;
+            }
+        }
     }
 
     handleMovement(touchpos: cc.Vec2) {
@@ -148,6 +161,8 @@ export default class Player extends cc.Component {
                         break;
                     case WEAPON.KNIFE:
                         // TOOD
+                        this.meleeAttack = true;
+                        this.meleeTimer = DEFAULT_MELLE_TIMER;
                         this.animations.play("attack_knife");
                         break;
                     default:
@@ -205,7 +220,7 @@ export default class Player extends cc.Component {
             this.currentWeapon = this.rifleUpgrade ? WEAPON.RIFLE : WEAPON.GUN;
             this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         }
-        this.bulletAmount += 5;
+        this.bulletAmount += 1;
         if (this.bulletAmount > this.bulletCap) {
             this.bulletAmount = this.bulletCap;
         }

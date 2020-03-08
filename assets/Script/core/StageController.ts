@@ -255,10 +255,10 @@ export default class StageController extends cc.Component {
         // The number of iterations per update of the Physics processing location is 10 by default
         cc.PhysicsManager.POSITION_ITERATIONS = 8;
 
-        // if (this.showPhysicsDebugInfo) {
+        // if (true) {
         //   cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-        //     cc.PhysicsManager.DrawBits.e_pairBit |
-        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+        //     // cc.PhysicsManager.DrawBits.e_pairBit |
+        //     // cc.PhysicsManager.DrawBits.e_centerOfMassBit |
         //     cc.PhysicsManager.DrawBits.e_jointBit |
         //     cc.PhysicsManager.DrawBits.e_shapeBit;
         // }
