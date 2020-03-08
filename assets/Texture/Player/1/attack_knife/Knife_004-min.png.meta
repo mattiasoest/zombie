@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "939b5789-f6c3-4b7c-84ef-0e4103c33e86",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "Knife_004-min": {
+      "ver": "1.0.4",
+      "uuid": "46974137-68bf-4cf3-acfd-15952ae83b31",
+      "rawTextureUuid": "939b5789-f6c3-4b7c-84ef-0e4103c33e86",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -21.5,
+      "offsetY": 118.5,
+      "trimX": 97,
+      "trimY": 62,
+      "width": 275,
+      "height": 151,
+      "rawWidth": 512,
+      "rawHeight": 512,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
