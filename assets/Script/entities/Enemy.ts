@@ -124,12 +124,12 @@ export default abstract class Enemy extends cc.Component {
             if (otherCollider.tag === 1) {
                 if (killZombie) {
                     this.killZombie(true, false, true);
-                    console.log('MELEE KILL');
+                    SoundManager.play('slash', false);
                 }
             } else {
                 if (killZombie) {
                     this.killZombie(true, false, true);
-                    console.log('MELEE KILL');
+                    SoundManager.play('slash', false);
                 } else {
                     cc.systemEvent.emit(GameEvent.PLAYER_HIT, this.node);
                 }

@@ -55,7 +55,7 @@ export default class Player extends cc.Component {
     // Different depending on upgrades
     bulletCap = 10;
 
-    bulletAmount = 1;
+    bulletAmount = 5;
 
     shields = 0;
 
@@ -164,6 +164,7 @@ export default class Player extends cc.Component {
                         this.meleeAttack = true;
                         this.meleeTimer = DEFAULT_MELLE_TIMER;
                         this.animations.play("attack_knife");
+                        SoundManager.play('sword', false);
                         break;
                     default:
                         throw new Error('Invalid weapon');
