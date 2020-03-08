@@ -15,7 +15,8 @@ const ARMOR_EFFECT_RIFLE = 50;
 export enum WEAPON {
     GUN = 'gun',
     RIFLE = 'rifle',
-    BASEBALLBAT = 'baseballbat',
+    BASEBALLBAT = 'bat',
+    KNIFE = 'knife',
 }
 
 @ccclass
@@ -57,6 +58,8 @@ export default class Player extends cc.Component {
 
     invincible = false;
 
+    rifleUpgrade = false;
+
     currentWeapon = WEAPON.GUN;
 
     private hp = 3;
@@ -84,6 +87,9 @@ export default class Player extends cc.Component {
         this.chargeBar.node.active = false;
         this.isAlive = true;
         this.animations.on('finished', (event) => {
+            if (this.bulletAmount <= 0) {
+                this.currentWeapon = WEAPON.KNIFE;
+            }
             if (this.isAlive) {
                 this.characterEffect.y = this.currentWeapon === WEAPON.GUN
                     ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
@@ -140,6 +146,10 @@ export default class Player extends cc.Component {
                         // TOOD
                         // this.animations.play("man_fire_rifle");
                         break;
+                    case WEAPON.KNIFE:
+                        // TOOD
+                        this.animations.play("attack_knife");
+                        break;
                     default:
                         throw new Error('Invalid weapon');
                 }
@@ -182,6 +192,7 @@ export default class Player extends cc.Component {
     }
 
     startLevel() {
+        this.rifleUpgrade = false;
         this.animations.on('finished', (event) => {
             this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         });
@@ -190,6 +201,10 @@ export default class Player extends cc.Component {
     }
 
     handleAmmoPickup() {
+        if (this.currentWeapon === WEAPON.KNIFE || this.currentWeapon === WEAPON.BASEBALLBAT) {
+            this.currentWeapon = this.rifleUpgrade ? WEAPON.RIFLE : WEAPON.GUN;
+            this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
+        }
         this.bulletAmount += 5;
         if (this.bulletAmount > this.bulletCap) {
             this.bulletAmount = this.bulletCap;
@@ -258,6 +273,7 @@ export default class Player extends cc.Component {
     }
 
     handleRifle() {
+        this.rifleUpgrade = true;
         this.updateWeapon(WEAPON.RIFLE);
     }
 

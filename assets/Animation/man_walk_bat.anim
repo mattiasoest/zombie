@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "man_walk_bat",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.17142857142857143,
+  "sample": 35,
+  "speed": 0.25,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "433ce31e-28e4-46d6-b5e8-4314eee3f1fe"
+            }
+          },
+          {
+            "frame": 0.02857142857142857,
+            "value": {
+              "__uuid__": "af041366-8f33-48b6-8953-78f4f5f2c1d6"
+            }
+          },
+          {
+            "frame": 0.05714285714285714,
+            "value": {
+              "__uuid__": "5cbaf20a-7c75-4788-9c9e-14d8eda73fef"
+            }
+          },
+          {
+            "frame": 0.08571428571428572,
+            "value": {
+              "__uuid__": "4c3ca4c3-7434-424c-a210-f4f4fdc69db1"
+            }
+          },
+          {
+            "frame": 0.11428571428571428,
+            "value": {
+              "__uuid__": "a850a4f5-fae1-4e0e-b059-279670e58cd2"
+            }
+          },
+          {
+            "frame": 0.14285714285714285,
+            "value": {
+              "__uuid__": "52d0fe23-c92a-453d-9f19-6271a19ec481"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
