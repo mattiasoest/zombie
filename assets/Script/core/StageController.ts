@@ -30,7 +30,16 @@ export default class StageController extends cc.Component {
     container: cc.Node = null;
 
     @property(cc.Node)
+    title: cc.Node = null;
+
+    @property(cc.Node)
     menu: cc.Node = null;
+
+    @property(cc.Camera)
+    camera: cc.Camera = null;
+
+    @property(cc.Node)
+    gameplayStats: cc.Node = null;
 
     @property(cc.Node)
     loadingNode: cc.Node = null;
@@ -484,7 +493,7 @@ export default class StageController extends cc.Component {
             if (!App.loadedRes) {
                 // Block all input
                 this.loadingNode.active = true;
-                this.menu.active = false;
+                this.title.active = false;
                 return await App.loadDir('prefab').then(() => {
                     this.preloadFabs();
                     this.startGame();
@@ -502,9 +511,14 @@ export default class StageController extends cc.Component {
     }
 
     private startGame() {
+        this.camera.node.runAction(cc.moveTo(0.3, cc.v2(0, 0)).easing(cc.easeBackIn()));
         // TODO DIFFERENT BUTTONS FOR MODES
         App.level.startLevel(MODE.NORMAL);
-        this.menu.active = false;
+        setTimeout(() => {
+            this.menu.active = false;
+        }, 300);
+        this.title.active = false;
+        this.gameplayStats.active = true;
         this.player.startLevel();
         this.currentState = GAME_STATE.PLAY;
         console.log('====== PLAY');
@@ -512,6 +526,9 @@ export default class StageController extends cc.Component {
 
     private endGame() {
         this.menu.active = true;
+        this.title.active = true;
+        this.gameplayStats.active = false;
+        this.camera.node.runAction(cc.moveTo(0.4, cc.v2(120, 0)).easing(cc.easeElasticOut(0.2)));
         this.killPlayer();
         this.resetGame();
     }
