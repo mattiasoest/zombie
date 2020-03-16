@@ -2787,7 +2787,6 @@
       "__id__": 26
     },
     "_enabled": true,
-    "meleeCollider": null,
     "animations": {
       "__id__": 38
     },

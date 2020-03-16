@@ -273,7 +273,10 @@ export default class Player extends cc.Component {
     }
 
     chargeAttack() {
-        SoundManager.play('reload_not_cc', false, 0.5, true);
+        // TODO
+        if (this.currentWeapon !== WEAPON.KNIFE) {
+            SoundManager.play('reload_not_cc', false, 0.5, true);
+        }
         this.chargeBar.node.active = true;
         this.chargingAttack = true;
         this.chargeTimer = 0;
