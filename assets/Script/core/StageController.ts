@@ -195,37 +195,40 @@ export default class StageController extends cc.Component {
     update(dt) {
         switch (this.currentState) {
             case GAME_STATE.PLAY:
-                if (App.level.levelMode === MODE.NORMAL) {
-                    this.itemSpawnerTimer -= dt;
-                    this.staticObjectSpawnTimer -= dt;
-                    this.vehicleSpawnTimer -= dt;
-                }
-                this.zombieSpawnerTimer -= dt;
-                if (this.staticObjectSpawnTimer <= 0) {
-                    // Random among other objects
-                    if (Math.random() < 0.12) {
-                        this.handleTankSpawn();
-                    }
-                    else {
-                        Math.random() < 0.5 ? this.handleStaticCarSpawn() : this.handleStaticCompactSpawn();
-                    }
-                }
-                if (this.vehicleSpawnTimer <= 0) {
-                    this.handleVehicleSpawn();
-                }
+                if (this.player.isAlive) {
 
-                if (this.zombieSpawnerTimer <= 0) {
-                    this.handleZombieSpawn();
-                }
+                    if (App.level.levelMode === MODE.NORMAL) {
+                        this.itemSpawnerTimer -= dt;
+                        this.staticObjectSpawnTimer -= dt;
+                        this.vehicleSpawnTimer -= dt;
+                    }
+                    this.zombieSpawnerTimer -= dt;
+                    if (this.staticObjectSpawnTimer <= 0) {
+                        // Random among other objects
+                        if (Math.random() < 0.12) {
+                            this.handleTankSpawn();
+                        }
+                        else {
+                            Math.random() < 0.5 ? this.handleStaticCarSpawn() : this.handleStaticCompactSpawn();
+                        }
+                    }
+                    if (this.vehicleSpawnTimer <= 0) {
+                        this.handleVehicleSpawn();
+                    }
 
-                if (this.itemSpawnerTimer <= 0) {
-                    // TODO MORE ITEMS
-                    if (Math.random() < 0.75) {
-                        this.handleAmmoSpawn();
-                    } else if (0.9) {
-                        this.handleArmorSpawn();
-                    } else {
-                        this.handleHpPackSpawn();
+                    if (this.zombieSpawnerTimer <= 0) {
+                        this.handleZombieSpawn();
+                    }
+
+                    if (this.itemSpawnerTimer <= 0) {
+                        // TODO MORE ITEMS
+                        if (Math.random() < 0.75) {
+                            this.handleAmmoSpawn();
+                        } else if (0.9) {
+                            this.handleArmorSpawn();
+                        } else {
+                            this.handleHpPackSpawn();
+                        }
                     }
                 }
                 break;
@@ -531,13 +534,16 @@ export default class StageController extends cc.Component {
         this.title.active = true;
         this.gameplayStats.active = false;
         this.camera.node.runAction(cc.moveTo(0.4, cc.v2(120, 0)).easing(cc.easeElasticOut(0.2)));
-        this.menu.runAction(cc.moveTo(0.3, cc.v2(300, 0)).easing(cc.easeElasticOut(0.2)));
+        this.menu.runAction(cc.moveTo(0.4, cc.v2(300, 0)).easing(cc.easeElasticOut(0.2)));
         this.killPlayer();
         this.resetGame();
     }
 
     private resetGame() {
-        this.currentState = GAME_STATE.MENU;
+        setTimeout(() => {
+            // Reset after the animation to prevent starting a new game mid animation
+            this.currentState = GAME_STATE.MENU;
+        }, 300);
         console.log('====== MENU');
         App.level.resetLevel();
         this.player.reset();
