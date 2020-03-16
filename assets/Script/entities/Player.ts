@@ -7,7 +7,7 @@ const { ccclass, property } = cc._decorator;
 const CHARGE_TIMER = 0.25;
 const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
-const DEFAULT_MELLE_TIMER = 0.33;
+const DEFAULT_MELEE_TIMER = 0.24;
 const INVICIBLE_DEFAULT = 4;
 const DEFUALT_AMMO_PACK = 5;
 
@@ -23,9 +23,6 @@ export enum WEAPON {
 
 @ccclass
 export default class Player extends cc.Component {
-
-    @property(cc.PhysicsBoxCollider)
-    meleeCollider: cc.PhysicsBoxCollider = null;
 
     @property(cc.Animation)
     animations: cc.Animation = null;
@@ -78,7 +75,7 @@ export default class Player extends cc.Component {
     private chargeTimer: number = 0;
     private chargingAttack: boolean = false;
     private invicibleTimer = INVICIBLE_DEFAULT;
-    private meleeTimer = DEFAULT_MELLE_TIMER;
+    private meleeTimer = DEFAULT_MELEE_TIMER;
 
     start() {
         // TODO adjust dynamically during pickup
@@ -155,7 +152,7 @@ export default class Player extends cc.Component {
             this.meleeTimer -= dt;
             if (this.meleeTimer <= 0) {
                 this.meleeAttack = false;
-                this.meleeTimer = DEFAULT_MELLE_TIMER;
+                this.meleeTimer = DEFAULT_MELEE_TIMER;
             }
         }
     }
@@ -183,7 +180,7 @@ export default class Player extends cc.Component {
                     case WEAPON.KNIFE:
                         // TOOD
                         this.meleeAttack = true;
-                        this.meleeTimer = DEFAULT_MELLE_TIMER;
+                        this.meleeTimer = DEFAULT_MELEE_TIMER;
                         this.animations.play("attack_knife");
                         SoundManager.play('sword', false);
                         break;
