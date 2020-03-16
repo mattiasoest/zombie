@@ -51,12 +51,18 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     weaponGlow: cc.Node = null;
 
+    @property(cc.Node)
+    gunParticle: cc.Node = null;
+
+    @property(cc.Node)
+    rifleParticle: cc.Node = null;
+
     isAlive = false;
 
     // Different depending on upgrades
     bulletCap = 10;
 
-    bulletAmount = 5;
+    bulletAmount = 2;
 
     shields = 0;
 
@@ -95,10 +101,24 @@ export default class Player extends cc.Component {
         this.animations.on('finished', (event) => {
             if (this.bulletAmount <= 0) {
                 this.currentWeapon = WEAPON.KNIFE;
-            }
-            if (this.isAlive) {
-                this.characterEffect.y = this.currentWeapon === WEAPON.GUN
-                    ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
+                this.weaponGlow.active = false;
+                this.gunParticle.active = false;
+                this.rifleParticle.active = false;
+            } else {
+                if (this.isAlive) {
+                    this.weaponGlow.active = true;
+                    const isGun = this.currentWeapon === WEAPON.GUN
+                    this.characterEffect.y = isGun
+                        ? ARMOR_EFFECT_GUN : ARMOR_EFFECT_RIFLE;
+
+                    if (isGun) {
+                        this.gunParticle.active = true;
+                        this.rifleParticle.active = false;
+                    } else {
+                        this.gunParticle.active = false;
+                        this.rifleParticle.active = true;
+                    }
+                }
             }
 
             this.characterEffect.runAction(cc.sequence(
@@ -219,7 +239,7 @@ export default class Player extends cc.Component {
 
     handleAmmoPickup() {
         if (this.currentWeapon === WEAPON.KNIFE || this.currentWeapon === WEAPON.BASEBALLBAT) {
-            this.currentWeapon = this.rifleUpgrade ? WEAPON.RIFLE : WEAPON.GUN;
+            this.updateWeapon(this.rifleUpgrade ? WEAPON.RIFLE : WEAPON.GUN);
             this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
         }
         this.bulletAmount += DEFUALT_AMMO_PACK;
@@ -354,5 +374,18 @@ export default class Player extends cc.Component {
         this.currentWeapon = weapon;
         this.updateEffects();
         this.animations.play(`man_walk_${this.currentWeapon.toString()}`);
+
+        if (weapon === WEAPON.KNIFE) {
+            this.weaponGlow.active = false;
+        } else {
+            if (weapon === WEAPON.GUN) {
+                this.gunParticle.active = true;
+                this.rifleParticle.active = false;
+            } else {
+                this.gunParticle.active = false;
+                this.rifleParticle.active = true;
+            }
+            this.weaponGlow.active = true;
+        }
     }
 }

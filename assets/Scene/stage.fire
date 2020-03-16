@@ -2812,6 +2812,12 @@
     "weaponGlow": {
       "__id__": 39
     },
+    "gunParticle": {
+      "__id__": 32
+    },
+    "rifleParticle": {
+      "__id__": 34
+    },
     "_id": "9aDAt1tlRPvboxO+V3QszB"
   },
   {
@@ -3550,7 +3556,7 @@
       "array": [
         120,
         0,
-        0,
+        253.74544330884055,
         0,
         0,
         0,
