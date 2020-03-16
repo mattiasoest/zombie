@@ -512,6 +512,8 @@ export default class StageController extends cc.Component {
 
     private startGame() {
         this.camera.node.runAction(cc.moveTo(0.3, cc.v2(0, 0)).easing(cc.easeBackIn()));
+        this.menu.runAction(cc.moveTo(0.3, cc.v2(650, 0)).easing(cc.easeBackIn()));
+
         // TODO DIFFERENT BUTTONS FOR MODES
         App.level.startLevel(MODE.NORMAL);
         setTimeout(() => {
@@ -529,6 +531,7 @@ export default class StageController extends cc.Component {
         this.title.active = true;
         this.gameplayStats.active = false;
         this.camera.node.runAction(cc.moveTo(0.4, cc.v2(120, 0)).easing(cc.easeElasticOut(0.2)));
+        this.menu.runAction(cc.moveTo(0.3, cc.v2(300, 0)).easing(cc.easeElasticOut(0.2)));
         this.killPlayer();
         this.resetGame();
     }
