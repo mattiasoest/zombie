@@ -7,7 +7,7 @@ const { ccclass, property } = cc._decorator;
 const CHARGE_TIMER = 0.25;
 const DEFAULT_HP = 3;
 const SHIELD_THRESHOLD = 3;
-const DEFAULT_MELEE_TIMER = 0.24;
+const DEFAULT_MELEE_TIMER = 0.3;
 const INVICIBLE_DEFAULT = 4;
 const DEFUALT_AMMO_PACK = 5;
 

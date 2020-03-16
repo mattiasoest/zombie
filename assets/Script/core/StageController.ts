@@ -514,14 +514,14 @@ export default class StageController extends cc.Component {
     }
 
     private startGame() {
-        this.camera.node.runAction(cc.moveTo(0.3, cc.v2(0, 0)).easing(cc.easeBackIn()));
-        this.menu.runAction(cc.moveTo(0.3, cc.v2(650, 0)).easing(cc.easeBackIn()));
+        this.camera.node.runAction(cc.moveTo(0.18, cc.v2(0, 0)).easing(cc.easeBackIn()));
+        this.menu.runAction(cc.moveTo(0.18, cc.v2(650, 0)).easing(cc.easeBackIn()));
 
         // TODO DIFFERENT BUTTONS FOR MODES
         App.level.startLevel(MODE.NORMAL);
         setTimeout(() => {
             this.menu.active = false;
-        }, 300);
+        }, 180);
         this.title.active = false;
         this.gameplayStats.active = true;
         this.player.startLevel();
