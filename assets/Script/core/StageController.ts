@@ -2,7 +2,7 @@ import { GameEvent } from "./Event";
 import App from "../App";
 import SoundManager from "../SoundManager";
 import Player, { WEAPON } from "../entities/Player";
-import Enemy from "../entities/Enemy";
+import Enemy, { ZOMBIE_TYPE } from "../entities/Enemy";
 import ZombieDynamic from "../entities/ZombieDynamic";
 import Zombie from "../entities/Zombie";
 
@@ -141,6 +141,7 @@ export default class StageController extends cc.Component {
     onLoad() {
         App.initApp();
 
+        cc.game.setFrameRate(60);
         this.initPhysics();
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -612,7 +613,12 @@ export default class StageController extends cc.Component {
             zombie.controller = this;
             zombie.init();
 
-            zombieNode.setPosition(this.generateRandomPos());
+            let pos = this.generateRandomPos();
+            if (zombie.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_HALF) {
+                pos.x = zombie.leftSide ? -Math.abs(pos.x) : Math.abs(pos.x);
+            }
+
+            zombieNode.setPosition(pos);
             this.container.addChild(zombieNode);
             this.zombieSpawnerTimer = ZOMBIE_SPAWN_RATE;
         } else {
