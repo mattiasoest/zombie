@@ -410,22 +410,6 @@
     "sync": false
   },
   {
-    "__type__": "7f9c5kKgZhL/7g6ok6O6JCo",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "visualNode": {
-      "__id__": 2
-    },
-    "glowNode": {
-      "__id__": 3
-    },
-    "_id": ""
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -433,9 +417,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 3,
+    "_type": 1,
     "_allowSleep": true,
-    "_gravityScale": 1,
+    "_gravityScale": 0,
     "_linearDamping": 0,
     "_angularDamping": 0,
     "_linearVelocity": {
@@ -459,9 +443,9 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 1,
+    "_density": 0,
     "_sensor": true,
-    "_friction": 0.2,
+    "_friction": 0,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -473,6 +457,22 @@
       "__type__": "cc.Size",
       "width": 66,
       "height": 100
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "7f9c5kKgZhL/7g6ok6O6JCo",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "visualNode": {
+      "__id__": 2
+    },
+    "glowNode": {
+      "__id__": 3
     },
     "_id": ""
   },

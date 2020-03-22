@@ -28,6 +28,11 @@ export default abstract class Enemy extends cc.Component {
     @property(cc.Animation)
     animations: cc.Animation = null;
 
+    @property(cc.RigidBody)
+    body: cc.RigidBody = null;
+
+    zombieType: ZOMBIE_TYPE = null;
+
     protected ySpeed: number = 0;
     protected lowerBound: number = 0;
     protected leftBound: number = 0;
@@ -36,8 +41,7 @@ export default abstract class Enemy extends cc.Component {
 
     protected hitPoints: number = 0;
     protected xSpeed = 0;
-    protected body: cc.RigidBody = null;
-    protected zombieType: ZOMBIE_TYPE = null;
+    protected velVector = new cc.Vec2(0, 0)
 
     protected isAlive = true;
 
@@ -89,7 +93,7 @@ export default abstract class Enemy extends cc.Component {
         }
         this.animations.play('walk').speed = animationSpeed;
         this.isAlive = true;
-        this.body = this.node.getComponent(cc.RigidBody);
+        // this.body = this.node.getComponent(cc.RigidBody);
         this.body.enabledContactListener = true;
         this.lowerBound = -this.controller.getMainCanvas().height * 0.6;
         if (leftBound !== undefined && rightBound !== undefined) {

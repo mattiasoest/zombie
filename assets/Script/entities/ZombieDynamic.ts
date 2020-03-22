@@ -3,7 +3,9 @@ import { SCROLL_SPEED } from "../core/GroundScroll";
 
 const { ccclass, property } = cc._decorator;
 
-const X_ACCELERATION = 1300;
+// const X_ACCELERATION = 1300;
+const X_ACCELERATION = 800;
+const X_SPEED_CAP = 300;
 const X_SPEED = 300;
 const Y_SPEED = -460;
 const DAMP = 0.95;
@@ -13,7 +15,8 @@ const DEATH_DAMP = 0.88;
 export default class ZombieDynamic extends Enemy {
 
 
-    private applyForceLeft: boolean = false;
+    leftSide = false;
+
     private rotateLeft: boolean = false;
     private rotateRight: boolean = false;
 
@@ -30,7 +33,11 @@ export default class ZombieDynamic extends Enemy {
 
 
     init() {
+        this.rotateLeft = false;
+        this.rotateRight = false;
+        this.leftSide = false;
         this.stuckContactCount = 0;
+        this.slowSpeed = false;
         this.zombieType = Math.random() < 0.5 ? ZOMBIE_TYPE.PATROLLER_DYN_HALF : ZOMBIE_TYPE.PATROLLER_DYN_FULL;
         if (this.zombieType === ZOMBIE_TYPE.PATROLLER_DYN_FULL) {
             this.ySpeed = Y_SPEED * 0.5;
@@ -38,22 +45,27 @@ export default class ZombieDynamic extends Enemy {
         } else {
             this.ySpeed = Y_SPEED;
             const halfWidth = this.controller.getMainCanvas().width * 0.5;
-            const leftSide = Math.random() < 0.5;
-            leftSide ? super.init(-halfWidth, -20) : super.init(20, halfWidth);
+            this.leftSide = Math.random() < 0.5;
+            this.leftSide ? super.init(-halfWidth, -20) : super.init(20, halfWidth);
         }
 
-        this.applyForceLeft = Math.random() < 0.5;
+        this.xSpeed = Math.random() < 0.5 ? X_SPEED_CAP * -1 : X_SPEED_CAP;
+        this.velVector.x = this.xSpeed;
+        this.velVector.y = this.ySpeed;
+        this.body.linearVelocity = this.velVector;
     }
 
     update(dt) {
         super.update(dt);
         this.updateMovement(dt)
-        this.updateAngle();
-        // this.angleTimer -= dt;
-        // if (this.angleTimer < 0) {
-        // this.node.angle = super.getAngle();
-        // this.angleTimer = 0.7;
-        // }
+        if (this.isAlive) {
+            this.updateAngle();
+            // this.angleTimer -= dt;
+            // if (this.angleTimer < 0) {
+            // this.node.angle = super.getAngle();
+            // this.angleTimer = 0.7;
+            // }
+        }
     }
 
     updateAngle() {
@@ -74,37 +86,44 @@ export default class ZombieDynamic extends Enemy {
 
     updateMovement(dt: number) {
         if (!this.isAlive) {
-            this.node.y -= SCROLL_SPEED * dt;
-            this.node.x += this.xSpeed * dt;
-            this.xSpeed *= DEATH_DAMP;
+            // this.node.y -= SCROLL_SPEED * dt;
+            // this.node.x += this.xSpeed * dt;
+            // this.xSpeed *= DEATH_DAMP;
+            this.velVector.x *= DEATH_DAMP * dt;
+            this.velVector.y = -SCROLL_SPEED;
+            this.body.linearVelocity = this.velVector;
             return;
         }
 
         // X-axis force bounds
-        if (this.node.x <= this.leftBound * 0.9) {
-            this.applyForceLeft = false;
-        }
-        else if (this.node.x >= this.rightBound * 0.9) {
-            this.applyForceLeft = true;
-        }
-        // === X-AXIS ===
-        if (this.applyForceLeft) {
-            this.xSpeed -= this.xAcceleration * dt;
-        } else {
+        if (this.node.x <= this.leftBound * 0.8 && this.xSpeed < X_SPEED_CAP) {
             this.xSpeed += this.xAcceleration * dt;
         }
+        else if (this.node.x >= this.rightBound * 0.8 && this.xSpeed > -X_SPEED_CAP) {
+            this.xSpeed -= this.xAcceleration * dt;
+
+        } else {
+            // this.xSpeed = this.xSpeed < 0 ? -X_SPEED_CAP : X_SPEED_CAP;
+        }
+
 
         if (this.slowSpeed) {
             this.slowSpeedtimer -= dt;
-            this.node.y += -(SCROLL_SPEED - 80 * this.stuckContactCount) * dt;
+            // this.node.y += -(SCROLL_SPEED - 80 * this.stuckContactCount) * dt;
+            this.velVector.y = -(SCROLL_SPEED - 80 * this.stuckContactCount);
+            // this.body.linearVelocity = new cc.Vec2(this.xSpeed * dt * DAMP, -(SCROLL_SPEED - 80 * this.stuckContactCount));
             if (this.slowSpeedtimer <= 0) {
                 this.slowSpeed = false;
             }
         } else {
-            this.node.y += this.ySpeed * dt;
+            // this.node.y += this.ySpeed * dt;
+            this.velVector.y = this.ySpeed;
         }
-        this.node.x += this.xSpeed * dt;
-        this.xSpeed *= DAMP;
+        // this.velVector.x = this.xSpeed * DAMP;
+        this.velVector.x = this.xSpeed;
+        this.body.linearVelocity = this.velVector;
+        // this.node.x += this.xSpeed * dt;
+        // this.xSpeed *= DAMP;
     }
 
     handleNotHardImpact(colliderNode: cc.Node): void {
@@ -126,8 +145,7 @@ export default class ZombieDynamic extends Enemy {
 
         this.stuckContactCount++;
         // Reverse movement and cap to scroll speed to look like we stopped.
-        this.xSpeed = 0;
-        this.applyForceLeft = !this.applyForceLeft;
+        this.xSpeed *= -1;
         this.slowSpeed = true;
         this.slowSpeedtimer = 0.4 + (this.stuckContactCount * 0.07);
 

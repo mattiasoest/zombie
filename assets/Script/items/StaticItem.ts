@@ -1,6 +1,6 @@
-import { SCROLL_SPEED } from "../core/GroundScroll";
 import StageController from "../core/StageController";
 import { GameEvent } from "../core/Event";
+import { SCROLL_SPEED } from "../core/GroundScroll";
 
 const { ccclass, property } = cc._decorator;
 
@@ -26,6 +26,7 @@ export default abstract class StaticItem extends cc.Component {
 
     onLoad() {
         cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+        this.body.linearVelocity = new cc.Vec2(0, -SCROLL_SPEED);
     }
 
     init() {
@@ -51,7 +52,7 @@ export default abstract class StaticItem extends cc.Component {
 
     update(dt) {
         if (this.alive) {
-            this.node.y -= SCROLL_SPEED * dt;
+            // this.node.y -= SCROLL_SPEED * dt;
             if (this.node.position.y < this.lowerBound) {
                 this.handleRemoval()
             }

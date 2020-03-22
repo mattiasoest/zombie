@@ -20,6 +20,9 @@ export default class Zombie extends Enemy {
         this.rotateRight = false;
         this.node.angle = 0;
         super.init();
+        this.velVector.x = this.xSpeed;
+        this.velVector.y = this.ySpeed;
+        this.body.linearVelocity = this.velVector;
     }
 
     start() {
@@ -29,20 +32,27 @@ export default class Zombie extends Enemy {
     update(dt) {
         super.update(dt);
         if (!this.isAlive) {
-            this.node.y -= SCROLL_SPEED * dt;
+            // this.node.y -= SCROLL_SPEED * dt;
+            this.velVector.y = -SCROLL_SPEED;
+            this.velVector.x = 0;
+            this.body.linearVelocity = this.velVector;
             return;
         }
 
         if (this.node.x <= this.leftBound * 0.9 && this.xSpeed < 0) {
             this.xSpeed = this.xSpeed * -1;
+            this.velVector.x = this.xSpeed;
+            this.body.linearVelocity = this.velVector;
         }
         else if (this.node.x >= this.rightBound * 0.9 && this.xSpeed >= 0) {
             this.xSpeed = this.xSpeed * -1;
+            this.velVector.x = this.xSpeed;
+            this.body.linearVelocity = this.velVector;
         }
 
 
-        this.node.x += this.xSpeed * dt;
-        this.node.y += this.ySpeed * dt;
+        // this.node.x += this.xSpeed * dt;
+        // this.node.y += this.ySpeed * dt;
         this.updateAngle();
     }
 

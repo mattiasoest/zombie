@@ -214,7 +214,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 3,
+    "_type": 1,
     "_allowSleep": true,
     "_gravityScale": 1,
     "_linearDamping": 0,
@@ -267,6 +267,9 @@
     "_enabled": true,
     "animations": {
       "__id__": 4
+    },
+    "body": {
+      "__id__": 6
     },
     "_id": ""
   },
