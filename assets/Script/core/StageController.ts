@@ -516,7 +516,8 @@ export default class StageController extends cc.Component {
 
     private startGame() {
         this.camera.node.runAction(cc.moveTo(0.18, cc.v2(0, 0)).easing(cc.easeBackIn()));
-        this.menu.runAction(cc.moveTo(0.18, cc.v2(650, 0)).easing(cc.easeBackIn()));
+        // this.menu.runAction(cc.moveTo(0.18, cc.v2(650, 0)).easing(cc.easeBackIn()));
+        this.menu.runAction(cc.moveBy(0.18, cc.v2(350, 0)).easing(cc.easeBackIn()));
 
         // TODO DIFFERENT BUTTONS FOR MODES
         App.level.startLevel(MODE.NORMAL);
@@ -531,11 +532,12 @@ export default class StageController extends cc.Component {
     }
 
     private endGame() {
+        console.log('END GAME');
         this.menu.active = true;
         this.title.active = true;
         this.gameplayStats.active = false;
         this.camera.node.runAction(cc.moveTo(0.4, cc.v2(120, 0)).easing(cc.easeElasticOut(0.2)));
-        this.menu.runAction(cc.moveTo(0.4, cc.v2(300, 0)).easing(cc.easeElasticOut(0.2)));
+        this.menu.runAction(cc.moveBy(0.38, cc.v2(-350, 0)).easing(cc.easeElasticOut(0.2)));
         this.killPlayer();
         this.resetGame();
     }
@@ -544,7 +546,9 @@ export default class StageController extends cc.Component {
         setTimeout(() => {
             // Reset after the animation to prevent starting a new game mid animation
             this.currentState = GAME_STATE.MENU;
-        }, 300);
+            const widget = this.menu.getComponent(cc.Widget);
+            widget.updateAlignment();
+        }, 395);
         console.log('====== MENU');
         App.level.resetLevel();
         this.player.reset();
