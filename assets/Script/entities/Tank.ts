@@ -5,8 +5,9 @@ import { SCROLL_SPEED } from "../core/GroundScroll";
 const TOTAL_HP = 6;
 
 const X_ACCELERATION = 140;
+const X_SPEED_CAP = 140;
 const DAMP = 0.99;
-const TANK_BULLET_SPEED = 900;
+const TANK_BULLET_SPEED = 720;
 const FIRE_RATE = 1.9;
 
 const { ccclass, property } = cc._decorator;
@@ -33,7 +34,8 @@ export default class Tank extends cc.Component {
     cannonFrames: Array<cc.SpriteFrame> = new Array(4);
 
     controller: StageController = null;
-
+    
+    private velVector = new cc.Vec2(0, 0)
     private xAcceleration: number = X_ACCELERATION;
     private applyForceLeft: boolean = false;
 
@@ -49,6 +51,7 @@ export default class Tank extends cc.Component {
 
     onLoad() {
         cc.systemEvent.on(GameEvent.END_GAME, this.handleEndGame, this);
+        this.velVector.y = -SCROLL_SPEED;
     }
 
     start() {
@@ -96,9 +99,11 @@ export default class Tank extends cc.Component {
             this.xSpeed += this.xAcceleration * dt;
         }
 
-        this.node.y -= SCROLL_SPEED * dt;
-        this.node.x += this.xSpeed * dt;
-        this.xSpeed *= DAMP;
+        if (Math.abs(this.xSpeed) > X_SPEED_CAP) {
+            this.xSpeed = this.xSpeed > 0 ? X_SPEED_CAP : -X_SPEED_CAP;
+        }
+        this.velVector.x = this.xSpeed;
+        this.body.linearVelocity = this.velVector;
     }
 
     hit() {
