@@ -1,6 +1,6 @@
 # README #
 
-Project zombie
+Project Zombie
 
 ### What is this repository? ###
 
