@@ -1,8 +1,5 @@
-# README #
+# Project Zombie #
 
-Project Zombie
+WIP
 
-### What is this repository? ###
-
-* Instant game
-* Endless zombie shooter
+zombie shooter in design/development phase
